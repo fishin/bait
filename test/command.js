@@ -1,6 +1,5 @@
 var Code = require('code');
 var Lab = require('lab');
-var Hapi = require('hapi');
 
 var Bait = require('../lib/index');
 
@@ -11,7 +10,7 @@ var it = lab.it;
 
 var internals = {
     defaults: {
-        dirPath: '/tmp/testreel'
+        dirPath: '/tmp/testbait'
     }
 };
 
@@ -20,7 +19,7 @@ describe('command', function () {
     it('runCommand valid', function (done) {
 
         var bait = new Bait(internals.defaults);
-        var command = 'cat /etc/hosts';
+        var command = 'uptime';
         bait.Utils.runCommand(command, function(result) {
 
             console.log(result);
