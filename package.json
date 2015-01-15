@@ -1,0 +1,25 @@
+{
+  "name": "bait",
+  "version": "0.0.1",
+  "description": "utils for reel",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fishin/bait"
+  },
+  "scripts": {
+    "test": "lab -a code -t 95 -v -m 60000",
+    "json": "lab -a code -r json -t 100 -o lab.json -m 60000"
+  },
+  "author": "Lloyd Benson",
+  "license": "MIT",
+  "dependencies": {
+    "hapi": "8.x.x",
+    "hoek": "2.x.x",
+    "pail": "git+https://github.com/fishin/pail"
+  },
+  "devDependencies": {
+    "code": "1.x.x",
+    "lab": "5.x.x"
+  }
+}
