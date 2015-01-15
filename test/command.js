@@ -22,7 +22,6 @@ describe('command', function () {
         var command = 'uptime';
         bait.Utils.runCommand(command, function(result) {
 
-            console.log(result);
             expect(result.status).to.equal('succeeded');
             expect(result.stdout).to.exist();
             done();
