@@ -1,6 +1,7 @@
 var Code = require('code');
 var Lab = require('lab');
-var Hapi = require('hapi');
+
+var Bait = require('../lib/index');
 
 var lab = exports.lab = Lab.script();
 var expect = Code.expect;
@@ -9,127 +10,74 @@ var it = lab.it;
 
 var internals = {
     defaults: {
-        dirPath: '/tmp/testreel'
+        dirPath: '/tmp/testbait'
     }
 };
 
-/*
+describe('failed', function () {    
 
-internals.prepareServer = function (callback) {
-    var server = new Hapi.Server();
-    server.connection();
-    server.register({
+    it('createRun', function (done) {
 
-        register: require('..'),
-        options: internals.defaults
-    }, function (err) {
-
-        expect(err).to.not.exist();
-        callback(server);
+        var bait = new Bait(internals.defaults);
+        var commands = [
+            'date',
+            'uptime',
+            [ 'ls -altr', 'npm test', 'ls -altr' ],
+            'cat /etc/hosts'
+        ];
+        var run = bait.Utils.createRun(commands);
+        expect(run.id).to.exist();
+        done();
     });
-};
 
-describe('fail', function () {
+    it('startRun', function (done) {
 
-    it('POST /api/run', function (done) {
-
-        internals.prepareServer(function (server) {
-
-            var payload = {
-                commands: [ 'date', 'uptime', [ 'ls -altr', 'npm test', 'ls -altr' ], 'cat /etc/hosts' ]
-            };
-            server.inject({ method: 'POST', url: '/api/run', payload: payload }, function (response) {
-
-                expect(response.statusCode).to.equal(200);
-                expect(response.payload).to.exist();
-                expect(response.result.id).to.exist();
-                var runId = response.result.id;
+        var bait = new Bait(internals.defaults);
+        var runs = bait.Utils.getRuns();
+        var runId = runs[0];
+        bait.Utils.startRun(runId);
+        var intervalObj = setInterval(function() {
+            var run = bait.Utils.getRun(runId);
+            if (run.finishTime) {
+                clearInterval(intervalObj);
+                expect(run.id).to.exist();
+                expect(run.status).to.equal('failed');
+                expect(run.commands.length).to.equal(4);
+                expect(run.commands[0].startTime).to.exist();
+                expect(run.commands[3].stderr).to.exist();
+                expect(run.commands[3].code).to.exist();
                 done();
-            });
-        });
+            }
+        }, 1000);
     });
 
-    it('POST /api/run/{runId}/start', function (done) {
+    it('getRun', function (done) {
 
-        internals.prepareServer(function (server) {
-
-            server.inject({ method: 'GET', url: '/api/runs'}, function (response) {
-
-                var runId = response.result[0];
-                server.inject({ method: 'GET', url: '/api/run/'+ runId + '/start'}, function (response) {
-      
-                    //console.log('result:\n' + JSON.stringify(response2.result, null, 4)); 
-                    expect(response.statusCode).to.equal(200);
-                    var intervalObj = setInterval(function() {
-
-                        //console.log('made it to setInterval');
-                        server.inject({ method: 'GET', url: '/api/run/'+ runId}, function (startResponse) {
-
-                            //console.log(startResponse);       
-                            if (startResponse.result.finishTime) {
-
-                                clearInterval(intervalObj);
-                                //console.log(startResponse.result);
-                                expect(startResponse.result.id).to.exist();
-                                expect(startResponse.result.commands).to.be.length(4);
-                                expect(startResponse.result.commands[3].code).to.exist();
-                                expect(startResponse.result.status).to.equal('failed');
-                                done();
-                            }
-                        });
-                    }, 1000);
-                });
-            });
-        });
+        var bait = new Bait(internals.defaults);
+        var runs = bait.Utils.getRuns();
+        var runId = runs[0];
+        var run = bait.Utils.getRun(runId);
+        expect(run.id).to.exist();
+        expect(run.createTime).to.exist();
+        expect(run.commands).to.exist();
+        done();
     });
 
-    it('GET /api/run/{runId}', function (done) {
+    it('deleteRun', function (done) {
 
-        internals.prepareServer(function (server) {
-
-            server.inject({ method: 'GET', url: '/api/runs'}, function (response) {
-
-                var runId = response.result[0];
-                server.inject({ method: 'GET', url: '/api/run/'+ runId}, function (response) {
-
-                    expect(response.statusCode).to.equal(200);
-                    expect(response.result.commands).to.exist();
-                    expect(response.result.id).to.exist();
-                    expect(response.result.createTime).to.exist();
-                    done();
-                });
-            });
-        });
+        var bait = new Bait(internals.defaults);
+        var runs = bait.Utils.getRuns();
+        var runId = runs[0];
+        var run = bait.Utils.deleteRun(runId);
+        var deleteRuns = bait.Utils.getRuns();
+        expect(deleteRuns.length).to.equal(0);
+        done();
     });
 
-    it('DELETE /api/run/{runId}', function (done) {
+    it('deleteWorkspace', function (done) {
 
-        internals.prepareServer(function (server) {
-
-            server.inject({ method: 'GET', url: '/api/runs'}, function (response) {
-
-                var runId = response.result[0];
-                server.inject({ method: 'DELETE', url: '/api/run/'+ runId }, function (response) {
-
-                    expect(response.statusCode).to.equal(200);
-                    expect(response.payload).to.exist();
-                    done();
-                });
-            });
-        });
-    });
-
-    it('DELETE /api/run/workspace', function (done) {
-
-        internals.prepareServer(function (server) {
-
-            server.inject({ method: 'DELETE', url: '/api/run/workspace' }, function (response) {
-
-                expect(response.statusCode).to.equal(200);
-                done();
-            });
-        });
+        var bait = new Bait(internals.defaults);
+        bait.Utils.deleteWorkspace();
+        done();
     });
 });
-
-*/
