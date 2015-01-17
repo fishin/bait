@@ -16,6 +16,7 @@
   "dependencies": {
     "hapi": "8.x.x",
     "hoek": "2.x.x",
+    "bobber": "git+https://github.com/fishin/bobber",
     "pail": "git+https://github.com/fishin/pail"
   },
   "devDependencies": {

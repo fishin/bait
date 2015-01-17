@@ -23,7 +23,7 @@ describe('cancel', function () {
 
         var config = {
             name: 'cancel',
-            cmds: [
+            body: [
                 'sleep 5',
                 'date',
             ]

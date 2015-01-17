@@ -23,7 +23,7 @@ describe('failed', function () {
 
         var config = {
             name: 'bad',
-            cmds: [
+            body: [
                 'date',
                 'uptime',
                 [ 'ls -altr', 'npm test', 'ls -altr' ],
