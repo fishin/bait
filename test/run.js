@@ -20,7 +20,7 @@ describe('run', function () {
 
         var bait = new Bait(internals.defaults);
         var commands = [
-            'git clone --branch=master https://github.com/fishin/reel .',
+            'git clone --branch=master https://github.com/fishin/bait .',
             'npm install',
             'bin/test.sh',
             [ 'uptime', 'npm list', 'ls -altr' ],
@@ -86,7 +86,7 @@ describe('run', function () {
                 expect(run.status).to.equal('succeeded');
                 expect(run.id).to.exist();
                 expect(run.commands).to.be.length(7);
-                expect(run.commands[2].stdout).to.equal('reelin em in\n');
+                expect(run.commands[2].stdout).to.equal('mmm bait\n');
                 done();
             } 
         }, 1000); 
@@ -106,7 +106,7 @@ describe('run', function () {
 
         var bait = new Bait(internals.defaults);
         var contents = bait.getWorkspaceArtifact('bin/test.sh');
-        expect(contents).to.contain('reelin em in');
+        expect(contents).to.contain('mmm bait');
         done();
     });
 

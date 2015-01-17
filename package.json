@@ -1,7 +1,7 @@
 {
   "name": "bait",
   "version": "0.0.1",
-  "description": "utils for reel",
+  "description": "command utilities",
   "main": "index.js",
   "repository": {
     "type": "git",
