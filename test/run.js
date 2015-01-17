@@ -26,7 +26,7 @@ describe('run', function () {
             [ 'uptime', 'npm list', 'ls -altr' ],
             'date'
         ];
-        var run = bait.Utils.createRun(commands);
+        var run = bait.createRun(commands);
         expect(run.id).to.exist();
         done();
     });
@@ -34,7 +34,7 @@ describe('run', function () {
     it('getRuns', function (done) {
 
         var bait = new Bait(internals.defaults);
-        var runs = bait.Utils.getRuns();
+        var runs = bait.getRuns();
         expect(runs.length).to.equal(1);
         done();
     });
@@ -42,9 +42,9 @@ describe('run', function () {
     it('getRun', function (done) {
 
         var bait = new Bait(internals.defaults);
-        var runs = bait.Utils.getRuns();
+        var runs = bait.getRuns();
         var runId = runs[0];
-        var run = bait.Utils.getRun(runId);
+        var run = bait.getRun(runId);
         expect(run.id).to.exist();
         expect(run.createTime).to.exist();
         expect(run.commands).to.exist();
@@ -54,10 +54,10 @@ describe('run', function () {
     it('startRun', function (done) {
 
         var bait = new Bait(internals.defaults);
-        var runs = bait.Utils.getRuns();
+        var runs = bait.getRuns();
         var runId = runs[0];
-        bait.Utils.startRun(runId);
-        var run = bait.Utils.getRun(runId);
+        bait.startRun(runId);
+        var run = bait.getRun(runId);
         expect(run.id).to.exist();
         expect(run.startTime).to.exist();
         done();
@@ -66,9 +66,9 @@ describe('run', function () {
     it('getRunPids 1', function (done) {
 
         var bait = new Bait(internals.defaults);
-        var runs = bait.Utils.getRuns();
+        var runs = bait.getRuns();
         var runId = runs[0];
-        var pids = bait.Utils.getRunPids(runId);
+        var pids = bait.getRunPids(runId);
         expect(pids.length).to.equal(1);
         done();
     });
@@ -76,10 +76,10 @@ describe('run', function () {
     it('getRun finish', function (done) {
 
         var bait = new Bait(internals.defaults);
-        var runs = bait.Utils.getRuns();
+        var runs = bait.getRuns();
         var runId = runs[0];
         var intervalObj = setInterval(function() {
-            var run = bait.Utils.getRun(runId);
+            var run = bait.getRun(runId);
             if (run.finishTime) {
                 clearInterval(intervalObj); 
                 //console.log(run);
@@ -95,9 +95,9 @@ describe('run', function () {
     it('getRunPids 0', function (done) {
 
         var bait = new Bait(internals.defaults);
-        var runs = bait.Utils.getRuns();
+        var runs = bait.getRuns();
         var runId = runs[0];
-        var pids = bait.Utils.getRunPids(runId);
+        var pids = bait.getRunPids(runId);
         expect(pids.length).to.equal(0);
         done();
     });
@@ -105,7 +105,7 @@ describe('run', function () {
     it('getWorkspaceArtifact', function (done) {
 
         var bait = new Bait(internals.defaults);
-        var contents = bait.Utils.getWorkspaceArtifact('bin/test.sh');
+        var contents = bait.getWorkspaceArtifact('bin/test.sh');
         expect(contents).to.contain('reelin em in');
         done();
     });
@@ -113,7 +113,7 @@ describe('run', function () {
     it('getRunByLink last', function (done) {
 
         var bait = new Bait(internals.defaults);
-        var run = bait.Utils.getRunByLink('last');
+        var run = bait.getRunByLink('last');
         expect(run.id).to.exist();
         done();
     });
@@ -121,7 +121,7 @@ describe('run', function () {
     it('getRunByLink lastFail', function (done) {
 
         var bait = new Bait(internals.defaults);
-        var run = bait.Utils.getRunByLink('lastFail');
+        var run = bait.getRunByLink('lastFail');
         expect(run).to.not.exist();
         done();
     });
@@ -129,10 +129,10 @@ describe('run', function () {
     it('deleteRun', function (done) {
 
         var bait = new Bait(internals.defaults);
-        var runs = bait.Utils.getRuns();
+        var runs = bait.getRuns();
         var runId = runs[0];
-        var run = bait.Utils.deleteRun(runId);
-        var deleteRuns = bait.Utils.getRuns();
+        var run = bait.deleteRun(runId);
+        var deleteRuns = bait.getRuns();
         expect(deleteRuns.length).to.equal(0);
         done();
     });
@@ -140,7 +140,7 @@ describe('run', function () {
     it('deleteWorkspace', function (done) {
 
         var bait = new Bait(internals.defaults);
-        bait.Utils.deleteWorkspace();
+        bait.deleteWorkspace();
         done();
     });
 });

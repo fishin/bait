@@ -20,7 +20,7 @@ describe('command', function () {
 
         var bait = new Bait(internals.defaults);
         var command = 'uptime';
-        bait.Utils.runCommand(command, function(result) {
+        bait.runCommand(command, function(result) {
 
             expect(result.status).to.equal('succeeded');
             expect(result.stdout).to.exist();
@@ -32,7 +32,7 @@ describe('command', function () {
 
         var bait = new Bait(internals.defaults);
         var command = 'invalid';
-        bait.Utils.runCommand(command, function(result) {
+        bait.runCommand(command, function(result) {
 
             expect(result.status).to.equal('failed');
             expect(result.error).to.exist();
@@ -44,7 +44,7 @@ describe('command', function () {
 
         var bait = new Bait(internals.defaults);
         var command = 'ls lloyd';
-        bait.Utils.runCommand(command, function(result) {
+        bait.runCommand(command, function(result) {
 
             expect(result.status).to.equal('failed');
             expect(result.stderr).to.exist();

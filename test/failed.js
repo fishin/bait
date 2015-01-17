@@ -25,7 +25,7 @@ describe('failed', function () {
             [ 'ls -altr', 'npm test', 'ls -altr' ],
             'cat /etc/hosts'
         ];
-        var run = bait.Utils.createRun(commands);
+        var run = bait.createRun(commands);
         expect(run.id).to.exist();
         done();
     });
@@ -33,11 +33,11 @@ describe('failed', function () {
     it('startRun', function (done) {
 
         var bait = new Bait(internals.defaults);
-        var runs = bait.Utils.getRuns();
+        var runs = bait.getRuns();
         var runId = runs[0];
-        bait.Utils.startRun(runId);
+        bait.startRun(runId);
         var intervalObj = setInterval(function() {
-            var run = bait.Utils.getRun(runId);
+            var run = bait.getRun(runId);
             if (run.finishTime) {
                 clearInterval(intervalObj);
                 expect(run.id).to.exist();
@@ -54,9 +54,9 @@ describe('failed', function () {
     it('getRun', function (done) {
 
         var bait = new Bait(internals.defaults);
-        var runs = bait.Utils.getRuns();
+        var runs = bait.getRuns();
         var runId = runs[0];
-        var run = bait.Utils.getRun(runId);
+        var run = bait.getRun(runId);
         expect(run.id).to.exist();
         expect(run.createTime).to.exist();
         expect(run.commands).to.exist();
@@ -66,10 +66,10 @@ describe('failed', function () {
     it('deleteRun', function (done) {
 
         var bait = new Bait(internals.defaults);
-        var runs = bait.Utils.getRuns();
+        var runs = bait.getRuns();
         var runId = runs[0];
-        var run = bait.Utils.deleteRun(runId);
-        var deleteRuns = bait.Utils.getRuns();
+        var run = bait.deleteRun(runId);
+        var deleteRuns = bait.getRuns();
         expect(deleteRuns.length).to.equal(0);
         done();
     });
@@ -77,7 +77,7 @@ describe('failed', function () {
     it('deleteWorkspace', function (done) {
 
         var bait = new Bait(internals.defaults);
-        bait.Utils.deleteWorkspace();
+        bait.deleteWorkspace();
         done();
     });
 });

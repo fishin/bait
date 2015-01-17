@@ -22,7 +22,7 @@ describe('runs', function () {
         var commands = [
             'git clone --branch=master https://github.com/fishin/pail .',
         ];
-        var run = bait.Utils.createRun(commands);
+        var run = bait.createRun(commands);
         expect(run.id).to.exist();
         done();
     });
@@ -33,7 +33,7 @@ describe('runs', function () {
         var commands = [
             'date'
         ];
-        var run = bait.Utils.createRun(commands);
+        var run = bait.createRun(commands);
         expect(run.id).to.exist();
         done();
     });
@@ -41,10 +41,10 @@ describe('runs', function () {
     it('startRun git', function (done) {
 
         var bait = new Bait(internals.defaults);
-        var runs = bait.Utils.getRuns();
+        var runs = bait.getRuns();
         var runId = runs[0];
-        bait.Utils.startRun(runId);
-        var run = bait.Utils.getRun(runId);
+        bait.startRun(runId);
+        var run = bait.getRun(runId);
         expect(run.id).to.exist();
         expect(run.startTime).to.exist();
         done();
@@ -53,10 +53,10 @@ describe('runs', function () {
     it('startRun date', function (done) {
 
         var bait = new Bait(internals.defaults);
-        var runs = bait.Utils.getRuns();
+        var runs = bait.getRuns();
         var runId = runs[1];
-        bait.Utils.startRun(runId);
-        var run = bait.Utils.getRun(runId);
+        bait.startRun(runId);
+        var run = bait.getRun(runId);
         expect(run.id).to.exist();
         expect(run.startTime).to.exist();
         done();
@@ -65,11 +65,11 @@ describe('runs', function () {
     it('getRun git', function (done) {
 
         var bait = new Bait(internals.defaults);
-        var runs = bait.Utils.getRuns();
+        var runs = bait.getRuns();
         var runId = runs[0];
         var intervalObj = setInterval(function() {
 
-            var run = bait.Utils.getRun(runId);
+            var run = bait.getRun(runId);
             if (run.finishTime) {
                 clearInterval(intervalObj);
                 expect(run.id).to.exist();
@@ -83,11 +83,11 @@ describe('runs', function () {
     it('getRun date', function (done) {
 
         var bait = new Bait(internals.defaults);
-        var runs = bait.Utils.getRuns();
+        var runs = bait.getRuns();
         var runId = runs[1];
         var intervalObj = setInterval(function() {
 
-            var run = bait.Utils.getRun(runId);
+            var run = bait.getRun(runId);
             if (run.finishTime) {
                 clearInterval(intervalObj);
                 expect(run.id).to.exist();
@@ -101,10 +101,10 @@ describe('runs', function () {
     it('deleteRun git', function (done) {
 
         var bait = new Bait(internals.defaults);
-        var runs = bait.Utils.getRuns();
+        var runs = bait.getRuns();
         var runId = runs[0];
-        var run = bait.Utils.deleteRun(runId);
-        var deleteRuns = bait.Utils.getRuns();
+        var run = bait.deleteRun(runId);
+        var deleteRuns = bait.getRuns();
         expect(deleteRuns.length).to.equal(1);
         done();
     });
@@ -112,10 +112,10 @@ describe('runs', function () {
     it('deleteRun date', function (done) {
 
         var bait = new Bait(internals.defaults);
-        var runs = bait.Utils.getRuns();
+        var runs = bait.getRuns();
         var runId = runs[0];
-        var run = bait.Utils.deleteRun(runId);
-        var deleteRuns = bait.Utils.getRuns();
+        var run = bait.deleteRun(runId);
+        var deleteRuns = bait.getRuns();
         expect(deleteRuns.length).to.equal(0);
         done();
     });
@@ -123,7 +123,7 @@ describe('runs', function () {
     it('deleteWorkspace', function (done) {
 
         var bait = new Bait(internals.defaults);
-        bait.Utils.deleteWorkspace();
+        bait.deleteWorkspace();
         done();
     });
 });
