@@ -88,10 +88,7 @@ describe('invalid', function () {
             name: 'invalid',
             scm: {
                 type: 'invalid'
-            },
-            body: [
-                'invalid'
-            ]
+            }
         };
         var bait = new Bait(internals.defaults);
         var createJob = bait.createJob(config);
@@ -127,10 +124,8 @@ describe('invalid', function () {
             if (run.finishTime) {
                 clearInterval(intervalObj); 
                 //console.log(run);
-                expect(run.status).to.equal('failed');
+                expect(run.status).to.equal('succeeded');
                 expect(run.id).to.exist();
-                expect(run.commands).to.be.length(1);
-                expect(run.commands[0].error).to.exist();
                 expect(run.finishTime).to.exist();
                 expect(run.finishTime).to.be.above(run.startTime);
                 done();
