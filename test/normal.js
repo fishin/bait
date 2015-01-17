@@ -125,7 +125,7 @@ describe('normal', function () {
         var jobId = jobs[0].id;
         var runs = bait.getRuns(jobId);
         var runId = runs[0];
-        var pids = bait.getRunPids(runId);
+        var pids = bait.getRunPids(jobId, runId);
         expect(pids.length).to.equal(1);
         done();
     });
@@ -178,7 +178,7 @@ describe('normal', function () {
         var jobId = jobs[0].id;
         var runs = bait.getRuns(jobId);
         var runId = runs[0];
-        var pids = bait.getRunPids(runId);
+        var pids = bait.getRunPids(jobId, runId);
         expect(pids.length).to.equal(0);
         done();
     });

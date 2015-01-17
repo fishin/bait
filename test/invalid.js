@@ -127,7 +127,6 @@ describe('invalid', function () {
                 expect(run.status).to.equal('succeeded');
                 expect(run.id).to.exist();
                 expect(run.finishTime).to.exist();
-                expect(run.finishTime).to.be.above(run.startTime);
                 done();
             } 
         }, 1000); 
