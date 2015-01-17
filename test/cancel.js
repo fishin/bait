@@ -1,12 +1,9 @@
 var Code = require('code');
 var Lab = require('lab');
+var Hapi = require('hapi');
+var Pail = require('pail');
 
 var Bait = require('../lib/index');
-
-var lab = exports.lab = Lab.script();
-var expect = Code.expect;
-var describe = lab.describe;
-var it = lab.it;
 
 var internals = {
     defaults: {
@@ -14,46 +11,62 @@ var internals = {
     }
 };
 
+var lab = exports.lab = Lab.script();
+var expect = Code.expect;
+var describe = lab.describe;
+var it = lab.it;
+
 describe('cancel', function () {    
 
-    it('createRun', function (done) {
+    it('createJob', function (done) {
 
+
+        var config = {
+            name: 'cancel',
+            cmds: [
+                'sleep 5',
+                'date',
+            ]
+        };
         var bait = new Bait(internals.defaults);
-        var commands = [
-            'sleep 5',
-            'date',
-            'uptime'
-        ];
-        var run = bait.createRun(commands);
-        expect(run.id).to.exist();
+        var createJob = bait.createJob(config);
+        expect(createJob.id).to.exist();
         done();
     });
 
-    it('startRun', function (done) {
+    it('startJob', function (done) {
 
         var bait = new Bait(internals.defaults);
-        var runs = bait.getRuns();
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        bait.startJob(jobId);
+        var job = bait.getJob(jobId);
+        var runs = bait.getRuns(jobId);
         var runId = runs[0];
-        bait.startRun(runId);
-        var run = bait.getRun(runId);
+        var run = bait.getRun(jobId, runId);
         expect(run.id).to.exist();
         expect(run.startTime).to.exist();
+        expect(runs.length).to.equal(1);
         done();
     });
 
     it('cancelRun', function (done) {
 
         var bait = new Bait(internals.defaults);
-        var runs = bait.getRuns();
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        var runs = bait.getRuns(jobId);
         var runId = runs[0];
-        bait.cancelRun(runId);
+        bait.cancelRun(jobId, runId);
         var intervalObj = setInterval(function() {
-            var run = bait.getRun(runId);
+
+            var runId = runs[0];
+            var run = bait.getRun(jobId, runId);
             if (run.finishTime) {
                 clearInterval(intervalObj);
                 expect(run.id).to.exist();
                 expect(run.status).to.equal('cancelled');
-                expect(run.commands.length).to.equal(3);
+                expect(run.commands.length).to.equal(2);
                 expect(run.commands[0].startTime).to.exist();
                 expect(run.commands[0].signal).to.equal('SIGTERM');
                 expect(run.commands[1].startTime).to.not.exist();
@@ -62,21 +75,27 @@ describe('cancel', function () {
         }, 1000);
     });
 
-    it('deleteRun', function (done) {
+    it('getRunByName lastCancel', function (done) {
 
         var bait = new Bait(internals.defaults);
-        var runs = bait.getRuns();
-        var runId = runs[0];
-        var run = bait.deleteRun(runId);
-        var deleteRuns = bait.getRuns();
-        expect(deleteRuns.length).to.equal(0);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        var run = bait.getRunByName(jobId, 'lastCancel');
+        expect(run.id).to.exist();
+        expect(run.startTime).to.exist();
+        expect(run.finishTime).to.exist();
+        expect(run.status).to.equal('cancelled');
         done();
     });
 
-    it('deleteWorkspace', function (done) {
+    it('deleteJob', function (done) {
 
         var bait = new Bait(internals.defaults);
-        bait.deleteWorkspace();
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        bait.deleteJob(jobId);
+        jobs = bait.getJobs();
+        expect(jobs.length).to.equal(0);
         done();
     });
 });
