@@ -44,7 +44,7 @@ describe('failed', function () {
         bait.startJob(jobId);
         var job = bait.getJob(jobId);
         var runs = bait.getRuns(jobId);
-        var runId = runs[0];
+        var runId = runs[0].id;
         var run = bait.getRun(jobId, runId);
         expect(run.id).to.exist();
         expect(run.startTime).to.exist();
@@ -58,8 +58,9 @@ describe('failed', function () {
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
         var runs = bait.getRuns(jobId);
-        var runId = runs[0];
+        var runId = runs[0].id;
         var intervalObj = setInterval(function() {
+
             var run = bait.getRun(jobId, runId);
             if (run.finishTime) {
                 clearInterval(intervalObj); 

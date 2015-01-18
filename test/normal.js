@@ -94,7 +94,7 @@ describe('normal', function () {
         bait.startJob(jobId);
         var job = bait.getJob(jobId);
         var runs = bait.getRuns(jobId);
-        var runId = runs[0];
+        var runId = runs[0].id;
         var run = bait.getRun(jobId, runId);
         expect(run.id).to.exist();
         expect(run.startTime).to.exist();
@@ -102,7 +102,7 @@ describe('normal', function () {
         done();
     });
 
-    it('startJob noscm', function (done) {
+    it('startJob noscm 1', function (done) {
 
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
@@ -110,7 +110,7 @@ describe('normal', function () {
         bait.startJob(jobId);
         var job = bait.getJob(jobId);
         var runs = bait.getRuns(jobId);
-        var runId = runs[0];
+        var runId = runs[0].id;
         var run = bait.getRun(jobId, runId);
         expect(run.id).to.exist();
         expect(run.startTime).to.exist();
@@ -124,7 +124,7 @@ describe('normal', function () {
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
         var runs = bait.getRuns(jobId);
-        var runId = runs[0];
+        var runId = runs[0].id;
         var pids = bait.getRunPids(jobId, runId);
         expect(pids.length).to.equal(1);
         done();
@@ -136,7 +136,7 @@ describe('normal', function () {
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
         var runs = bait.getRuns(jobId);
-        var runId = runs[0];
+        var runId = runs[0].id;
         var intervalObj = setInterval(function() {
             var run = bait.getRun(jobId, runId);
             if (run.finishTime) {
@@ -157,7 +157,43 @@ describe('normal', function () {
         var jobs = bait.getJobs();
         var jobId = jobs[1].id;
         var runs = bait.getRuns(jobId);
-        var runId = runs[0];
+        var runId = runs[0].id;
+        var intervalObj = setInterval(function() {
+            var run = bait.getRun(jobId, runId);
+            if (run.finishTime) {
+                clearInterval(intervalObj); 
+                //console.log(run);
+                expect(run.status).to.equal('succeeded');
+                expect(run.id).to.exist();
+                expect(run.commands).to.be.length(3);
+                done();
+            } 
+        }, 1000); 
+    });
+
+    it('startJob noscm 2', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[1].id;
+        bait.startJob(jobId);
+        var job = bait.getJob(jobId);
+        var runs = bait.getRuns(jobId);
+        var runId = runs[0].id;
+        var run = bait.getRun(jobId, runId);
+        expect(run.id).to.exist();
+        expect(run.startTime).to.exist();
+        expect(runs.length).to.equal(2);
+        done();
+    });
+
+    it('getRun noscm 2', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[1].id;
+        var runs = bait.getRuns(jobId);
+        var runId = runs[0].id;
         var intervalObj = setInterval(function() {
             var run = bait.getRun(jobId, runId);
             if (run.finishTime) {
@@ -177,7 +213,7 @@ describe('normal', function () {
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
         var runs = bait.getRuns(jobId);
-        var runId = runs[0];
+        var runId = runs[0].id;
         var pids = bait.getRunPids(jobId, runId);
         expect(pids.length).to.equal(0);
         done();
@@ -212,7 +248,7 @@ describe('normal', function () {
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
         var runs = bait.getRuns(jobId);
-        var runId = runs[0];
+        var runId = runs[0].id;
         bait.deleteRun(jobId, runId);
         var deleteRuns = bait.getRuns(jobId);
         expect(deleteRuns.length).to.equal(0);

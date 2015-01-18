@@ -42,7 +42,7 @@ describe('cancel', function () {
         bait.startJob(jobId);
         var job = bait.getJob(jobId);
         var runs = bait.getRuns(jobId);
-        var runId = runs[0];
+        var runId = runs[0].id;
         var run = bait.getRun(jobId, runId);
         expect(run.id).to.exist();
         expect(run.startTime).to.exist();
@@ -56,11 +56,10 @@ describe('cancel', function () {
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
         var runs = bait.getRuns(jobId);
-        var runId = runs[0];
+        var runId = runs[0].id;
         bait.cancelRun(jobId, runId);
         var intervalObj = setInterval(function() {
 
-            var runId = runs[0];
             var run = bait.getRun(jobId, runId);
             if (run.finishTime) {
                 clearInterval(intervalObj);
