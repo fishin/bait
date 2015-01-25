@@ -24,12 +24,15 @@ describe('normal', function () {
             name: 'scm',
             scm: {
                 type: 'git',
-                url: 'https://github.com/fishin/bait',
+                url: 'https://github.com/fishin/pail',
                 branch: 'master'
+            },
+            archive: {
+                pattern: 'lab.json'
             },
             body: [
                 'npm install',
-                'bin/test.sh',
+                'npm run-script json',
                 [ 'uptime', 'npm list', 'ls -altr' ],
                 'date'
             ]
@@ -139,13 +142,14 @@ describe('normal', function () {
         var runId = runs[0].id;
         var intervalObj = setInterval(function() {
             var run = bait.getRun(jobId, runId);
+            //console.log(run);
             if (run.finishTime) {
                 clearInterval(intervalObj); 
                 //console.log(run);
                 expect(run.status).to.equal('succeeded');
                 expect(run.id).to.exist();
                 expect(run.commands).to.be.length(8);
-                expect(run.commands[3].stdout).to.equal('mmm bait\n');
+                expect(run.commands[3].stdout).to.exist();
                 done();
             } 
         }, 1000); 
@@ -224,8 +228,20 @@ describe('normal', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        var contents = bait.getWorkspaceArtifact(jobId, 'bin/test.sh');
-        expect(contents).to.contain('mmm bait');
+        var contents = bait.getWorkspaceArtifact(jobId, 'lab.json');
+        expect(contents).to.contain('test');
+        done();
+    });
+
+    it('getArchiveArtifact scm', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        var runs = bait.getRuns(jobId);
+        var runId = runs[0].id;
+        var contents = bait.getArchiveArtifact(jobId, runId, 'lab.json');
+        expect(contents).to.contain('test');
         done();
     });
 
@@ -254,6 +270,7 @@ describe('normal', function () {
         expect(deleteRuns.length).to.equal(0);
         done();
     });
+
 
     it('deleteWorkspace scm', function (done) {
 

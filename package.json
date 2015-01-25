@@ -14,9 +14,10 @@
   "author": "Lloyd Benson",
   "license": "MIT",
   "dependencies": {
+    "bobber": "git+https://github.com/fishin/bobber",
+    "glob": "4.3.x",
     "hapi": "8.x.x",
     "hoek": "2.x.x",
-    "bobber": "git+https://github.com/fishin/bobber",
     "pail": "git+https://github.com/fishin/pail"
   },
   "devDependencies": {
