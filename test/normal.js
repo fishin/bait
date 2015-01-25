@@ -223,6 +223,32 @@ describe('normal', function () {
         done();
     });
 
+    it('getCommits scm', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        bait.getCommits(jobId, function(commits) {
+
+            //console.log(commits);
+            expect(commits.length).to.be.above(0);
+            done();
+        });
+    });
+
+    it('getCommits noscm', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[1].id;
+        bait.getCommits(jobId, function(commits) {
+
+            //console.log(commits);
+            expect(commits.length).to.be.equal(0);
+            done();
+        });
+    });
+
     it('getWorkspaceArtifact scm', function (done) {
 
         var bait = new Bait(internals.defaults);
@@ -270,7 +296,6 @@ describe('normal', function () {
         expect(deleteRuns.length).to.equal(0);
         done();
     });
-
 
     it('deleteWorkspace scm', function (done) {
 
