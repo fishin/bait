@@ -271,6 +271,18 @@ describe('normal', function () {
         done();
     });
 
+    it('getArchiveArtifacts scm', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        var runs = bait.getRuns(jobId);
+        var runId = runs[0].id;
+        var files = bait.getArchiveArtifacts(jobId, runId);
+        expect(files[0]).to.equal('lab.json');
+        done();
+    });
+
     it('getRunByName last scm', function (done) {
 
         var bait = new Bait(internals.defaults);
