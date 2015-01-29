@@ -271,6 +271,24 @@ describe('normal', function () {
         done();
     });
 
+    it('getTestResult scm', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        var runs = bait.getRuns(jobId);
+        var runId = runs[0].id;
+        var result = bait.getTestResult(jobId, runId, 'lab.json');
+        console.log(result);
+        expect(result.totalTests).to.exist();
+        expect(result.tests).to.exist();
+        expect(result.coveragePercent).to.exist();
+        expect(result.coverage).to.exist();
+        expect(result.totalDuration).to.exist();
+        expect(result.totalLeaks).to.exist();
+        done();
+    });
+
     it('getArchiveArtifacts scm', function (done) {
 
         var bait = new Bait(internals.defaults);
