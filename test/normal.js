@@ -279,7 +279,7 @@ describe('normal', function () {
         var runs = bait.getRuns(jobId);
         var runId = runs[0].id;
         var result = bait.getTestResult(jobId, runId, 'lab.json');
-        console.log(result);
+        //console.log(result);
         expect(result.totalTests).to.exist();
         expect(result.tests).to.exist();
         expect(result.coveragePercent).to.exist();
