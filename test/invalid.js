@@ -139,12 +139,10 @@ describe('invalid', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        bait.getCommits(jobId, function(commits) {
-
-            //console.log(commits);
-            expect(commits.length).to.be.equal(0);
-            done();
-        });
+        var commits = bait.getCommits(jobId);
+        //console.log(commits);
+        expect(commits.length).to.be.equal(0);
+        done();
     });
 
     it('deleteJob scm', function (done) {

@@ -228,12 +228,10 @@ describe('normal', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        bait.getCommits(jobId, function(commits) {
-
-            //console.log(commits);
-            expect(commits.length).to.be.above(0);
-            done();
-        });
+        var commits = bait.getCommits(jobId);
+        //console.log(commits);
+        expect(commits.length).to.be.above(0);
+        done();
     });
 
     it('getCommits noscm', function (done) {
@@ -241,12 +239,10 @@ describe('normal', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[1].id;
-        bait.getCommits(jobId, function(commits) {
-
-            //console.log(commits);
-            expect(commits.length).to.be.equal(0);
-            done();
-        });
+        var commits = bait.getCommits(jobId);
+        //console.log(commits);
+        expect(commits.length).to.be.equal(0);
+        done();
     });
 
     it('getWorkspaceArtifact scm', function (done) {
