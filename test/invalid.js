@@ -32,6 +32,42 @@ describe('invalid', function () {
         done();
     });
 
+    it('updateJob cmd scm https', function (done) {
+
+        var config = {
+            scm: {
+                type: 'git',
+                url: 'https://github.com/fishin/invalid',
+                branch: 'master'
+            }
+        };
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        var updateJob = bait.updateJob(jobId, config);
+        expect(updateJob.id).to.exist();
+        expect(updateJob.updateTime).to.not.exist();
+        expect(updateJob.scm).to.not.exist();
+        done();
+    });
+
+    it('updateJob cmd scm type', function (done) {
+
+        var config = {
+            scm: {
+                type: 'invalid'
+            }
+        };
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        var updateJob = bait.updateJob(jobId, config);
+        expect(updateJob.id).to.exist();
+        expect(updateJob.updateTime).to.not.exist();
+        expect(updateJob.scm).to.not.exist();
+        done();
+    });
+
     it('startJob cmd', function (done) {
 
         var bait = new Bait(internals.defaults);
@@ -83,7 +119,7 @@ describe('invalid', function () {
         done();
     });
 
-    it('createJob scm', function (done) {
+    it('createJob scm type', function (done) {
 
         var config = {
             name: 'invalid',
@@ -93,66 +129,26 @@ describe('invalid', function () {
         };
         var bait = new Bait(internals.defaults);
         var createJob = bait.createJob(config);
-        expect(createJob.id).to.exist();
+        expect(createJob.id).to.not.exist();
+        expect(createJob.message).to.exist();
         done();
     });
 
-    it('startJob scm', function (done) {
+    it('createJob scm http', function (done) {
 
+        var config = {
+            name: 'http',
+            scm: {
+                type: 'git',
+                url: 'https://github.com/fishin/invalid',
+                branch: 'master'
+            }
+        };
         var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        bait.startJob(jobId);
-        var job = bait.getJob(jobId);
-        var runs = bait.getRuns(jobId);
-        var runId = runs[0].id;
-        var run = bait.getRun(jobId, runId);
-        expect(run.id).to.exist();
-        expect(run.startTime).to.exist();
-        expect(runs.length).to.equal(1);
+        var createJob = bait.createJob(config);
+        expect(createJob.id).to.not.exist();
+        expect(createJob.message).to.exist();
         done();
     });
 
-    it('getRun scm', function (done) {
-
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var runs = bait.getRuns(jobId);
-        var runId = runs[0].id;
-        var intervalObj = setInterval(function() {
-
-            var run = bait.getRun(jobId, runId);
-            if (run.finishTime) {
-                clearInterval(intervalObj); 
-                //console.log(run);
-                expect(run.status).to.equal('succeeded');
-                expect(run.id).to.exist();
-                expect(run.finishTime).to.exist();
-                done();
-            } 
-        }, 1000); 
-    });
-
-    it('getCommits scm', function (done) {
-
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var commits = bait.getCommits(jobId);
-        //console.log(commits);
-        expect(commits.length).to.be.equal(0);
-        done();
-    });
-
-    it('deleteJob scm', function (done) {
-
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        bait.deleteJob(jobId);
-        jobs = bait.getJobs();
-        expect(jobs.length).to.equal(0);
-        done();
-    });
 });

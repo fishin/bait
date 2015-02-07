@@ -20,11 +20,12 @@ describe('normal', function () {
 
     it('createJob scm', function (done) {
 
+        // switching this to pail later
         var config = {
             name: 'scm',
             scm: {
                 type: 'git',
-                url: 'https://github.com/fishin/pail',
+                url: 'https://github.com/fishin/bait',
                 branch: 'master'
             },
             archive: {
@@ -57,6 +58,21 @@ describe('normal', function () {
         done();
     });
 
+    it('updateJob noscm', function (done) {
+
+        var config = {
+            description: 'desc'
+        };
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[1].id;
+        var updateJob = bait.updateJob(jobId, config);
+        expect(updateJob.id).to.exist();
+        expect(updateJob.updateTime).to.exist();
+        expect(updateJob.description).to.equal('desc');
+        done();
+    });
+
     it('getJobs', function (done) {
 
         var bait = new Bait(internals.defaults);
@@ -68,7 +84,11 @@ describe('normal', function () {
     it('updateJob scm', function (done) {
 
         var config = {
-            description: 'desc'
+            scm: {
+                type: 'git',
+                url: 'https://github.com/fishin/pail',
+                branch: 'master'
+            }
         };
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
@@ -76,7 +96,7 @@ describe('normal', function () {
         var updateJob = bait.updateJob(jobId, config);
         expect(updateJob.id).to.exist();
         expect(updateJob.updateTime).to.exist();
-        expect(updateJob.description).to.equal('desc');
+        expect(updateJob.scm.url).to.equal('https://github.com/fishin/pail');
         done();
     });
 
