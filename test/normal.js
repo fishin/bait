@@ -148,6 +148,7 @@ describe('normal', function () {
                 //console.log(run);
                 expect(run.status).to.equal('succeeded');
                 expect(run.id).to.exist();
+                expect(run.commit).to.be.length(40);
                 expect(run.commands).to.be.length(8);
                 expect(run.commands[3].stdout).to.exist();
                 done();
