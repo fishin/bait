@@ -244,25 +244,37 @@ describe('normal', function () {
         done();
     });
 
-    it('getCommits scm', function (done) {
+    it('getAllCommits scm', function (done) {
 
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        var commits = bait.getCommits(jobId);
+        var commits = bait.getAllCommits(jobId);
         //console.log(commits);
         expect(commits.length).to.be.above(0);
         done();
     });
 
-    it('getCommits noscm', function (done) {
+    it('getAllCommits noscm', function (done) {
 
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[1].id;
-        var commits = bait.getCommits(jobId);
+        var commits = bait.getAllCommits(jobId);
         //console.log(commits);
         expect(commits.length).to.be.equal(0);
+        done();
+    });
+
+    it('getCompareCommits scm', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        var commits = bait.getAllCommits(jobId);
+        var compareCommits = bait.getCompareCommits(jobId, commits[0].commit, commits[1].commit);
+        //console.log(commits);
+        expect(compareCommits.length).to.equal(1);
         done();
     });
 
