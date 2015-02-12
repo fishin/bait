@@ -83,6 +83,19 @@ describe('prs', function () {
         done();
     });
 
+    it('getOpenPullRequests scm', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        bait.getOpenPullRequests(jobId, function(prs) {
+
+           //console.log(commits);
+           expect(prs.length).to.be.above(0);
+           done();
+        });
+    });
+
     it('deleteJob scm', function (done) {
 
         var bait = new Bait(internals.defaults);
