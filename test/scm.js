@@ -271,5 +271,35 @@ describe('scm', function () {
         done();
     });
 
+    it('createJob invalid', function (done) {
+
+        // switching this to pail later
+        var config = {
+            name: 'scm',
+            scm: {
+                type: 'invalid'
+            },
+            body: [
+                'npm install',
+                'npm run-script json'
+            ]
+        };
+        var bait = new Bait(internals.defaults);
+        var createJob = bait.createJob(config);
+        expect(createJob.id).to.exist();
+        expect(createJob.scm.type).to.equal('invalid');
+        done();
+    });
+
+    it('deleteJob invalid', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        bait.deleteJob(jobId);
+        jobs = bait.getJobs();
+        expect(jobs.length).to.equal(0);
+        done();
+    });
 */
 });
