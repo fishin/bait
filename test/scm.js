@@ -25,7 +25,7 @@ describe('scm', function () {
             name: 'scm',
             scm: {
                 type: 'git',
-                url: 'https://github.com/fishin/pail',
+                url: 'https://github.com/fishin/bait',
                 branch: 'master'
             },
             archive: {
@@ -41,7 +41,26 @@ describe('scm', function () {
         var bait = new Bait(internals.defaults);
         var createJob = bait.createJob(config);
         expect(createJob.id).to.exist();
-        expect(createJob.scm.url).to.equal('https://github.com/fishin/pail');
+        expect(createJob.scm.url).to.equal('https://github.com/fishin/bait');
+        done();
+    });
+
+    it('updateJob scm', function (done) {
+
+        var config = {
+            scm: {
+                type: 'git',
+                url: 'https://github.com/fishin/pail',
+                branch: 'master'
+            }
+        };
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        var updateJob = bait.updateJob(jobId, config);
+        expect(updateJob.id).to.exist();
+        expect(updateJob.updateTime).to.exist();
+        expect(updateJob.scm.url).to.equal('https://github.com/fishin/pail');
         done();
     });
 

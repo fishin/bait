@@ -18,23 +18,13 @@ var it = lab.it;
 
 describe('normal', function () {    
 
-    it('createJob scm', function (done) {
+    it('createJob job1', function (done) {
 
         // switching this to pail later
         var config = {
-            name: 'scm',
-            scm: {
-                type: 'git',
-                url: 'https://github.com/fishin/bait',
-                branch: 'master'
-            },
-            archive: {
-                pattern: 'lab.json'
-            },
+            name: 'job1',
             body: [
-                'npm install',
-                'npm run-script json',
-                [ 'uptime', 'npm list', 'ls -altr' ],
+                [ 'uptime', 'sleep 2' ],
                 'date'
             ]
         };
@@ -44,10 +34,10 @@ describe('normal', function () {
         done();
     });
 
-    it('createJob noscm', function (done) {
+    it('createJob job2', function (done) {
 
         var config = {
-            name: 'noscm',
+            name: 'job2',
             head: [ 'date' ],
             body: [ 'uptime' ],
             tail: [ 'cat /etc/hosts' ]
@@ -58,7 +48,7 @@ describe('normal', function () {
         done();
     });
 
-    it('updateJob noscm', function (done) {
+    it('updateJob job2', function (done) {
 
         var config = {
             description: 'desc'
@@ -81,35 +71,16 @@ describe('normal', function () {
         done();
     });
 
-    it('updateJob scm', function (done) {
-
-        var config = {
-            scm: {
-                type: 'git',
-                url: 'https://github.com/fishin/pail',
-                branch: 'master'
-            }
-        };
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var updateJob = bait.updateJob(jobId, config);
-        expect(updateJob.id).to.exist();
-        expect(updateJob.updateTime).to.exist();
-        expect(updateJob.scm.url).to.equal('https://github.com/fishin/pail');
-        done();
-    });
-
-    it('getJobByName scm', function (done) {
+    it('getJobByName job1', function (done) {
 
         var bait = new Bait(internals.defaults);
-        var job = bait.getJobByName('scm');
+        var job = bait.getJobByName('job1');
         expect(job.id).to.exist();
-        expect(job.name).to.equal('scm');
+        expect(job.name).to.equal('job1');
         done();
     });
 
-    it('startJob scm', function (done) {
+    it('startJob job1', function (done) {
 
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
@@ -125,7 +96,7 @@ describe('normal', function () {
         done();
     });
 
-    it('startJob noscm 1', function (done) {
+    it('startJob job2 1', function (done) {
 
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
@@ -153,7 +124,7 @@ describe('normal', function () {
         done();
     });
 
-    it('getRun scm', function (done) {
+    it('getRun job1', function (done) {
 
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
@@ -168,15 +139,14 @@ describe('normal', function () {
                 //console.log(run);
                 expect(run.status).to.equal('succeeded');
                 expect(run.id).to.exist();
-                expect(run.commit).to.be.length(40);
-                expect(run.commands).to.be.length(6);
-                expect(run.commands[3].stdout).to.exist();
+                expect(run.commands).to.be.length(3);
+                expect(run.commands[2].stdout).to.exist();
                 done();
             } 
         }, 1000); 
     });
 
-    it('getRun noscm', function (done) {
+    it('getRun job2', function (done) {
 
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
@@ -196,7 +166,7 @@ describe('normal', function () {
         }, 1000); 
     });
 
-    it('startJob noscm 2', function (done) {
+    it('startJob job2 2', function (done) {
 
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
@@ -212,7 +182,7 @@ describe('normal', function () {
         done();
     });
 
-    it('getRun noscm 2', function (done) {
+    it('getRun job2 2', function (done) {
 
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
@@ -244,18 +214,7 @@ describe('normal', function () {
         done();
     });
 
-    it('getAllCommits scm', function (done) {
-
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var commits = bait.getAllCommits(jobId);
-        //console.log(commits);
-        expect(commits.length).to.be.above(0);
-        done();
-    });
-
-    it('getAllCommits noscm', function (done) {
+    it('getAllCommits job2', function (done) {
 
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
@@ -266,106 +225,7 @@ describe('normal', function () {
         done();
     });
 
-    it('getCompareCommits scm', function (done) {
-
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var commits = bait.getAllCommits(jobId);
-        var compareCommits = bait.getCompareCommits(jobId, commits[0].commit, commits[1].commit);
-        //console.log(commits);
-        expect(compareCommits.length).to.equal(1);
-        done();
-    });
-
-    it('getWorkspaceArtifact scm', function (done) {
-
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var contents = bait.getWorkspaceArtifact(jobId, 'lab.json');
-        expect(contents).to.contain('test');
-        done();
-    });
-
-    it('getArchiveArtifact scm', function (done) {
-
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var runs = bait.getRuns(jobId);
-        var runId = runs[0].id;
-        var contents = bait.getArchiveArtifact(jobId, runId, 'lab.json');
-        expect(contents).to.contain('test');
-        done();
-    });
-
-    it('getTestResult scm', function (done) {
-
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var runs = bait.getRuns(jobId);
-        var runId = runs[0].id;
-        var result = bait.getTestResult(jobId, runId, 'lab.json');
-        //console.log(result);
-        expect(result.totalTests).to.exist();
-        expect(result.tests).to.exist();
-        expect(result.coveragePercent).to.exist();
-        expect(result.coverage).to.exist();
-        expect(result.totalDuration).to.exist();
-        expect(result.totalLeaks).to.exist();
-        done();
-    });
-
-    it('getArchiveArtifacts scm', function (done) {
-
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var runs = bait.getRuns(jobId);
-        var runId = runs[0].id;
-        var files = bait.getArchiveArtifacts(jobId, runId);
-        expect(files[0]).to.equal('lab.json');
-        done();
-    });
-
-    it('getRunByName last scm', function (done) {
-
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var run = bait.getRunByName(jobId, 'last');
-        expect(run.id).to.exist();
-        expect(run.startTime).to.exist();
-        expect(run.finishTime).to.exist();
-        expect(run.status).to.equal('succeeded');
-        done();
-    });
-
-    it('deleteRun scm', function (done) {
-
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var runs = bait.getRuns(jobId);
-        var runId = runs[0].id;
-        bait.deleteRun(jobId, runId);
-        var deleteRuns = bait.getRuns(jobId);
-        expect(deleteRuns.length).to.equal(0);
-        done();
-    });
-
-    it('deleteWorkspace scm', function (done) {
-
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        bait.deleteWorkspace(jobId);
-        done();
-    });
-
-    it('deleteJob scm', function (done) {
+    it('deleteJob job1', function (done) {
 
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
@@ -376,7 +236,7 @@ describe('normal', function () {
         done();
     });
 
-    it('deleteJob noscm', function (done) {
+    it('deleteJob job2', function (done) {
 
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
