@@ -18,11 +18,11 @@ var it = lab.it;
 
 describe('prs', function () {    
 
-    it('createJob scm', function (done) {
+    it('createJob', function (done) {
 
         // switching this to pail later
         var config = {
-            name: 'scm',
+            name: 'prs',
             scm: {
                 type: 'git',
                 url: 'https://github.com/fishin/bobber',
@@ -35,7 +35,7 @@ describe('prs', function () {
         done();
     });
 
-    it('startJob scm', function (done) {
+    it('startJob', function (done) {
 
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
@@ -51,7 +51,7 @@ describe('prs', function () {
         done();
     });
 
-    it('getRun scm', function (done) {
+    it('getRun', function (done) {
 
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
@@ -72,7 +72,7 @@ describe('prs', function () {
         }, 1000); 
     });
 
-    it('getPullRequests scm', function (done) {
+    it('getPullRequests', function (done) {
 
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
@@ -83,7 +83,7 @@ describe('prs', function () {
         done();
     });
 
-    it('getOpenPullRequests scm', function (done) {
+    it('getOpenPullRequests', function (done) {
 
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
@@ -96,7 +96,7 @@ describe('prs', function () {
         });
     });
 
-    it('deleteJob scm', function (done) {
+    it('deleteJob', function (done) {
 
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
