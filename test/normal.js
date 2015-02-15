@@ -245,6 +245,41 @@ describe('normal', function () {
         done();
     });
 
+    it('getCompareCommits', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[1].id;
+        var compareCommits = bait.getCompareCommits(jobId, 1, 2);
+        //console.log(commits);
+        expect(compareCommits.length).to.equal(0);
+        done();
+    });
+
+    it('getPullRequests', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[1].id;
+        var prs = bait.getPullRequests(jobId);
+        //console.log(commits);
+        expect(prs.length).to.equal(0);
+        done();
+    });
+
+    it('getOpenPullRequests', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[1].id;
+        bait.getOpenPullRequests(jobId, function(prs) {
+
+           //console.log(commits);
+           expect(prs.length).to.equal(0);
+           done();
+        });
+    });
+
     it('deleteJob job1', function (done) {
 
         var bait = new Bait(internals.defaults);
