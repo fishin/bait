@@ -225,6 +225,26 @@ describe('normal', function () {
         done();
     });
 
+    it('getLatestCommit job2', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[1].id;
+        var commit = bait.getLatestCommit(jobId);
+        expect(commit).to.not.exist();
+        done();
+    });
+
+    it('getLatestRemoteCommit job2', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[1].id;
+        var commit = bait.getLatestRemoteCommit(jobId);
+        expect(commit).to.not.exist();
+        done();
+    });
+
     it('deleteJob job1', function (done) {
 
         var bait = new Bait(internals.defaults);
