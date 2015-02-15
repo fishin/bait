@@ -224,7 +224,6 @@ describe('scm', function () {
         done();
     });
 
-/*
     it('createJob runOnCommit', function (done) {
 
         // switching this to pail later
@@ -248,7 +247,7 @@ describe('scm', function () {
         done();
     });
 
-    it('startJob runOnCommit', function (done) {
+    it('startJob runOnCommit 1', function (done) {
 
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
@@ -256,7 +255,42 @@ describe('scm', function () {
         bait.startJob(jobId);
         var job = bait.getJob(jobId);
         var runs = bait.getRuns(jobId);
-        expect(runs.length).to.equal(0);
+        expect(runs.length).to.equal(1);
+        done();
+    });
+
+    it('getRun runOnCommit 1', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        var runs = bait.getRuns(jobId);
+        var runId = runs[0].id;
+        var intervalObj2 = setInterval(function() {
+            var run = bait.getRun(jobId, runId);
+            //console.log(run);
+            if (run.finishTime) {
+                clearInterval(intervalObj2); 
+                //console.log(run);
+                expect(run.status).to.equal('succeeded');
+                expect(run.id).to.exist();
+                expect(run.commit).to.be.length(40);
+                expect(run.commands).to.be.length(2);
+                expect(run.commands[1].stdout).to.exist();
+                done();
+            } 
+        }, 1000); 
+    });
+
+    it('startJob runOnCommit 2', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        bait.startJob(jobId);
+        var job = bait.getJob(jobId);
+        var runs = bait.getRuns(jobId);
+        expect(runs.length).to.equal(1);
         done();
     });
 
@@ -271,6 +305,7 @@ describe('scm', function () {
         done();
     });
 
+/*
     it('createJob invalid', function (done) {
 
         // switching this to pail later
