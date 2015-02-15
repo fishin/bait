@@ -20,7 +20,6 @@ describe('scm', function () {
 
     it('createJob', function (done) {
 
-        // switching this to pail later
         var config = {
             name: 'scm',
             scm: {
@@ -315,6 +314,76 @@ describe('scm', function () {
     });
 
     it('deleteJob runOnCommit', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        bait.deleteJob(jobId);
+        jobs = bait.getJobs();
+        expect(jobs.length).to.equal(0);
+        done();
+    });
+
+    it('createJob fail', function (done) {
+
+        var config = {
+            name: 'scm',
+            scm: {
+                type: 'git',
+                url: 'https://github.com/fishin/pail',
+                branch: 'master1'
+            },
+            body: [
+                'npm install',
+                'npm run-script json'
+            ]
+        };
+        var bait = new Bait(internals.defaults);
+        var createJob = bait.createJob(config);
+        expect(createJob.id).to.exist();
+        expect(createJob.scm.url).to.equal('https://github.com/fishin/pail');
+        done();
+    });
+
+    it('startJob fail', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        bait.startJob(jobId);
+        var job = bait.getJob(jobId);
+        var runs = bait.getRuns(jobId);
+        var runId = runs[0].id;
+        var run = bait.getRun(jobId, runId);
+        expect(run.id).to.exist();
+        expect(run.startTime).to.exist();
+        expect(runs.length).to.equal(1);
+        done();
+    });
+
+    it('getRun fail', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        var runs = bait.getRuns(jobId);
+        var runId = runs[0].id;
+        var intervalObj = setInterval(function() {
+            var run = bait.getRun(jobId, runId);
+            //console.log(run);
+            if (run.finishTime) {
+                clearInterval(intervalObj); 
+                //console.log(run);
+                expect(run.status).to.equal('failed');
+                expect(run.id).to.exist();
+                expect(run.commands).to.be.length(2);
+                expect(run.commands[1].stdout).to.not.exist();
+                done();
+            } 
+        }, 1000); 
+    });
+
+    it('deleteJob fail', function (done) {
 
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
