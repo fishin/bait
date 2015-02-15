@@ -103,6 +103,26 @@ describe('scm', function () {
         }, 1000); 
     });
 
+    it('getLatestCommit', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        var commit = bait.getLatestCommit(jobId);
+        expect(commit).to.be.length(40);
+        done();
+    });
+
+    it('getLatestRemoteCommit', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        var commit = bait.getLatestRemoteCommit(jobId);
+        expect(commit).to.be.length(40);
+        done();
+    });
+
     it('getAllCommits', function (done) {
 
         var bait = new Bait(internals.defaults);
