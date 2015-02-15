@@ -202,6 +202,55 @@ describe('normal', function () {
         }, 1000); 
     });
 
+    it('startJob job2 3', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[1].id;
+        bait.startJob(jobId);
+        var job = bait.getJob(jobId);
+        var runs = bait.getRuns(jobId);
+        var runId = runs[0].id;
+        var run = bait.getRun(jobId, runId);
+        expect(run.id).to.exist();
+        expect(run.startTime).to.exist();
+        expect(runs.length).to.equal(3);
+        done();
+    });
+
+    it('startJob job2 4', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[1].id;
+        bait.startJob(jobId);
+        var job = bait.getJob(jobId);
+        var runs = bait.getRuns(jobId);
+        expect(runs.length).to.equal(3);
+        done();
+    });
+
+    it('getRun job2 3', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[1].id;
+        var runs = bait.getRuns(jobId);
+        // job 4 shouldnt have been added
+        var runId = runs[1].id;
+        var intervalObj = setInterval(function() {
+            var run = bait.getRun(jobId, runId);
+            if (run.finishTime) {
+                clearInterval(intervalObj); 
+                //console.log(run);
+                expect(run.status).to.equal('succeeded');
+                expect(run.id).to.exist();
+                expect(run.commands).to.be.length(3);
+                done();
+            } 
+        }, 1000); 
+    });
+
     it('getRunPids 0', function (done) {
 
         var bait = new Bait(internals.defaults);
