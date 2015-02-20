@@ -79,9 +79,27 @@ describe('prs', function () {
         var jobId = jobs[0].id;
         bait.getPullRequests(jobId, function(prs) {
 
-           //console.log(commits);
+           //console.log(prs);
            expect(prs.length).to.be.above(0);
            done();
+        });
+    });
+
+    it('getPullRequest', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        bait.getPullRequests(jobId, function(prs) {
+
+           //console.log(prs);
+           expect(prs.length).to.be.above(0);
+           var number = prs[0].number;
+           bait.getPullRequest(jobId, number, function(pr) {
+
+               //console.log(pr); 
+               done();
+           });
         });
     });
 

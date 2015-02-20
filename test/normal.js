@@ -300,7 +300,7 @@ describe('normal', function () {
         var jobs = bait.getJobs();
         var jobId = jobs[1].id;
         var compareCommits = bait.getCompareCommits(jobId, 1, 2);
-        //console.log(commits);
+        //console.log(compareCommits);
         expect(compareCommits.length).to.equal(0);
         done();
     });
@@ -312,8 +312,21 @@ describe('normal', function () {
         var jobId = jobs[1].id;
         bait.getPullRequests(jobId, function(prs) {
 
-           //console.log(commits);
+           //console.log(prs);
            expect(prs.length).to.equal(0);
+           done();
+        });
+    });
+
+    it('getPullRequest', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[1].id;
+        bait.getPullRequest(jobId, 0, function(pr) {
+
+           //console.log(pr);
+           expect(pr).to.not.exist();
            done();
         });
     });
