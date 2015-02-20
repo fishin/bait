@@ -77,7 +77,7 @@ describe('prs', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        bait.getPullRequests(jobId, function(prs) {
+        bait.getPullRequests(jobId, null, function(prs) {
 
            //console.log(prs);
            expect(prs.length).to.be.above(0);
@@ -90,12 +90,12 @@ describe('prs', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        bait.getPullRequests(jobId, function(prs) {
+        bait.getPullRequests(jobId, null, function(prs) {
 
            //console.log(prs);
            expect(prs.length).to.be.above(0);
            var number = prs[0].number;
-           bait.getPullRequest(jobId, number, function(pr) {
+           bait.getPullRequest(jobId, number, null, function(pr) {
 
                //console.log(pr); 
                done();

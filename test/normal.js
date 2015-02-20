@@ -310,7 +310,7 @@ describe('normal', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[1].id;
-        bait.getPullRequests(jobId, function(prs) {
+        bait.getPullRequests(jobId, null, function(prs) {
 
            //console.log(prs);
            expect(prs.length).to.equal(0);
@@ -324,7 +324,7 @@ describe('normal', function () {
         var jobs = bait.getJobs();
         var jobId = jobs[1].id;
         var number = 0;
-        bait.getPullRequest(jobId, number, function(pr) {
+        bait.getPullRequest(jobId, number, null, function(pr) {
 
            //console.log(pr);
            expect(pr).to.not.exist();
@@ -338,8 +338,7 @@ describe('normal', function () {
         var jobs = bait.getJobs();
         var jobId = jobs[1].id;
         var number = 0;
-        var token = 1;
-        bait.mergePullRequest(jobId, number, token, function(result) {
+        bait.mergePullRequest(jobId, number, null, function(result) {
 
            //console.log(result);
            expect(result).to.not.exist();
