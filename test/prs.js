@@ -77,18 +77,7 @@ describe('prs', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        var prs = bait.getPullRequests(jobId);
-        //console.log(commits);
-        expect(prs.length).to.be.above(0);
-        done();
-    });
-
-    it('getOpenPullRequests', function (done) {
-
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        bait.getOpenPullRequests(jobId, function(prs) {
+        bait.getPullRequests(jobId, function(prs) {
 
            //console.log(commits);
            expect(prs.length).to.be.above(0);

@@ -310,18 +310,7 @@ describe('normal', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[1].id;
-        var prs = bait.getPullRequests(jobId);
-        //console.log(commits);
-        expect(prs.length).to.equal(0);
-        done();
-    });
-
-    it('getOpenPullRequests', function (done) {
-
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[1].id;
-        bait.getOpenPullRequests(jobId, function(prs) {
+        bait.getPullRequests(jobId, function(prs) {
 
            //console.log(commits);
            expect(prs.length).to.equal(0);
