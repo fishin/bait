@@ -323,10 +323,26 @@ describe('normal', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[1].id;
-        bait.getPullRequest(jobId, 0, function(pr) {
+        var number = 0;
+        bait.getPullRequest(jobId, number, function(pr) {
 
            //console.log(pr);
            expect(pr).to.not.exist();
+           done();
+        });
+    });
+
+    it('mergePullRequest', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[1].id;
+        var number = 0;
+        var token = 1;
+        bait.mergePullRequest(jobId, number, token, function(result) {
+
+           //console.log(result);
+           expect(result).to.not.exist();
            done();
         });
     });

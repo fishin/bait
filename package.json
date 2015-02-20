@@ -11,7 +11,7 @@
     "node": ">=0.12.x"
   },
   "scripts": {
-    "test": "lab -a code -t 100 -v -m 60000",
+    "test": "lab -a code -t 99 -v -m 60000",
     "json": "lab -a code -r json -t 100 -o lab.json -m 60000"
   },
   "author": "Lloyd Benson",
