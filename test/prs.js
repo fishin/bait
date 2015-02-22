@@ -1,6 +1,7 @@
 var Code = require('code');
 var Lab = require('lab');
 var Hapi = require('hapi');
+var Mock = require('mock');
 var Pail = require('pail');
 
 var Bait = require('../lib/index');
@@ -84,7 +85,40 @@ describe('prs', function () {
            done();
         });
     });
+/*
+    it('getPullRequests mock', function (done) {
 
+        var type = 'github';
+        var routes = [
+            {
+                method: 'get',
+                path: '/repos/org/repo/pulls',
+                file: 'index.json'
+            },
+            {
+                method: 'get',
+                path: '/rate_limit',
+                file: 'anonymous.json'
+            }
+        ];
+        Mock.prepareServer(type, routes, function(server) {
+
+            server.start(function() {
+
+                //console.log(server.info);
+                var bait = new Bait({ dirPath: '/tmp/testbait', github: { url: server.info.uri } });
+                var jobs = bait.getJobs();
+                var jobId = jobs[0].id;
+                bait.getPullRequests(jobId, null, function(prs) {
+
+                    //console.log(prs);
+                   expect(prs.length).to.be.above(0);
+                   done();
+                });
+            });
+        });
+    });
+*/
     it('getPullRequest', function (done) {
 
         var bait = new Bait(internals.defaults);
