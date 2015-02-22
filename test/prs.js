@@ -231,7 +231,7 @@ describe('prs', function () {
                 branch: 'master',
                 runOnCommit: true
             },
-            body: [ 'uptime' ]
+            body: [ 'sleep 5' ]
         };
         var bait = new Bait(internals.defaults);
         var createJob = bait.createJob(config);
