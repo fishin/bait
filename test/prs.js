@@ -20,7 +20,7 @@ var it = lab.it;
 
 describe('prs', function () {    
 
-    it('createJob mock', function (done) {
+    it('createJob', function (done) {
 
         // switching this to pail later
         var config = {
@@ -37,7 +37,7 @@ describe('prs', function () {
         done();
     });
 
-    it('getPullRequests mock', function (done) {
+    it('getPullRequests', function (done) {
 
         var type = 'github';
         var routes = [
@@ -70,7 +70,7 @@ describe('prs', function () {
         });
     });
 
-    it('getPullRequest mock', function (done) {
+    it('getPullRequest', function (done) {
 
         var type = 'github';
         var routes = [
@@ -108,7 +108,7 @@ describe('prs', function () {
         });
     });
 
-    it('mergePullRequest mock', function (done) {
+    it('mergePullRequest', function (done) {
 
         var type = 'github';
         var routes = [
@@ -145,7 +145,7 @@ describe('prs', function () {
         });
     });
 
-    it('deleteJob mock', function (done) {
+    it('deleteJob', function (done) {
 
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
