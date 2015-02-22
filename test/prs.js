@@ -8,7 +8,8 @@ var Bait = require('../lib/index');
 
 var internals = {
     defaults: {
-        dirPath: '/tmp/testbait'
+        dirPath: '/tmp/testbait',
+        mock: true
     }
 };
 
@@ -19,14 +20,14 @@ var it = lab.it;
 
 describe('prs', function () {    
 
-    it('createJob', function (done) {
+    it('createJob mock', function (done) {
 
         // switching this to pail later
         var config = {
-            name: 'prs',
+            name: 'mock',
             scm: {
                 type: 'git',
-                url: 'https://github.com/fishin/bobber',
+                url: 'https://github.com/org/repo',
                 branch: 'master'
             }
         };
@@ -36,56 +37,6 @@ describe('prs', function () {
         done();
     });
 
-    it('startJob', function (done) {
-
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        bait.startJob(jobId);
-        var job = bait.getJob(jobId);
-        var runs = bait.getRuns(jobId);
-        var runId = runs[0].id;
-        var run = bait.getRun(jobId, runId);
-        expect(run.id).to.exist();
-        expect(run.startTime).to.exist();
-        expect(runs.length).to.equal(1);
-        done();
-    });
-
-    it('getRun', function (done) {
-
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var runs = bait.getRuns(jobId);
-        var runId = runs[0].id;
-        var intervalObj = setInterval(function() {
-            var run = bait.getRun(jobId, runId);
-            //console.log(run);
-            if (run.finishTime) {
-                clearInterval(intervalObj); 
-                //console.log(run);
-                expect(run.status).to.equal('succeeded');
-                expect(run.id).to.exist();
-                expect(run.commit).to.be.length(40);
-                done();
-            } 
-        }, 1000); 
-    });
-
-    it('getPullRequests', function (done) {
-
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        bait.getPullRequests(jobId, null, function(prs) {
-
-           //console.log(prs);
-           expect(prs.length).to.be.above(0);
-           done();
-        });
-    });
-/*
     it('getPullRequests mock', function (done) {
 
         var type = 'github';
@@ -118,26 +69,83 @@ describe('prs', function () {
             });
         });
     });
-*/
-    it('getPullRequest', function (done) {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        bait.getPullRequests(jobId, null, function(prs) {
+    it('getPullRequest mock', function (done) {
 
-           //console.log(prs);
-           expect(prs.length).to.be.above(0);
-           var number = prs[0].number;
-           bait.getPullRequest(jobId, number, null, function(pr) {
+        var type = 'github';
+        var routes = [
+            {
+                method: 'get',
+                path: '/repos/org/repo/pulls/1',
+                file: 'index.json'
+            },
+            {
+                method: 'get',
+                path: '/rate_limit',
+                file: 'anonymous.json'
+            }
+        ];
+        Mock.prepareServer(type, routes, function(server) {
 
-               //console.log(pr); 
-               done();
-           });
+            server.start(function() {
+
+                //console.log(server.info);
+                var bait = new Bait({ dirPath: '/tmp/testbait', github: { url: server.info.uri } });
+                var jobs = bait.getJobs();
+                var jobId = jobs[0].id;
+                var number = 1;
+                bait.getPullRequest(jobId, number, null, function(pr) {
+
+                    expect(pr.number).to.equal(1); 
+                    expect(pr.title).to.equal('mock pr'); 
+                    expect(pr.commit.length).to.equal(40); 
+                    expect(pr.mergeCommit.length).to.equal(40); 
+                    expect(pr.shortCommit.length).to.equal(7); 
+                    expect(pr.repoUrl).to.equal('https://github.com/org/repo'); 
+                    done();
+                });
+            });
         });
     });
 
-    it('deleteJob', function (done) {
+    it('mergePullRequest mock', function (done) {
+
+        var type = 'github';
+        var routes = [
+            {
+                method: 'put',
+                path: '/repos/org/repo/pulls/1/merge',
+                file: 'index.json'
+            },
+            {
+                method: 'get',
+                path: '/rate_limit',
+                file: 'authorized.json'
+            }
+        ];
+        Mock.prepareServer(type, routes, function(server) {
+
+            server.start(function() {
+
+                //console.log(server.info);
+                var bait = new Bait({ dirPath: '/tmp/testbait', github: { url: server.info.uri } });
+                var jobs = bait.getJobs();
+                var jobId = jobs[0].id;
+                var number = 1;
+                var token = 1;
+                bait.mergePullRequest(jobId, number, token, function(result) {
+
+                    //console.log(result);
+                    expect(result.sha.length).to.equal(40);
+                    expect(result.merged).to.be.true();
+                    expect(result.message).to.equal('Pull Request successfully merged');
+                    done();
+                });
+            });
+        });
+    });
+
+    it('deleteJob mock', function (done) {
 
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
