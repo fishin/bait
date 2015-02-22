@@ -69,11 +69,11 @@ describe('scm', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        bait.startJob(jobId);
+        bait.startJob(jobId, null);
         var job = bait.getJob(jobId);
-        var runs = bait.getRuns(jobId);
+        var runs = bait.getRuns(jobId, null);
         var runId = runs[0].id;
-        var run = bait.getRun(jobId, runId);
+        var run = bait.getRun(jobId, null, runId);
         expect(run.id).to.exist();
         expect(run.startTime).to.exist();
         expect(runs.length).to.equal(1);
@@ -85,10 +85,10 @@ describe('scm', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        var runs = bait.getRuns(jobId);
+        var runs = bait.getRuns(jobId, null);
         var runId = runs[0].id;
         var intervalObj1 = setInterval(function() {
-            var run = bait.getRun(jobId, runId);
+            var run = bait.getRun(jobId, null, runId);
             //console.log(run);
             if (run.finishTime) {
                 clearInterval(intervalObj1); 
@@ -161,7 +161,7 @@ describe('scm', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        var runs = bait.getRuns(jobId);
+        var runs = bait.getRuns(jobId, null);
         var runId = runs[0].id;
         var contents = bait.getArchiveArtifact(jobId, runId, 'lab.json');
         expect(contents).to.contain('test');
@@ -173,7 +173,7 @@ describe('scm', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        var runs = bait.getRuns(jobId);
+        var runs = bait.getRuns(jobId, null);
         var runId = runs[0].id;
         var result = bait.getTestResult(jobId, runId, 'lab.json');
         //console.log(result);
@@ -191,7 +191,7 @@ describe('scm', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        var runs = bait.getRuns(jobId);
+        var runs = bait.getRuns(jobId, null);
         var runId = runs[0].id;
         var files = bait.getArchiveArtifacts(jobId, runId);
         expect(files[0]).to.equal('lab.json');
@@ -216,10 +216,10 @@ describe('scm', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        var runs = bait.getRuns(jobId);
+        var runs = bait.getRuns(jobId, null);
         var runId = runs[0].id;
-        bait.deleteRun(jobId, runId);
-        var deleteRuns = bait.getRuns(jobId);
+        bait.deleteRun(jobId, null, runId);
+        var deleteRuns = bait.getRuns(jobId, null);
         expect(deleteRuns.length).to.equal(0);
         done();
     });
@@ -272,9 +272,9 @@ describe('scm', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        bait.startJob(jobId);
+        bait.startJob(jobId, null);
         var job = bait.getJob(jobId);
-        var runs = bait.getRuns(jobId);
+        var runs = bait.getRuns(jobId, null);
         expect(runs.length).to.equal(1);
         done();
     });
@@ -284,10 +284,10 @@ describe('scm', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        var runs = bait.getRuns(jobId);
+        var runs = bait.getRuns(jobId, null);
         var runId = runs[0].id;
         var intervalObj2 = setInterval(function() {
-            var run = bait.getRun(jobId, runId);
+            var run = bait.getRun(jobId, null, runId);
             //console.log(run);
             if (run.finishTime) {
                 clearInterval(intervalObj2);
@@ -307,9 +307,9 @@ describe('scm', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        bait.startJob(jobId);
+        bait.startJob(jobId, null);
         var job = bait.getJob(jobId);
-        var runs = bait.getRuns(jobId);
+        var runs = bait.getRuns(jobId, null);
         expect(runs.length).to.equal(1);
         done();
     });
@@ -351,11 +351,11 @@ describe('scm', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        bait.startJob(jobId);
+        bait.startJob(jobId, null);
         var job = bait.getJob(jobId);
-        var runs = bait.getRuns(jobId);
+        var runs = bait.getRuns(jobId, null);
         var runId = runs[0].id;
-        var run = bait.getRun(jobId, runId);
+        var run = bait.getRun(jobId, null, runId);
         expect(run.id).to.exist();
         expect(run.startTime).to.exist();
         expect(runs.length).to.equal(1);
@@ -367,10 +367,10 @@ describe('scm', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        var runs = bait.getRuns(jobId);
+        var runs = bait.getRuns(jobId, null);
         var runId = runs[0].id;
         var intervalObj3 = setInterval(function() {
-            var run = bait.getRun(jobId, runId);
+            var run = bait.getRun(jobId, null, runId);
             //console.log(run);
             if (run.finishTime) {
                 clearInterval(intervalObj3); 
@@ -417,11 +417,11 @@ describe('scm', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        bait.startJob(jobId);
+        bait.startJob(jobId, null);
         var job = bait.getJob(jobId);
-        var runs = bait.getRuns(jobId);
+        var runs = bait.getRuns(jobId, null);
         var runId = runs[0].id;
-        var run = bait.getRun(jobId, runId);
+        var run = bait.getRun(jobId, null, runId);
         expect(run.id).to.exist();
         expect(run.startTime).to.exist();
         expect(runs.length).to.equal(1);
@@ -433,10 +433,10 @@ describe('scm', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        var runs = bait.getRuns(jobId);
+        var runs = bait.getRuns(jobId, null);
         var runId = runs[0].id;
         var intervalObj = setInterval(function() {
-            var run = bait.getRun(jobId, runId);
+            var run = bait.getRun(jobId, null, runId);
             //console.log(run);
             if (run.finishTime) {
                 clearInterval(intervalObj); 
