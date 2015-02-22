@@ -20,7 +20,7 @@ var it = lab.it;
 
 describe('prs', function () {    
 
-    it('createJob', function (done) {
+    it('createJob scm', function (done) {
 
         // switching this to pail later
         var config = {
@@ -37,7 +37,7 @@ describe('prs', function () {
         done();
     });
 
-    it('getPullRequests', function (done) {
+    it('getPullRequests scm', function (done) {
 
         var type = 'github';
         var routes = [
@@ -70,7 +70,7 @@ describe('prs', function () {
         });
     });
 
-    it('getPullRequest', function (done) {
+    it('getPullRequest scm', function (done) {
 
         var type = 'github';
         var routes = [
@@ -108,7 +108,7 @@ describe('prs', function () {
         });
     });
 
-    it('mergePullRequest', function (done) {
+    it('mergePullRequest scm', function (done) {
 
         var type = 'github';
         var routes = [
@@ -142,6 +142,70 @@ describe('prs', function () {
                     done();
                 });
             });
+        });
+    });
+
+    it('deleteJob scm', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        bait.deleteJob(jobId);
+        jobs = bait.getJobs();
+        expect(jobs.length).to.equal(0);
+        done();
+    });
+
+    it('createJob', function (done) {
+
+        // switching this to pail later
+        var config = {
+            name: 'mock'
+        };
+        var bait = new Bait(internals.defaults);
+        var createJob = bait.createJob(config);
+        expect(createJob.id).to.exist();
+        done();
+    });
+
+    it('getPullRequests', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        bait.getPullRequests(jobId, null, function(prs) {
+
+           //console.log(prs);
+           expect(prs.length).to.equal(0);
+           done();
+        });
+    });
+
+    it('getPullRequest', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        var number = 0;
+        bait.getPullRequest(jobId, number, null, function(pr) {
+
+           //console.log(pr);
+           expect(pr).to.not.exist();
+           done();
+        });
+    });
+
+    it('mergePullRequest', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        var number = 0;
+        bait.mergePullRequest(jobId, number, null, function(result) {
+
+           //console.log(pr);
+           expect(result).to.not.exist();
+           done();
         });
     });
 

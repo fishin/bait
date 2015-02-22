@@ -305,33 +305,6 @@ describe('normal', function () {
         done();
     });
 
-    it('getPullRequests', function (done) {
-
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[1].id;
-        bait.getPullRequests(jobId, null, function(prs) {
-
-           //console.log(prs);
-           expect(prs.length).to.equal(0);
-           done();
-        });
-    });
-
-    it('getPullRequest', function (done) {
-
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[1].id;
-        var number = 0;
-        bait.getPullRequest(jobId, number, null, function(pr) {
-
-           //console.log(pr);
-           expect(pr).to.not.exist();
-           done();
-        });
-    });
-
     it('deleteJob job1', function (done) {
 
         var bait = new Bait(internals.defaults);
