@@ -332,20 +332,6 @@ describe('normal', function () {
         });
     });
 
-    it('mergePullRequest', function (done) {
-
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[1].id;
-        var number = 0;
-        bait.mergePullRequest(jobId, number, null, function(result) {
-
-           //console.log(result);
-           expect(result).to.not.exist();
-           done();
-        });
-    });
-
     it('deleteJob job1', function (done) {
 
         var bait = new Bait(internals.defaults);

@@ -1,6 +1,7 @@
 var Code = require('code');
 var Lab = require('lab');
 var Hapi = require('hapi');
+var Mock = require('mock');
 var Pail = require('pail');
 
 var Bait = require('../lib/index');
@@ -86,11 +87,11 @@ describe('scm', function () {
         var jobId = jobs[0].id;
         var runs = bait.getRuns(jobId);
         var runId = runs[0].id;
-        var intervalObj = setInterval(function() {
+        var intervalObj1 = setInterval(function() {
             var run = bait.getRun(jobId, runId);
             //console.log(run);
             if (run.finishTime) {
-                clearInterval(intervalObj); 
+                clearInterval(intervalObj1); 
                 //console.log(run);
                 expect(run.status).to.equal('succeeded');
                 expect(run.id).to.exist();
@@ -289,7 +290,7 @@ describe('scm', function () {
             var run = bait.getRun(jobId, runId);
             //console.log(run);
             if (run.finishTime) {
-                clearInterval(intervalObj2); 
+                clearInterval(intervalObj2);
                 //console.log(run);
                 expect(run.status).to.equal('succeeded');
                 expect(run.id).to.exist();
@@ -368,11 +369,11 @@ describe('scm', function () {
         var jobId = jobs[0].id;
         var runs = bait.getRuns(jobId);
         var runId = runs[0].id;
-        var intervalObj = setInterval(function() {
+        var intervalObj3 = setInterval(function() {
             var run = bait.getRun(jobId, runId);
             //console.log(run);
             if (run.finishTime) {
-                clearInterval(intervalObj); 
+                clearInterval(intervalObj3); 
                 //console.log(run);
                 expect(run.status).to.equal('failed');
                 expect(run.id).to.exist();
