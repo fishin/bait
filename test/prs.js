@@ -245,6 +245,29 @@ describe('prs', function () {
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
         var number = 1;
+        bait.startJob(jobId, number);
+        done();
+    });
+
+    it('getRunPids 1', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        var number = 1;
+        var runs = bait.getRuns(jobId, number);
+        var runId = runs[0].id;
+        var pids = bait.getRunPids(jobId, number, runId);
+        expect(pids.length).to.equal(1);
+        done();
+    });
+
+    it('startJob should not result in extra run', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        var number = 1;
         var cmds = [ 'uptime' ];
         bait.startJob(jobId, number);
         done();
@@ -269,11 +292,11 @@ describe('prs', function () {
         var number = 1;
         var runs = bait.getRuns(jobId, number);
         var runId = runs[0].id;
-        var intervalObj = setInterval(function() {
+        var intervalObj1 = setInterval(function() {
             var run = bait.getRun(jobId, number, runId);
             //console.log(run);
             if (run.finishTime) {
-                clearInterval(intervalObj); 
+                clearInterval(intervalObj1); 
                 //console.log(run);
                 expect(run.status).to.equal('succeeded');
                 expect(run.id).to.exist();
@@ -282,6 +305,19 @@ describe('prs', function () {
                 done();
             } 
         }, 1000); 
+    });
+
+    it('getRunPids 0', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        var number = 1;
+        var runs = bait.getRuns(jobId, number);
+        var runId = runs[0].id;
+        var pids = bait.getRunPids(jobId, number, runId);
+        expect(pids.length).to.equal(0);
+        done();
     });
 
     it('deleteRun', function (done) {
@@ -311,6 +347,70 @@ describe('prs', function () {
     });
 
     it('deleteJob', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        bait.deleteJob(jobId);
+        jobs = bait.getJobs();
+        expect(jobs.length).to.equal(0);
+        done();
+    });
+
+    it('createJob cancel', function (done) {
+
+        // switching this to pail later
+        var config = {
+            name: 'prcancel',
+            scm: {
+                type: 'git',
+                url: 'https://github.com/fishin/bobber',
+                branch: 'master',
+                runOnCommit: true
+            },
+            body: [ 'sleep 5' ]
+        };
+        var bait = new Bait(internals.defaults);
+        var createJob = bait.createJob(config);
+        expect(createJob.id).to.exist();
+        done();
+    });
+
+    it('startJob cancel', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        var number = 1;
+        bait.startJob(jobId, number);
+        done();
+    });
+
+    it('cancelRun', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        var number = 1;
+        var runs = bait.getRuns(jobId, number);
+        var runId = runs[0].id;
+        bait.cancelRun(jobId, number, runId);
+        var intervalObj2 = setInterval(function() {
+
+            var run = bait.getRun(jobId, number, runId);
+            if (run.finishTime) {
+                clearInterval(intervalObj2);
+                expect(run.id).to.exist();
+                expect(run.status).to.equal('cancelled');
+                expect(run.commands.length).to.equal(1);
+                expect(run.commands[0].startTime).to.exist();
+                expect(run.commands[0].finishTime).to.exist();
+                done();
+            }
+        }, 1000);
+    });
+
+    it('deleteJob cancel', function (done) {
 
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
