@@ -440,4 +440,73 @@ describe('prs', function () {
         expect(jobs.length).to.equal(0);
         done();
     });
+
+    it('createJob real pr', function (done) {
+
+        // switching this to pail later
+        var config = {
+            name: 'pr',
+            scm: {
+                type: 'git',
+                url: 'https://github.com/fishin/demo',
+                branch: 'master',
+                runOnCommit: true
+            },
+            body: [ 'npm install', 'npm test' ]
+        };
+        var bait = new Bait({ dirPath: '/tmp/testbait', mock: false });
+        var createJob = bait.createJob(config);
+        expect(createJob.id).to.exist();
+        done();
+    });
+
+    it('startJob real pr', function (done) {
+
+        var bait = new Bait({ dirPath: '/tmp/testbait', mock: false });
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        bait.getPullRequests(jobId, null, function(prs) {
+
+            bait.startJob(jobId, prs[0]);
+            done();
+        });
+    });
+
+    it('getRun', function (done) {
+
+        var bait = new Bait({ dirPath: '/tmp/testbait', mock: false });
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        bait.getPullRequests(jobId, null, function(prs) {
+
+            var runs = bait.getRuns(jobId, prs[0]);
+            var runId = runs[0].id;
+            var intervalObj1 = setInterval(function() {
+
+                var run = bait.getRun(jobId, prs[0], runId);
+                //console.log(run);
+                if (run.finishTime) {
+                    clearInterval(intervalObj1); 
+                    //console.log(run);
+                    expect(run.status).to.equal('succeeded');
+                    expect(run.id).to.exist();
+                    expect(run.commands).to.be.length(2);
+                    expect(run.commands[0].stdout).to.exist();
+                    done();
+                } 
+            }, 1000); 
+        });
+    });
+
+
+    it('deleteJob pr real', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        bait.deleteJob(jobId);
+        jobs = bait.getJobs();
+        expect(jobs.length).to.equal(0);
+        done();
+    });
 });
