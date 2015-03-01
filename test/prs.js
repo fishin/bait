@@ -303,6 +303,7 @@ describe('prs', function () {
         var runs = bait.getRuns(jobId, pr);
         var runId = runs[0].id;
         var intervalObj1 = setInterval(function() {
+
             var run = bait.getRun(jobId, pr, runId);
             //console.log(run);
             if (run.finishTime) {
@@ -449,8 +450,9 @@ describe('prs', function () {
             scm: {
                 type: 'git',
                 url: 'https://github.com/fishin/demo',
-                branch: 'master',
-                runOnCommit: true
+                branch: 'master'
+//                branch: 'master',
+//                runOnCommit: true
             },
             body: [ 'npm install', 'npm test' ]
         };
@@ -460,7 +462,7 @@ describe('prs', function () {
         done();
     });
 
-    it('startJob real pr', function (done) {
+    it('startJob real prs', function (done) {
 
         var bait = new Bait({ dirPath: '/tmp/testbait', mock: false });
         var jobs = bait.getJobs();
@@ -468,11 +470,12 @@ describe('prs', function () {
         bait.getPullRequests(jobId, null, function(prs) {
 
             bait.startJob(jobId, prs[0]);
+            bait.startJob(jobId, prs[1]);
             done();
         });
     });
 
-    it('getRun', function (done) {
+    it('getRun pr1', function (done) {
 
         var bait = new Bait({ dirPath: '/tmp/testbait', mock: false });
         var jobs = bait.getJobs();
@@ -481,12 +484,12 @@ describe('prs', function () {
 
             var runs = bait.getRuns(jobId, prs[0]);
             var runId = runs[0].id;
-            var intervalObj1 = setInterval(function() {
+            var intervalObj3 = setInterval(function() {
 
                 var run = bait.getRun(jobId, prs[0], runId);
                 //console.log(run);
                 if (run.finishTime) {
-                    clearInterval(intervalObj1); 
+                    clearInterval(intervalObj3); 
                     //console.log(run);
                     expect(run.status).to.equal('succeeded');
                     expect(run.id).to.exist();
@@ -498,6 +501,31 @@ describe('prs', function () {
         });
     });
 
+    it('getRun pr2', function (done) {
+
+        var bait = new Bait({ dirPath: '/tmp/testbait', mock: false });
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        bait.getPullRequests(jobId, null, function(prs) {
+
+            var runs = bait.getRuns(jobId, prs[1]);
+            var runId = runs[0].id;
+            var intervalObj4 = setInterval(function() {
+
+                var run = bait.getRun(jobId, prs[1], runId);
+                //console.log(run);
+                if (run.finishTime) {
+                    clearInterval(intervalObj4); 
+                    //console.log(run);
+                    expect(run.status).to.equal('failed');
+                    expect(run.id).to.exist();
+                    expect(run.commands).to.be.length(2);
+                    expect(run.commands[0].stdout).to.exist();
+                    done();
+                } 
+            }, 1000); 
+        });
+    });
 
     it('deleteJob pr real', function (done) {
 
