@@ -18,6 +18,14 @@ var it = lab.it;
 
 describe('invalid', function () {    
 
+    it('getRun', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var run = bait.getRun('invalid', null, 'invalid');
+        expect(run).to.not.exist();
+        done();
+    });
+
     it('createJob cmd', function (done) {
 
         var config = {
