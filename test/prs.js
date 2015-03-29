@@ -490,7 +490,7 @@ describe('prs', function () {
                 //console.log(run);
                 if (run.finishTime) {
                     clearInterval(intervalObj3); 
-                    //console.log(run);
+                    console.log(run);
                     expect(run.status).to.equal('succeeded');
                     expect(run.id).to.exist();
                     expect(run.commands).to.be.length(2);
@@ -513,7 +513,7 @@ describe('prs', function () {
             var intervalObj4 = setInterval(function() {
 
                 var run = bait.getRun(jobId, prs[1], runId);
-                //console.log(run);
+                console.log(run);
                 if (run.finishTime) {
                     clearInterval(intervalObj4); 
                     //console.log(run);
