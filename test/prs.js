@@ -490,7 +490,7 @@ describe('prs', function () {
                 //console.log(run);
                 if (run.finishTime) {
                     clearInterval(intervalObj3); 
-                    console.log(run.checkout.commands);
+                    //console.log(run);
                     expect(run.status).to.equal('succeeded');
                     expect(run.id).to.exist();
                     expect(run.commands).to.be.length(2);
@@ -516,7 +516,7 @@ describe('prs', function () {
                 //console.log(run);
                 if (run.finishTime) {
                     clearInterval(intervalObj4); 
-                    console.log(run.checkout.commands);
+                    //console.log(run);
                     expect(run.status).to.equal('failed');
                     expect(run.id).to.exist();
                     expect(run.commands).to.be.length(2);
