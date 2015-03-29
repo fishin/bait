@@ -17,7 +17,7 @@ var expect = Code.expect;
 var describe = lab.describe;
 var it = lab.it;
 
-describe('scm', function () {    
+describe('scm', function () {
 
     it('createJob', function (done) {
 
@@ -91,7 +91,7 @@ describe('scm', function () {
             var run = bait.getRun(jobId, null, runId);
             //console.log(run);
             if (run.finishTime) {
-                clearInterval(intervalObj1); 
+                clearInterval(intervalObj1);
                 //console.log(run);
                 expect(run.status).to.equal('succeeded');
                 expect(run.id).to.exist();
@@ -99,8 +99,8 @@ describe('scm', function () {
                 expect(run.commands).to.be.length(6);
                 expect(run.commands[3].stdout).to.exist();
                 done();
-            } 
-        }, 1000); 
+            }
+        }, 1000);
     });
 
     it('getLatestCommit', function (done) {
@@ -298,8 +298,8 @@ describe('scm', function () {
                 expect(run.commands).to.be.length(2);
                 expect(run.commands[1].stdout).to.exist();
                 done();
-            } 
-        }, 1000); 
+            }
+        }, 1000);
     });
 
     it('startJob runOnCommit 2', function (done) {
@@ -373,15 +373,15 @@ describe('scm', function () {
             var run = bait.getRun(jobId, null, runId);
             //console.log(run);
             if (run.finishTime) {
-                clearInterval(intervalObj3); 
+                clearInterval(intervalObj3);
                 //console.log(run);
                 expect(run.status).to.equal('failed');
                 expect(run.id).to.exist();
                 expect(run.commands).to.be.length(2);
                 expect(run.commands[1].stdout).to.not.exist();
                 done();
-            } 
-        }, 1000); 
+            }
+        }, 1000);
     });
 
     it('deleteJob fail', function (done) {
@@ -439,14 +439,14 @@ describe('scm', function () {
             var run = bait.getRun(jobId, null, runId);
             //console.log(run);
             if (run.finishTime) {
-                clearInterval(intervalObj); 
+                clearInterval(intervalObj);
                 //console.log(run);
                 expect(run.status).to.equal('succeeded');
                 expect(run.id).to.exist();
                 expect(run.commit).to.be.length(40);
                 done();
-            } 
-        }, 1000); 
+            }
+        }, 1000);
     });
 
     it('deleteJob nobody', function (done) {
