@@ -16,7 +16,7 @@ var expect = Code.expect;
 var describe = lab.describe;
 var it = lab.it;
 
-describe('normal', function () {    
+describe('normal', function () {
 
     it('createJob job1', function (done) {
 
@@ -135,15 +135,15 @@ describe('normal', function () {
             var run = bait.getRun(jobId, null, runId);
             //console.log(run);
             if (run.finishTime) {
-                clearInterval(intervalObj); 
+                clearInterval(intervalObj);
                 //console.log(run);
                 expect(run.status).to.equal('succeeded');
                 expect(run.id).to.exist();
                 expect(run.commands).to.be.length(3);
                 expect(run.commands[2].stdout).to.exist();
                 done();
-            } 
-        }, 1000); 
+            }
+        }, 1000);
     });
 
     it('getRun job2', function (done) {
@@ -156,14 +156,14 @@ describe('normal', function () {
         var intervalObj = setInterval(function() {
             var run = bait.getRun(jobId, null, runId);
             if (run.finishTime) {
-                clearInterval(intervalObj); 
+                clearInterval(intervalObj);
                 //console.log(run);
                 expect(run.status).to.equal('succeeded');
                 expect(run.id).to.exist();
                 expect(run.commands).to.be.length(3);
                 done();
-            } 
-        }, 1000); 
+            }
+        }, 1000);
     });
 
     it('startJob job2 2', function (done) {
@@ -192,14 +192,14 @@ describe('normal', function () {
         var intervalObj = setInterval(function() {
             var run = bait.getRun(jobId, null, runId);
             if (run.finishTime) {
-                clearInterval(intervalObj); 
+                clearInterval(intervalObj);
                 //console.log(run);
                 expect(run.status).to.equal('succeeded');
                 expect(run.id).to.exist();
                 expect(run.commands).to.be.length(3);
                 done();
-            } 
-        }, 1000); 
+            }
+        }, 1000);
     });
 
     it('startJob job2 3', function (done) {
@@ -241,14 +241,14 @@ describe('normal', function () {
         var intervalObj = setInterval(function() {
             var run = bait.getRun(jobId, null, runId);
             if (run.finishTime) {
-                clearInterval(intervalObj); 
+                clearInterval(intervalObj);
                 //console.log(run);
                 expect(run.status).to.equal('succeeded');
                 expect(run.id).to.exist();
                 expect(run.commands).to.be.length(3);
                 done();
-            } 
-        }, 1000); 
+            }
+        }, 1000);
     });
 
     it('getRunPids 0', function (done) {

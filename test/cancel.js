@@ -16,7 +16,7 @@ var expect = Code.expect;
 var describe = lab.describe;
 var it = lab.it;
 
-describe('cancel', function () {    
+describe('cancel', function () {
 
     it('createJob', function (done) {
 
@@ -25,7 +25,7 @@ describe('cancel', function () {
             name: 'cancel',
             body: [
                 'sleep 5',
-                'date',
+                'date'
             ]
         };
         var bait = new Bait(internals.defaults);

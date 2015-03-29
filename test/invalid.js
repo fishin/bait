@@ -16,7 +16,7 @@ var expect = Code.expect;
 var describe = lab.describe;
 var it = lab.it;
 
-describe('invalid', function () {    
+describe('invalid', function () {
 
     it('getRun', function (done) {
 
@@ -103,7 +103,7 @@ describe('invalid', function () {
 
             var run = bait.getRun(jobId, null, runId);
             if (run.finishTime) {
-                clearInterval(intervalObj); 
+                clearInterval(intervalObj);
                 //console.log(run);
                 expect(run.status).to.equal('failed');
                 expect(run.id).to.exist();
@@ -112,8 +112,8 @@ describe('invalid', function () {
                 expect(run.finishTime).to.exist();
                 expect(run.finishTime).to.be.above(run.startTime);
                 done();
-            } 
-        }, 1000); 
+            }
+        }, 1000);
     });
 
     it('deleteJob cmd', function (done) {

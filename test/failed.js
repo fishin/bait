@@ -16,7 +16,7 @@ var expect = Code.expect;
 var describe = lab.describe;
 var it = lab.it;
 
-describe('failed', function () {    
+describe('failed', function () {
 
     it('createJob', function (done) {
 
@@ -63,7 +63,7 @@ describe('failed', function () {
 
             var run = bait.getRun(jobId, null, runId);
             if (run.finishTime) {
-                clearInterval(intervalObj); 
+                clearInterval(intervalObj);
                 //console.log(run);
                 expect(run.status).to.equal('failed');
                 expect(run.id).to.exist();
@@ -72,8 +72,8 @@ describe('failed', function () {
                 expect(run.commands[3].stderr).to.exist();
                 expect(run.commands[3].code).to.exist();
                 done();
-            } 
-        }, 1000); 
+            }
+        }, 1000);
     });
 
     it('getRunByName lastFail', function (done) {
