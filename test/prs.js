@@ -18,7 +18,7 @@ var expect = Code.expect;
 var describe = lab.describe;
 var it = lab.it;
 
-describe('prs', function () {    
+describe('prs', function () {
 
     it('createJob scm', function (done) {
 
@@ -96,12 +96,12 @@ describe('prs', function () {
                 var number = 1;
                 bait.getPullRequest(jobId, number, null, function(pr) {
 
-                    expect(pr.number).to.equal(1); 
-                    expect(pr.title).to.equal('mock pr'); 
-                    expect(pr.commit.length).to.equal(40); 
-                    expect(pr.mergeCommit.length).to.equal(40); 
-                    expect(pr.shortCommit.length).to.equal(7); 
-                    expect(pr.repoUrl).to.equal('https://github.com/org/repo'); 
+                    expect(pr.number).to.equal(1);
+                    expect(pr.title).to.equal('mock pr');
+                    expect(pr.commit.length).to.equal(40);
+                    expect(pr.mergeCommit.length).to.equal(40);
+                    expect(pr.shortCommit.length).to.equal(7);
+                    expect(pr.repoUrl).to.equal('https://github.com/org/repo');
                     done();
                 });
             });
@@ -307,15 +307,15 @@ describe('prs', function () {
             var run = bait.getRun(jobId, pr, runId);
             //console.log(run);
             if (run.finishTime) {
-                clearInterval(intervalObj1); 
+                clearInterval(intervalObj1);
                 //console.log(run);
                 expect(run.status).to.equal('succeeded');
                 expect(run.id).to.exist();
                 expect(run.commands).to.be.length(1);
                 expect(run.commands[0].stdout).to.exist();
                 done();
-            } 
-        }, 1000); 
+            }
+        }, 1000);
     });
 
     it('getRunPids 0', function (done) {
@@ -344,7 +344,7 @@ describe('prs', function () {
         var runs = bait.getRuns(jobId, pr);
         var runId = runs[0].id;
         bait.deleteRun(jobId, pr, runId);
-        var runs = bait.getRuns(jobId, pr);
+        runs = bait.getRuns(jobId, pr);
         expect(runs.length).to.equal(0);
         done();
     });
@@ -489,15 +489,15 @@ describe('prs', function () {
                 var run = bait.getRun(jobId, prs[0], runId);
                 //console.log(run);
                 if (run.finishTime) {
-                    clearInterval(intervalObj3); 
+                    clearInterval(intervalObj3);
                     //console.log(run);
                     expect(run.status).to.equal('succeeded');
                     expect(run.id).to.exist();
                     expect(run.commands).to.be.length(2);
                     expect(run.commands[0].stdout).to.exist();
                     done();
-                } 
-            }, 1000); 
+                }
+            }, 1000);
         });
     });
 
@@ -515,15 +515,15 @@ describe('prs', function () {
                 var run = bait.getRun(jobId, prs[1], runId);
                 //console.log(run);
                 if (run.finishTime) {
-                    clearInterval(intervalObj4); 
+                    clearInterval(intervalObj4);
                     //console.log(run);
                     expect(run.status).to.equal('failed');
                     expect(run.id).to.exist();
                     expect(run.commands).to.be.length(2);
                     expect(run.commands[0].stdout).to.exist();
                     done();
-                } 
-            }, 1000); 
+                }
+            }, 1000);
         });
     });
 
