@@ -1,7 +1,7 @@
 {
   "name": "bait",
-  "version": "0.0.1",
-  "description": "command utilities",
+  "version": "0.0.2",
+  "description": "job functions for ficion",
   "main": "index.js",
   "repository": {
     "type": "git",
