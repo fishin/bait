@@ -451,8 +451,6 @@ describe('prs', function () {
                 type: 'git',
                 url: 'https://github.com/fishin/demo',
                 branch: 'master'
-//                branch: 'master',
-//                runOnCommit: true
             },
             body: [ 'npm install', 'npm test' ]
         };
