@@ -22,7 +22,7 @@
     "hapi": "8.x.x",
     "hoek": "2.x.x",
     "bobber": "git+https://github.com/fishin/bobber",
-    "fishhook": "git+https://github.com/fishin/fishhook",
+    "fishhook": "0.x.x",
     "hatchery": "git+https://github.com/fishin/hatchery",
     "pail": "git+https://github.com/fishin/pail"
   },
