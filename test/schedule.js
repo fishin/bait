@@ -25,7 +25,7 @@ describe('schedule', function () {
             name: 'job',
             body: [ 'date' ],
             schedule: {
-                cron: true,
+                type: 'cron',
                 pattern: '*/5 * * * *'
             }
         };
