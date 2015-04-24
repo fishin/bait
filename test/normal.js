@@ -48,6 +48,14 @@ describe('normal', function () {
         done();
     });
 
+    it('getJobs', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        expect(jobs.length).to.equal(2);
+        done();
+    });
+
     it('updateJob job2', function (done) {
 
         var config = {
@@ -60,14 +68,6 @@ describe('normal', function () {
         expect(updateJob.id).to.exist();
         expect(updateJob.updateTime).to.exist();
         expect(updateJob.description).to.equal('desc');
-        done();
-    });
-
-    it('getJobs', function (done) {
-
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        expect(jobs.length).to.equal(2);
         done();
     });
 
@@ -131,12 +131,13 @@ describe('normal', function () {
         var jobId = jobs[0].id;
         var runs = bait.getRuns(jobId, null);
         var runId = runs[0].id;
-        var intervalObj = setInterval(function() {
+        var intervalObj = setInterval(function () {
+
             var run = bait.getRun(jobId, null, runId);
             //console.log(run);
             if (run.finishTime) {
                 clearInterval(intervalObj);
-                //console.log(run);
+                console.log(run);
                 expect(run.status).to.equal('succeeded');
                 expect(run.id).to.exist();
                 expect(run.commands).to.be.length(3);
@@ -153,7 +154,8 @@ describe('normal', function () {
         var jobId = jobs[1].id;
         var runs = bait.getRuns(jobId, null);
         var runId = runs[0].id;
-        var intervalObj = setInterval(function() {
+        var intervalObj = setInterval(function () {
+
             var run = bait.getRun(jobId, null, runId);
             if (run.finishTime) {
                 clearInterval(intervalObj);
@@ -189,7 +191,8 @@ describe('normal', function () {
         var jobId = jobs[1].id;
         var runs = bait.getRuns(jobId, null);
         var runId = runs[0].id;
-        var intervalObj = setInterval(function() {
+        var intervalObj = setInterval(function () {
+
             var run = bait.getRun(jobId, null, runId);
             if (run.finishTime) {
                 clearInterval(intervalObj);
@@ -238,7 +241,8 @@ describe('normal', function () {
         var runs = bait.getRuns(jobId, null);
         // job 4 shouldnt have been added
         var runId = runs[1].id;
-        var intervalObj = setInterval(function() {
+        var intervalObj = setInterval(function () {
+
             var run = bait.getRun(jobId, null, runId);
             if (run.finishTime) {
                 clearInterval(intervalObj);

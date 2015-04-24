@@ -52,19 +52,19 @@ describe('prs', function () {
                 file: 'anonymous.json'
             }
         ];
-        Mock.prepareServer(type, routes, function(server) {
+        Mock.prepareServer(type, routes, function (server) {
 
-            server.start(function() {
+            server.start(function () {
 
                 //console.log(server.info);
                 var bait = new Bait({ dirPath: '/tmp/testbait', github: { url: server.info.uri } });
                 var jobs = bait.getJobs();
                 var jobId = jobs[0].id;
-                bait.getPullRequests(jobId, null, function(prs) {
+                bait.getPullRequests(jobId, null, function (prs) {
 
                     //console.log(prs);
-                   expect(prs.length).to.be.above(0);
-                   done();
+                    expect(prs.length).to.be.above(0);
+                    done();
                 });
             });
         });
@@ -85,16 +85,16 @@ describe('prs', function () {
                 file: 'anonymous.json'
             }
         ];
-        Mock.prepareServer(type, routes, function(server) {
+        Mock.prepareServer(type, routes, function (server) {
 
-            server.start(function() {
+            server.start(function () {
 
                 //console.log(server.info);
                 var bait = new Bait({ dirPath: '/tmp/testbait', github: { url: server.info.uri } });
                 var jobs = bait.getJobs();
                 var jobId = jobs[0].id;
                 var number = 1;
-                bait.getPullRequest(jobId, number, null, function(pr) {
+                bait.getPullRequest(jobId, number, null, function (pr) {
 
                     expect(pr.number).to.equal(1);
                     expect(pr.title).to.equal('mock pr');
@@ -123,9 +123,9 @@ describe('prs', function () {
                 file: 'authorized.json'
             }
         ];
-        Mock.prepareServer(type, routes, function(server) {
+        Mock.prepareServer(type, routes, function (server) {
 
-            server.start(function() {
+            server.start(function () {
 
                 //console.log(server.info);
                 var bait = new Bait({ dirPath: '/tmp/testbait', github: { url: server.info.uri } });
@@ -133,7 +133,7 @@ describe('prs', function () {
                 var jobId = jobs[0].id;
                 var number = 1;
                 var token = 1;
-                bait.mergePullRequest(jobId, number, token, function(result) {
+                bait.mergePullRequest(jobId, number, token, function (result) {
 
                     //console.log(result);
                     expect(result.sha.length).to.equal(40);
@@ -173,11 +173,11 @@ describe('prs', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        bait.getPullRequests(jobId, null, function(prs) {
+        bait.getPullRequests(jobId, null, function (prs) {
 
-           //console.log(prs);
-           expect(prs.length).to.equal(0);
-           done();
+            //console.log(prs);
+            expect(prs.length).to.equal(0);
+            done();
         });
     });
 
@@ -187,11 +187,11 @@ describe('prs', function () {
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
         var number = 0;
-        bait.getPullRequest(jobId, number, null, function(pr) {
+        bait.getPullRequest(jobId, number, null, function (pr) {
 
-           //console.log(pr);
-           expect(pr).to.not.exist();
-           done();
+            //console.log(pr);
+            expect(pr).to.not.exist();
+            done();
         });
     });
 
@@ -201,11 +201,11 @@ describe('prs', function () {
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
         var number = 0;
-        bait.mergePullRequest(jobId, number, null, function(result) {
+        bait.mergePullRequest(jobId, number, null, function (result) {
 
-           //console.log(pr);
-           expect(result).to.not.exist();
-           done();
+            //console.log(pr);
+            expect(result).to.not.exist();
+            done();
         });
     });
 
@@ -302,7 +302,7 @@ describe('prs', function () {
         };
         var runs = bait.getRuns(jobId, pr);
         var runId = runs[0].id;
-        var intervalObj1 = setInterval(function() {
+        var intervalObj1 = setInterval(function () {
 
             var run = bait.getRun(jobId, pr, runId);
             //console.log(run);
@@ -416,7 +416,7 @@ describe('prs', function () {
         var runs = bait.getRuns(jobId, pr);
         var runId = runs[0].id;
         bait.cancelRun(jobId, pr, runId);
-        var intervalObj2 = setInterval(function() {
+        var intervalObj2 = setInterval(function () {
 
             var run = bait.getRun(jobId, pr, runId);
             if (run.finishTime) {
@@ -465,7 +465,7 @@ describe('prs', function () {
         var bait = new Bait({ dirPath: '/tmp/testbait', mock: false });
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        bait.getPullRequests(jobId, null, function(prs) {
+        bait.getPullRequests(jobId, null, function (prs) {
 
             bait.startJob(jobId, prs[0]);
             bait.startJob(jobId, prs[1]);
@@ -478,11 +478,11 @@ describe('prs', function () {
         var bait = new Bait({ dirPath: '/tmp/testbait', mock: false });
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        bait.getPullRequests(jobId, null, function(prs) {
+        bait.getPullRequests(jobId, null, function (prs) {
 
             var runs = bait.getRuns(jobId, prs[0]);
             var runId = runs[0].id;
-            var intervalObj3 = setInterval(function() {
+            var intervalObj3 = setInterval(function () {
 
                 var run = bait.getRun(jobId, prs[0], runId);
                 //console.log(run);
@@ -504,11 +504,11 @@ describe('prs', function () {
         var bait = new Bait({ dirPath: '/tmp/testbait', mock: false });
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        bait.getPullRequests(jobId, null, function(prs) {
+        bait.getPullRequests(jobId, null, function (prs) {
 
             var runs = bait.getRuns(jobId, prs[1]);
             var runId = runs[0].id;
-            var intervalObj4 = setInterval(function() {
+            var intervalObj4 = setInterval(function () {
 
                 var run = bait.getRun(jobId, prs[1], runId);
                 //console.log(run);

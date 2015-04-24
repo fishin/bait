@@ -99,7 +99,7 @@ describe('invalid', function () {
         var jobId = jobs[0].id;
         var runs = bait.getRuns(jobId, null);
         var runId = runs[0].id;
-        var intervalObj = setInterval(function() {
+        var intervalObj = setInterval(function () {
 
             var run = bait.getRun(jobId, null, runId);
             if (run.finishTime) {

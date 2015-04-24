@@ -87,7 +87,8 @@ describe('scm', function () {
         var jobId = jobs[0].id;
         var runs = bait.getRuns(jobId, null);
         var runId = runs[0].id;
-        var intervalObj1 = setInterval(function() {
+        var intervalObj1 = setInterval(function () {
+
             var run = bait.getRun(jobId, null, runId);
             //console.log(run);
             if (run.finishTime) {
@@ -286,7 +287,8 @@ describe('scm', function () {
         var jobId = jobs[0].id;
         var runs = bait.getRuns(jobId, null);
         var runId = runs[0].id;
-        var intervalObj2 = setInterval(function() {
+        var intervalObj2 = setInterval(function () {
+
             var run = bait.getRun(jobId, null, runId);
             //console.log(run);
             if (run.finishTime) {
@@ -369,7 +371,8 @@ describe('scm', function () {
         var jobId = jobs[0].id;
         var runs = bait.getRuns(jobId, null);
         var runId = runs[0].id;
-        var intervalObj3 = setInterval(function() {
+        var intervalObj3 = setInterval(function () {
+
             var run = bait.getRun(jobId, null, runId);
             //console.log(run);
             if (run.finishTime) {
@@ -435,7 +438,8 @@ describe('scm', function () {
         var jobId = jobs[0].id;
         var runs = bait.getRuns(jobId, null);
         var runId = runs[0].id;
-        var intervalObj = setInterval(function() {
+        var intervalObj = setInterval(function () {
+
             var run = bait.getRun(jobId, null, runId);
             //console.log(run);
             if (run.finishTime) {

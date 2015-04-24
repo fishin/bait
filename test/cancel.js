@@ -58,7 +58,7 @@ describe('cancel', function () {
         var runs = bait.getRuns(jobId, null);
         var runId = runs[0].id;
         bait.cancelRun(jobId, null, runId);
-        var intervalObj = setInterval(function() {
+        var intervalObj = setInterval(function () {
 
             var run = bait.getRun(jobId, null, runId);
             if (run.finishTime) {
