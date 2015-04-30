@@ -8,7 +8,7 @@ var Bait = require('../lib/index');
 
 var internals = {
     defaults: {
-        dirPath: '/tmp/testbait'
+        dirPath: __dirname + '/tmp'
     }
 };
 

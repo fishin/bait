@@ -11,11 +11,22 @@ var Bait = require('../lib/index');
 
 var internals = {
     defaults: {
-        dirPath: '/tmp/testbait'
+        dirPath: __dirname + '/tmp'
     }
 };
 
 describe('queue', function () {
+
+    it('startQueue and stopQueue', function (done) {
+
+        var bait = new Bait({});
+        var queueObj = bait.startQueue();
+        setTimeout(function () {
+
+            bait.stopQueue(queueObj);
+            done();
+        }, 1000);
+    });
 
     it('getQueue', function (done) {
 

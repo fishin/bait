@@ -8,7 +8,7 @@ var Bait = require('../lib/index');
 
 var internals = {
     defaults: {
-        dirPath: '/tmp/testbait',
+        dirPath: __dirname + '/tmp',
         mock: true
     }
 };
@@ -22,7 +22,6 @@ describe('prs', function () {
 
     it('createJob scm', function (done) {
 
-        // switching this to pail later
         var config = {
             name: 'mock',
             scm: {
@@ -57,7 +56,7 @@ describe('prs', function () {
             server.start(function () {
 
                 //console.log(server.info);
-                var bait = new Bait({ dirPath: '/tmp/testbait', github: { url: server.info.uri } });
+                var bait = new Bait({ dirPath: internals.defaults.dirPath, github: { url: server.info.uri } });
                 var jobs = bait.getJobs();
                 var jobId = jobs[0].id;
                 bait.getPullRequests(jobId, null, function (prs) {
@@ -90,7 +89,7 @@ describe('prs', function () {
             server.start(function () {
 
                 //console.log(server.info);
-                var bait = new Bait({ dirPath: '/tmp/testbait', github: { url: server.info.uri } });
+                var bait = new Bait({ dirPath: internals.defaults.dirPath, github: { url: server.info.uri } });
                 var jobs = bait.getJobs();
                 var jobId = jobs[0].id;
                 var number = 1;
@@ -128,7 +127,7 @@ describe('prs', function () {
             server.start(function () {
 
                 //console.log(server.info);
-                var bait = new Bait({ dirPath: '/tmp/testbait', github: { url: server.info.uri } });
+                var bait = new Bait({ dirPath: internals.defaults.dirPath, github: { url: server.info.uri } });
                 var jobs = bait.getJobs();
                 var jobId = jobs[0].id;
                 var number = 1;
@@ -454,7 +453,7 @@ describe('prs', function () {
             },
             body: [ 'npm install', 'npm test' ]
         };
-        var bait = new Bait({ dirPath: '/tmp/testbait', mock: false });
+        var bait = new Bait({ dirPath: internals.defaults.dirPath, mock: false });
         var createJob = bait.createJob(config);
         expect(createJob.id).to.exist();
         done();
@@ -462,7 +461,7 @@ describe('prs', function () {
 
     it('startJob real prs', function (done) {
 
-        var bait = new Bait({ dirPath: '/tmp/testbait', mock: false });
+        var bait = new Bait({ dirPath: internals.defaults.dirPath, mock: false });
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
         bait.getPullRequests(jobId, null, function (prs) {
@@ -475,7 +474,7 @@ describe('prs', function () {
 
     it('getRun pr1', function (done) {
 
-        var bait = new Bait({ dirPath: '/tmp/testbait', mock: false });
+        var bait = new Bait({ dirPath: internals.defaults.dirPath, mock: false });
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
         bait.getPullRequests(jobId, null, function (prs) {
@@ -501,7 +500,7 @@ describe('prs', function () {
 
     it('getRun pr2', function (done) {
 
-        var bait = new Bait({ dirPath: '/tmp/testbait', mock: false });
+        var bait = new Bait({ dirPath: internals.defaults.dirPath, mock: false });
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
         bait.getPullRequests(jobId, null, function (prs) {

@@ -7,7 +7,7 @@ var Bait = require('../lib/index');
 
 var internals = {
     defaults: {
-        dirPath: '/tmp/testbait'
+        dirPath: __dirname + '/tmp'
     }
 };
 
@@ -26,7 +26,7 @@ describe('failed', function () {
             body: [
                 'date',
                 'uptime',
-                [ 'ls -altr', 'npm test', 'ls -altr' ],
+                [ 'ls -altr', 'npm invalid', 'ls -altr' ],
                 'cat /etc/hosts'
             ]
         };
