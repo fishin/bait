@@ -46,6 +46,16 @@ describe('queue', function () {
         done();
     });
 
+    it('addJob 1 again', function (done) {
+
+        var bait = new Bait({});
+        var jobId = '12345678-1234-1234-1234-123456789012';
+        bait.addJob(jobId);
+        var queue = bait.getQueue();
+        expect(queue.length).to.equal(1);
+        done();
+    });
+
     it('addJob 2', function (done) {
 
         var bait = new Bait({});
