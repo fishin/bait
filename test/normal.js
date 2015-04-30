@@ -18,6 +18,22 @@ var it = lab.it;
 
 describe('normal', function () {
 
+    it('getActiveJobs', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var active = bait.getActiveJobs();
+        expect(active.length).to.equal(0);
+        done();
+    });
+
+    it('getActivePullRequests', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var active = bait.getActivePullRequests();
+        expect(active.length).to.equal(0);
+        done();
+    });
+
     it('createJob job1', function (done) {
 
         // switching this to pail later
