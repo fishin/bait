@@ -22,7 +22,7 @@ describe('normal', function () {
 
         var bait = new Bait(internals.defaults);
         var active = bait.getActiveJobs();
-        expect(active.length).to.equal(0);
+        expect(active).to.be.empty();
         done();
     });
 
@@ -30,7 +30,7 @@ describe('normal', function () {
 
         var bait = new Bait(internals.defaults);
         var active = bait.getActivePullRequests();
-        expect(active.length).to.equal(0);
+        expect(active).to.be.empty();
         done();
     });
 
