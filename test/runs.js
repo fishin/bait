@@ -86,7 +86,28 @@ describe('runs', function () {
         cancelPail2.status = 'cancelled';
         var updateCancelPail2 = pail.updatePail(cancelPail2);
         expect(updateCancelPail2.status).to.equal('cancelled');
+        var successConfig3 = { name: 'success3', foo: 'bar' };
+        var successPail3 = pail.createPail(successConfig3);
+        expect(successPail3.name).to.equal('success3');
+        expect(successPail3.status).to.equal('created');
+        successPail3.status = 'fixed';
+        var updateSuccessPail3 = pail.updatePail(successPail3);
+        expect(updateSuccessPail3.status).to.equal('fixed');
+        var successConfig4 = { name: 'success4', foo: 'bar' };
+        var successPail4 = pail.createPail(successConfig4);
+        expect(successPail4.name).to.equal('success4');
+        expect(successPail4.status).to.equal('created');
+        successPail4.status = 'succeeded';
+        var updateSuccessPail4 = pail.updatePail(successPail4);
+        expect(updateSuccessPail4.status).to.equal('succeeded');
         // now start deleting stuff
+        bait.deleteRun(jobId, null, successPail4.id);
+        expect(pail.getPailByName('last')).to.equal(successPail3.id);
+        expect(pail.getPailByName('lastSuccess')).to.equal(successPail3.id);
+        bait.deleteRun(jobId, null, successPail3.id);
+        expect(pail.getPailByName('last')).to.equal(cancelPail2.id);
+        expect(pail.getPailByName('lastSuccess')).to.equal(successPail2.id);
+        expect(pail.getPailByName('lastCancel')).to.equal(cancelPail2.id);
         bait.deleteRun(jobId, null, cancelPail2.id);
         expect(pail.getPailByName('last')).to.equal(cancelPail1.id);
         expect(pail.getPailByName('lastCancel')).to.equal(cancelPail1.id);
@@ -141,6 +162,49 @@ describe('runs', function () {
         expect(pail.getPailByName('last')).to.equal(successPail3.id);
         bait.deleteRun(jobId, null, successPail2.id);
         expect(pail.getPailByName('last')).to.equal(successPail3.id);
+        bait.deleteRun(jobId, null, successPail1.id);
+        bait.deleteRun(jobId, null, successPail3.id);
+        done();
+    });
+
+    it('getPreviousRun', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        // 3 success
+        var pail = new Pail({ dirPath: internals.defaults.dirPath + '/' + jobId });
+        var successConfig1 = { name: 'success1', foo: 'bar' };
+        var successPail1 = pail.createPail(successConfig1);
+        expect(successPail1.name).to.equal('success1');
+        expect(successPail1.status).to.equal('created');
+        successPail1.status = 'succeeded';
+        var updateSuccessPail1 = pail.updatePail(successPail1);
+        expect(updateSuccessPail1.status).to.equal('succeeded');
+        var successConfig2 = { name: 'success2', foo: 'bar' };
+        var successPail2 = pail.createPail(successConfig2);
+        expect(successPail2.name).to.equal('success2');
+        expect(successPail2.status).to.equal('created');
+        successPail2.status = 'succeeded';
+        var updateSuccessPail2 = pail.updatePail(successPail2);
+        expect(updateSuccessPail2.status).to.equal('succeeded');
+        var successConfig3 = { name: 'success3', foo: 'bar' };
+        var successPail3 = pail.createPail(successConfig3);
+        expect(successPail3.name).to.equal('success3');
+        expect(successPail3.status).to.equal('created');
+        successPail3.status = 'succeeded';
+        var updateSuccessPail3 = pail.updatePail(successPail3);
+        expect(updateSuccessPail3.status).to.equal('succeeded');
+        expect(pail.getPailByName('last')).to.equal(successPail3.id);
+        var run = bait.getPreviousRun(jobId, null, successPail3.id);
+        expect(run.id).to.equal(successPail2.id);
+        run = bait.getPreviousRun(jobId, null, successPail2.id);
+        expect(run.id).to.equal(successPail1.id);
+        run = bait.getPreviousRun(jobId, null, successPail1.id);
+        expect(run).to.not.exist();
+        bait.deleteRun(jobId, null, successPail1.id);
+        bait.deleteRun(jobId, null, successPail2.id);
+        bait.deleteRun(jobId, null, successPail3.id);
         done();
     });
 

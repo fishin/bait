@@ -143,7 +143,7 @@ describe('scm', function () {
         var commits = bait.getAllCommits(jobId);
         var compareCommits = bait.getCompareCommits(jobId, commits[0].commit, commits[1].commit);
         //console.log(commits);
-        expect(compareCommits.length).to.equal(1);
+        expect(compareCommits.length).to.be.above(0);
         done();
     });
 
