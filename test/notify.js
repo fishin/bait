@@ -7,7 +7,8 @@ var Bait = require('../lib/index');
 
 var internals = {
     defaults: {
-        dirPath: __dirname + '/tmp'
+        dirPath: __dirname + '/tmp',
+        mock: true
     }
 };
 
@@ -216,6 +217,82 @@ describe('notify', function () {
     });
 
     it('deleteJob nonotify', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        bait.deleteJob(jobId);
+        jobs = bait.getJobs();
+        expect(jobs.length).to.equal(0);
+        done();
+    });
+
+    it('createJob', function (done) {
+
+        // switching this to pail later
+        var config = {
+            name: 'pr',
+            scm: {
+                type: 'git',
+                url: 'https://github.com/fishin/bobber',
+                branch: 'master'
+            },
+            body: [ 'date' ],
+            notify: {
+                type: 'email',
+                to: 'lloyd.benson@gmail.com',
+                subject: 'subject',
+                message: 'message',
+                statuses: [
+                    'succeeded'
+                ]
+            }
+        };
+        var bait = new Bait(internals.defaults);
+        var createJob = bait.createJob(config);
+        expect(createJob.id).to.exist();
+        done();
+    });
+
+    it('startJob', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        var pr = {
+            number: 1
+        };
+        bait.startJob(jobId, pr);
+        done();
+    });
+
+    it('getRun', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        var pr = {
+            number: 1
+        };
+        var runs = bait.getRuns(jobId, pr);
+        var runId = runs[0].id;
+        var intervalObj1 = setInterval(function () {
+
+            var run = bait.getRun(jobId, pr, runId);
+            //console.log(run);
+            if (run.finishTime) {
+                clearInterval(intervalObj1);
+                //console.log(run);
+                expect(run.status).to.equal('succeeded');
+                expect(run.id).to.exist();
+                expect(run.commands).to.be.length(1);
+                expect(run.commands[0].stdout).to.exist();
+                done();
+            }
+        }, 1000);
+    });
+
+    it('deleteJob', function (done) {
 
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
