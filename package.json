@@ -2,7 +2,7 @@
   "name": "bait",
   "version": "0.0.2",
   "description": "job functions for ficion",
-  "main": "index.js",
+  "main": "lib/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/fishin/bait"
