@@ -23,7 +23,7 @@ describe('schedule', function () {
         // switching this to pail later
         var config = {
             name: 'job',
-            body: [ 'date' ],
+            body: ['date'],
             schedule: {
                 type: 'cron',
                 pattern: '*/5 * * * *'

@@ -237,7 +237,7 @@ describe('notify', function () {
                 url: 'https://github.com/fishin/bobber',
                 branch: 'master'
             },
-            body: [ 'date' ],
+            body: ['date'],
             notify: {
                 type: 'email',
                 to: 'lloyd.benson@gmail.com',

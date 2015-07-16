@@ -230,7 +230,7 @@ describe('prs', function () {
                 branch: 'master',
                 runOnCommit: true
             },
-            body: [ 'sleep 5' ]
+            body: ['sleep 5']
         };
         var bait = new Bait(internals.defaults);
         var createJob = bait.createJob(config);
@@ -273,7 +273,7 @@ describe('prs', function () {
         var pr = {
             number: 1
         };
-        var cmds = [ 'uptime' ];
+        var cmds = ['uptime'];
         bait.startJob(jobId, pr);
         done();
     });
@@ -384,7 +384,7 @@ describe('prs', function () {
                 branch: 'master',
                 runOnCommit: true
             },
-            body: [ 'sleep 5' ]
+            body: ['sleep 5']
         };
         var bait = new Bait(internals.defaults);
         var createJob = bait.createJob(config);
@@ -451,7 +451,7 @@ describe('prs', function () {
                 url: 'https://github.com/fishin/demo',
                 branch: 'master'
             },
-            body: [ 'npm install', 'npm test' ]
+            body: ['npm install', 'npm test']
         };
         var bait = new Bait({ dirPath: internals.defaults.dirPath, mock: false });
         var createJob = bait.createJob(config);

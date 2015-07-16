@@ -1,6 +1,6 @@
 {
   "name": "bait",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "job functions for ficion",
   "main": "lib/index.js",
   "repository": {
@@ -23,7 +23,7 @@
     "hoek": "2.x.x",
     "bobber": "git+https://github.com/fishin/bobber",
     "brag": "git+https://github.com/fishin/brag",
-    "fishhook": "0.x.x",
+    "fishhook": "git+https://github.com/fishin/fishhook",
     "hatchery": "git+https://github.com/fishin/hatchery",
     "pail": "git+https://github.com/fishin/pail"
   },

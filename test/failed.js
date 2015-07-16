@@ -26,7 +26,7 @@ describe('failed', function () {
             body: [
                 'date',
                 'uptime',
-                [ 'ls -altr', 'npm invalid', 'ls -altr' ],
+                ['ls -altr', 'npm invalid', 'ls -altr'],
                 'cat /etc/hosts'
             ]
         };

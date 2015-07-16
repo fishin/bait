@@ -34,7 +34,7 @@ describe('scm', function () {
             body: [
                 'npm install',
                 'npm run-script json',
-                [ 'uptime', 'npm list', 'ls -altr' ],
+                ['uptime', 'npm list', 'ls -altr'],
                 'date'
             ]
         };

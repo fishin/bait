@@ -40,7 +40,7 @@ describe('normal', function () {
         var config = {
             name: 'job1',
             body: [
-                [ 'uptime', 'sleep 2' ],
+                ['uptime', 'sleep 2'],
                 'date'
             ]
         };
@@ -54,9 +54,9 @@ describe('normal', function () {
 
         var config = {
             name: 'job2',
-            head: [ 'date' ],
-            body: [ 'uptime' ],
-            tail: [ 'cat /etc/hosts' ]
+            head: ['date'],
+            body: ['uptime'],
+            tail: ['cat /etc/hosts']
         };
         var bait = new Bait(internals.defaults);
         var createJob = bait.createJob(config);
