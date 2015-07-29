@@ -33,7 +33,7 @@ describe('scm', function () {
             },
             body: [
                 'npm install',
-                'npm run-script json',
+                'npm test',
                 ['uptime', 'npm list', 'ls -altr'],
                 'date'
             ]
@@ -258,7 +258,7 @@ describe('scm', function () {
             },
             body: [
                 'npm install',
-                'npm run-script json'
+                'npm test'
             ]
         };
         var bait = new Bait(internals.defaults);
@@ -338,7 +338,7 @@ describe('scm', function () {
             },
             body: [
                 'npm install',
-                'npm run-script json'
+                'npm test'
             ]
         };
         var bait = new Bait(internals.defaults);
