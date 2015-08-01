@@ -100,39 +100,10 @@ describe('queue', function () {
         done();
     });
 
-    it('startJob from queue', function (done) {
-
-        var bait = new Bait(internals.defaults);
-        var queueObj = bait.startQueue();
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        bait.addJob(jobId);
-        var queue = bait.getQueue();
-        expect(queue.length).to.equal(1);
-        setTimeout(function () {
-
-            queue = bait.getQueue();
-            expect(queue.length).to.equal(0);
-            bait.stopQueue(queueObj);
-            done();
-        }, 1000);
-    });
-
-    it('deleteJob', function (done) {
-
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        bait.deleteJob(jobId);
-        jobs = bait.getJobs();
-        expect(jobs.length).to.equal(0);
-        done();
-    });
-
     it('createJob sleep', function (done) {
 
         var config = {
-            name: 'queue',
+            name: 'sleep',
             body: [
                 'sleep 2'
             ]
@@ -143,12 +114,50 @@ describe('queue', function () {
         done();
     });
 
-    it('addJob for startJob', function (done) {
+    it('createJob sleep2', function (done) {
+
+        var config = {
+            name: 'sleep2',
+            body: [
+                'sleep 2'
+            ]
+        };
+        var bait = new Bait(internals.defaults);
+        var createJob = bait.createJob(config);
+        expect(createJob.id).to.exist();
+        done();
+    });
+
+    it('startJob from queue', function (done) {
 
         var bait = new Bait(internals.defaults);
         var queueObj = bait.startQueue();
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
+        bait.addJob(jobId);
+        var queue = bait.getQueue();
+        expect(queue.length).to.equal(1);
+        var intervalObj1 = setInterval(function () {
+
+            var runs = bait.getRuns(jobId, null);
+            var runId = runs[0].id;
+            var run = bait.getRun(jobId, null, runId);
+            if (run.finishTime) {
+                clearInterval(intervalObj1);
+                queue = bait.getQueue();
+                expect(queue.length).to.equal(0);
+                bait.stopQueue(queueObj);
+                done();
+            }
+        }, 1000);
+    });
+
+    it('addJob for startJob', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var queueObj = bait.startQueue();
+        var jobs = bait.getJobs();
+        var jobId = jobs[1].id;
         bait.startJob(jobId);
         var runs = bait.getRuns(jobId, null);
         var runId = runs[0].id;
@@ -160,13 +169,65 @@ describe('queue', function () {
             var run = bait.getRun(jobId, null, runId);
             if (run.finishTime) {
                 clearInterval(intervalObj2);
+                bait.removeJob(jobId);
                 bait.stopQueue(queueObj);
                 done();
             }
         }, 1000);
     });
 
+    it('addJob for full reel', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var queueObj = bait.startQueue();
+        console.log('initial');
+        var queue = bait.getQueue();
+        console.log(queue);
+        var jobs = bait.getJobs();
+        bait.startJob(jobs[1].id);
+        bait.startJob(jobs[2].id);
+        var jobId = jobs[2].id;
+        var runs = bait.getRuns(jobId, null);
+        var runId = runs[0].id;
+        bait.addJob(jobs[0].id);
+        queue = bait.getQueue();
+        console.log(queue);
+        expect(queue.length).to.equal(1);
+        var intervalObj3 = setInterval(function () {
+
+            var run = bait.getRun(jobId, null, runId);
+            if (run.finishTime) {
+                clearInterval(intervalObj3);
+                bait.removeJob(jobs[0].id);
+                bait.stopQueue(queueObj);
+                done();
+            }
+        }, 1000);
+    });
+
+    it('deleteJob', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        bait.deleteJob(jobId);
+        jobs = bait.getJobs();
+        expect(jobs.length).to.equal(2);
+        done();
+    });
+
     it('deleteJob sleep', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        bait.deleteJob(jobId);
+        jobs = bait.getJobs();
+        expect(jobs.length).to.equal(1);
+        done();
+    });
+
+    it('deleteJob sleep2', function (done) {
 
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
