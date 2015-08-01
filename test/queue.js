@@ -180,9 +180,7 @@ describe('queue', function () {
 
         var bait = new Bait(internals.defaults);
         var queueObj = bait.startQueue();
-        console.log('initial');
         var queue = bait.getQueue();
-        console.log(queue);
         var jobs = bait.getJobs();
         bait.startJob(jobs[1].id);
         bait.startJob(jobs[2].id);
@@ -191,7 +189,6 @@ describe('queue', function () {
         var runId = runs[0].id;
         bait.addJob(jobs[0].id);
         queue = bait.getQueue();
-        console.log(queue);
         expect(queue.length).to.equal(1);
         var intervalObj3 = setInterval(function () {
 
