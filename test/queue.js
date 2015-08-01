@@ -85,4 +85,48 @@ describe('queue', function () {
         expect(queue.length).to.equal(0);
         done();
     });
+
+    it('createJob', function (done) {
+
+        var config = {
+            name: 'queue',
+            body: [
+                'date'
+            ]
+        };
+        var bait = new Bait(internals.defaults);
+        var createJob = bait.createJob(config);
+        expect(createJob.id).to.exist();
+        done();
+    });
+
+    it('startJob from queue', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var queueObj = bait.startQueue();
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        bait.addJob(jobId);
+        var queue = bait.getQueue();
+        expect(queue.length).to.equal(1);
+        setTimeout(function () {
+
+            queue = bait.getQueue();
+            expect(queue.length).to.equal(0);
+            bait.stopQueue(queueObj);
+            done();
+        }, 1000);
+    });
+
+    it('deleteJob', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        bait.deleteJob(jobId);
+        jobs = bait.getJobs();
+        expect(jobs.length).to.equal(0);
+        done();
+    });
+
 });
