@@ -36,56 +36,6 @@ describe('queue', function () {
         done();
     });
 
-    it('addJob 1', function (done) {
-
-        var bait = new Bait({});
-        var jobId = '12345678-1234-1234-1234-123456789012';
-        bait.addJob(jobId);
-        var queue = bait.getQueue();
-        expect(queue.length).to.equal(1);
-        done();
-    });
-
-    it('addJob 1 again', function (done) {
-
-        var bait = new Bait({});
-        var jobId = '12345678-1234-1234-1234-123456789012';
-        bait.addJob(jobId);
-        var queue = bait.getQueue();
-        expect(queue.length).to.equal(1);
-        done();
-    });
-
-    it('addJob 2', function (done) {
-
-        var bait = new Bait({});
-        var jobId = '12345678-1234-1234-1234-123456789013';
-        bait.addJob(jobId);
-        var queue = bait.getQueue();
-        expect(queue.length).to.equal(2);
-        done();
-    });
-
-    it('removeJob 2', function (done) {
-
-        var bait = new Bait({});
-        var jobId = '12345678-1234-1234-1234-123456789013';
-        bait.removeJob(jobId);
-        var queue = bait.getQueue();
-        expect(queue.length).to.equal(1);
-        done();
-    });
-
-    it('removeJob 1', function (done) {
-
-        var bait = new Bait({});
-        var jobId = '12345678-1234-1234-1234-123456789012';
-        bait.removeJob(jobId);
-        var queue = bait.getQueue();
-        expect(queue.length).to.equal(0);
-        done();
-    });
-
     it('createJob', function (done) {
 
         var config = {
@@ -125,6 +75,61 @@ describe('queue', function () {
         var bait = new Bait(internals.defaults);
         var createJob = bait.createJob(config);
         expect(createJob.id).to.exist();
+        done();
+    });
+
+    it('addJob 1', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        bait.addJob(jobId);
+        var queue = bait.getQueue();
+        expect(queue.length).to.equal(1);
+        done();
+    });
+
+    it('addJob 1 again', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        bait.addJob(jobId);
+        var queue = bait.getQueue();
+        expect(queue.length).to.equal(1);
+        done();
+    });
+
+    it('addJob 2', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[1].id;
+        bait.addJob(jobId);
+        var queue = bait.getQueue();
+        expect(queue.length).to.equal(2);
+        done();
+    });
+
+    it('removeJob 2', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[1].id;
+        bait.removeJob(jobId);
+        var queue = bait.getQueue();
+        expect(queue.length).to.equal(1);
+        done();
+    });
+
+    it('removeJob 1', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        bait.removeJob(jobId);
+        var queue = bait.getQueue();
+        expect(queue.length).to.equal(0);
         done();
     });
 
