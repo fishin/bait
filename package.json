@@ -24,7 +24,8 @@
     "brag": "git+https://github.com/fishin/brag",
     "fishhook": "git+https://github.com/fishin/fishhook",
     "hatchery": "git+https://github.com/fishin/hatchery",
-    "pail": "git+https://github.com/fishin/pail"
+    "pail": "git+https://github.com/fishin/pail",
+    "taut": "git+https://github.com/fishin/taut"
   },
   "devDependencies": {
     "code": "1.x.x",
