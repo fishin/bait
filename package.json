@@ -19,7 +19,6 @@
   "dependencies": {
     "cron": "1.0.x",
     "glob": "4.3.x",
-    "hapi": "8.x.x",
     "hoek": "2.x.x",
     "bobber": "git+https://github.com/fishin/bobber",
     "brag": "git+https://github.com/fishin/brag",
@@ -29,6 +28,7 @@
   },
   "devDependencies": {
     "code": "1.x.x",
+    "hapi": "8.x.x",
     "lab": "5.x.x",
     "mock": "git+https://github.com/fishin/mock"
   }

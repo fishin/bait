@@ -398,7 +398,7 @@ describe('prs', function () {
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
         var pr = {
-           number: 1
+            number: 1
         };
         bait.startJob(jobId, pr);
         done();
@@ -410,7 +410,7 @@ describe('prs', function () {
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
         var pr = {
-           number: 1
+            number: 1
         };
         var runs = bait.getRuns(jobId, pr);
         var runId = runs[0].id;

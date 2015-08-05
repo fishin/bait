@@ -88,7 +88,7 @@ describe('notify', function () {
         var config = {
             notify: {
                 statuses: [
-                   'succeeded'
+                    'succeeded'
                 ]
             }
         };
