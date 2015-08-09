@@ -25,6 +25,7 @@
     "fishhook": "git+https://github.com/fishin/fishhook",
     "hatchery": "git+https://github.com/fishin/hatchery",
     "pail": "git+https://github.com/fishin/pail",
+    "smelt": "git+https://github.com/fishin/smelt",
     "taut": "git+https://github.com/fishin/taut"
   },
   "devDependencies": {
