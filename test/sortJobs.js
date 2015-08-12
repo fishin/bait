@@ -1,7 +1,9 @@
 var Code = require('code');
+var Fs = require('fs');
 var Lab = require('lab');
 var Hapi = require('hapi');
 var Pail = require('pail');
+var Path = require('path');
 
 var Bait = require('../lib/index');
 
@@ -18,139 +20,29 @@ var it = lab.it;
 
 describe('sort jobs', function () {
 
-/*
-    it('createJob a', function (done) {
-
-        // switching this to pail later
-        var config = {
-            name: 'a',
-            body: ['uptime']
-        };
-        var bait = new Bait(internals.defaults);
-        var createJob = bait.createJob(config);
-        expect(createJob.id).to.exist();
-        done();
-    });
-
-    it('createJob e', function (done) {
-
-        // switching this to pail later
-        var config = {
-            name: 'e',
-            body: ['uptime']
-        };
-        var bait = new Bait(internals.defaults);
-        var createJob = bait.createJob(config);
-        expect(createJob.id).to.exist();
-        done();
-    });
-
-    it('createJob c', function (done) {
-
-        // switching this to pail later
-        var config = {
-            name: 'c',
-            body: ['uptime']
-        };
-        var bait = new Bait(internals.defaults);
-        var createJob = bait.createJob(config);
-        expect(createJob.id).to.exist();
-        done();
-    });
-
-    it('createJob d', function (done) {
-
-        // switching this to pail later
-        var config = {
-            name: 'd',
-            body: ['uptime']
-        };
-        var bait = new Bait(internals.defaults);
-        var createJob = bait.createJob(config);
-        expect(createJob.id).to.exist();
-        done();
-    });
-
-    it('createJob b', function (done) {
-
-        // switching this to pail later
-        var config = {
-            name: 'b',
-            body: ['uptime']
-        };
-        var bait = new Bait(internals.defaults);
-        var createJob = bait.createJob(config);
-        expect(createJob.id).to.exist();
-        done();
-    });
-
-
     it('getJobs', function (done) {
 
-        var bait = new Bait(internals.defaults);
+        var jobDir = Path.join(internals.defaults.dirPath, 'job');
+        var name = ['a', 'c', 'b'];
+        var pail = new Pail(internals.defaults);
+        pail.createDir('job');
+        for (var i = 1; i < 4; i++) {
+            var id = '12345678-1234-1234-1234-12345678901' + i.toString();
+            pail.createDir(Path.join('job', id));
+            var config = {
+                id: id,
+                name: name[i - 1]
+            };
+            Fs.writeFileSync(Path.join(jobDir, id, 'config.json'), JSON.stringify(config));
+        }
+        var bait = new Bait({ dirPath: jobDir });
         var jobs = bait.getJobs();
-        expect(jobs.length).to.equal(5);
+        //console.log(jobs);
+        expect(jobs.length).to.equal(3);
         expect(jobs[0].name).to.equal('a');
         expect(jobs[1].name).to.equal('b');
         expect(jobs[2].name).to.equal('c');
-        expect(jobs[3].name).to.equal('d');
-        expect(jobs[4].name).to.equal('e');
+        pail.deleteDir('job');
         done();
     });
-
-    it('deleteJob a', function (done) {
-
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        bait.deleteJob(jobId);
-        jobs = bait.getJobs();
-        expect(jobs.length).to.equal(4);
-        done();
-    });
-
-    it('deleteJob b', function (done) {
-
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        bait.deleteJob(jobId);
-        jobs = bait.getJobs();
-        expect(jobs.length).to.equal(3);
-        done();
-    });
-
-    it('deleteJob c', function (done) {
-
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        bait.deleteJob(jobId);
-        jobs = bait.getJobs();
-        expect(jobs.length).to.equal(2);
-        done();
-    });
-
-    it('deleteJob d', function (done) {
-
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        bait.deleteJob(jobId);
-        jobs = bait.getJobs();
-        expect(jobs.length).to.equal(1);
-        done();
-    });
-
-    it('deleteJob e', function (done) {
-
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        bait.deleteJob(jobId);
-        jobs = bait.getJobs();
-        expect(jobs.length).to.equal(0);
-        done();
-    });
-*/
 });
