@@ -463,4 +463,32 @@ describe('scm', function () {
         expect(jobs.length).to.equal(0);
         done();
     });
+
+    it('createJob noscm', function (done) {
+
+        var config = {
+            name: 'noscm',
+            scm: {
+                type: 'none'
+            },
+            body: ['uptime']
+        };
+        var bait = new Bait(internals.defaults);
+        var createJob = bait.createJob(config);
+        expect(createJob.id).to.exist();
+        expect(createJob.body[0]).to.equal('uptime');
+        expect(createJob.scm.type).to.equal('none');
+        done();
+    });
+
+    it('deleteJob noscm', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        bait.deleteJob(jobId);
+        jobs = bait.getJobs();
+        expect(jobs.length).to.equal(0);
+        done();
+    });
 });
