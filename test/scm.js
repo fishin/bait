@@ -481,6 +481,28 @@ describe('scm', function () {
         done();
     });
 
+    it('updateJob noscm', function (done) {
+
+        var config = {
+            scm: {
+                type: 'none',
+                url: 'https://github.com/fishin/pail',
+                branch: 'master'
+            }
+        };
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        var updateJob = bait.updateJob(jobId, config);
+        expect(updateJob.scm.type).to.equal('none');
+        expect(updateJob.id).to.exist();
+        expect(updateJob.updateTime).to.exist();
+        expect(updateJob.body[0]).to.equal('uptime');
+        expect(updateJob.scm.branch).to.equal('master');
+        expect(updateJob.scm.url).to.equal('https://github.com/fishin/pail');
+        done();
+    });
+
     it('deleteJob noscm', function (done) {
 
         var bait = new Bait(internals.defaults);
