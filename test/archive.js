@@ -115,4 +115,39 @@ describe('archiveArtifacts', function () {
         pail.deleteDir('job');
         done();
     });
+
+    it('archive none', function (done) {
+
+        var jobDir = Path.join(internals.defaults.dirPath, 'job');
+        var pail = new Pail(internals.defaults);
+        pail.createDir('job');
+        var jobId = '12345678-1234-1234-1234-123456789012';
+        var jobConfig = {
+            id: jobId,
+            name: 'archive',
+            archive: {
+                type: 'none'
+            }
+        };
+        pail.createDir(Path.join('job', jobId));
+        Fs.writeFileSync(Path.join(jobDir, jobId, 'config.json'), JSON.stringify(jobConfig));
+        var runId1 = '12345678-1234-1234-1234-123456789011';
+        pail.createDir(Path.join('job', jobId, runId1));
+        var startTime = new Date().getTime();
+        var runConfig = {
+            id: runId1,
+            startTime: startTime
+        };
+        Fs.writeFileSync(Path.join(jobDir, jobId, runId1, 'config.json'), JSON.stringify(runConfig));
+        var bait = new Bait({ dirPath: jobDir });
+        var jobs = bait.getJobs();
+        expect(jobs.length).to.equal(1);
+        var runs = bait.getRuns(jobId, null);
+        expect(runs.length).to.equal(1);
+        bait.archiveArtifacts(jobId, runs[0].id);
+        runs = bait.getRuns(jobId, null);
+        expect(runs.length).to.equal(1);
+        pail.deleteDir('job');
+        done();
+    });
 });
