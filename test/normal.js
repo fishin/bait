@@ -55,7 +55,7 @@ describe('normal', function () {
         var config = {
             name: 'job2',
             head: ['date'],
-            body: ['uptime'],
+            body: ['', 'uptime'],
             tail: ['cat /etc/hosts']
         };
         var bait = new Bait(internals.defaults);
