@@ -67,7 +67,7 @@ describe('cancel', function () {
                 expect(run.status).to.equal('cancelled');
                 expect(run.commands.length).to.equal(2);
                 expect(run.commands[0].startTime).to.exist();
-                expect(run.commands[0].signal).to.equal('SIGINT');
+                expect(run.commands[0].signal).to.equal('SIGTERM');
                 expect(run.commands[1].startTime).to.not.exist();
                 done();
             }
