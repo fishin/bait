@@ -29,7 +29,7 @@ describe('scm', function () {
                 branch: 'master'
             },
             archive: {
-                pattern: 'lab.json'
+                pattern: 'test.lab'
             },
             body: [
                 'npm install',
@@ -152,7 +152,7 @@ describe('scm', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        var contents = bait.getWorkspaceArtifact(jobId, 'lab.json');
+        var contents = bait.getWorkspaceArtifact(jobId, 'test.lab');
         expect(contents).to.contain('test');
         done();
     });
@@ -164,7 +164,7 @@ describe('scm', function () {
         var jobId = jobs[0].id;
         var runs = bait.getRuns(jobId, null);
         var runId = runs[0].id;
-        var contents = bait.getArchiveArtifact(jobId, runId, 'lab.json');
+        var contents = bait.getArchiveArtifact(jobId, runId, 'test.lab');
         expect(contents).to.contain('test');
         done();
     });
@@ -176,7 +176,7 @@ describe('scm', function () {
         var jobId = jobs[0].id;
         var runs = bait.getRuns(jobId, null);
         var runId = runs[0].id;
-        var result = bait.getTestResult(jobId, runId, 'lab.json');
+        var result = bait.getTestResult(jobId, runId, 'test.lab');
         //console.log(result);
         expect(result.totalTests).to.exist();
         expect(result.tests).to.exist();
@@ -195,7 +195,7 @@ describe('scm', function () {
         var runs = bait.getRuns(jobId, null);
         var runId = runs[0].id;
         var files = bait.getArchiveArtifacts(jobId, runId);
-        expect(files[0]).to.equal('lab.json');
+        expect(files[0]).to.equal('test.lab');
         done();
     });
 
