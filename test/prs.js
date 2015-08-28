@@ -246,8 +246,10 @@ describe('prs', function () {
         var pr = {
             number: 1
         };
-        bait.startJob(jobId, pr);
-        done();
+        bait.startJob(jobId, pr, function () {
+
+            done();
+        });
     });
 
     it('getRunPids 1', function (done) {
@@ -274,8 +276,10 @@ describe('prs', function () {
             number: 1
         };
         var cmds = ['uptime'];
-        bait.startJob(jobId, pr);
-        done();
+        bait.startJob(jobId, pr, function () {
+
+            done();
+        });
     });
 
     it('getRuns', function (done) {
@@ -400,8 +404,10 @@ describe('prs', function () {
         var pr = {
             number: 1
         };
-        bait.startJob(jobId, pr);
-        done();
+        bait.startJob(jobId, pr, function () {
+
+            done();
+        });
     });
 
     it('cancelRun', function (done) {
@@ -466,9 +472,13 @@ describe('prs', function () {
         var jobId = jobs[0].id;
         bait.getPullRequests(jobId, null, function (prs) {
 
-            bait.startJob(jobId, prs[0]);
-            bait.startJob(jobId, prs[1]);
-            done();
+            bait.startJob(jobId, prs[0], function () {
+
+                bait.startJob(jobId, prs[1], function () {
+
+                    done();
+                });
+            });
         });
     });
 

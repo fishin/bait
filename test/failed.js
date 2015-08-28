@@ -41,15 +41,17 @@ describe('failed', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        bait.startJob(jobId, null);
-        var job = bait.getJob(jobId);
-        var runs = bait.getRuns(jobId, null);
-        var runId = runs[0].id;
-        var run = bait.getRun(jobId, null, runId);
-        expect(run.id).to.exist();
-        expect(run.startTime).to.exist();
-        expect(runs.length).to.equal(1);
-        done();
+        bait.startJob(jobId, null, function () {
+
+            var job = bait.getJob(jobId);
+            var runs = bait.getRuns(jobId, null);
+            var runId = runs[0].id;
+            var run = bait.getRun(jobId, null, runId);
+            expect(run.id).to.exist();
+            expect(run.startTime).to.exist();
+            expect(runs.length).to.equal(1);
+            done();
+        });
     });
 
     it('getRun finish', function (done) {
