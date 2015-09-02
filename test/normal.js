@@ -45,9 +45,11 @@ describe('normal', function () {
             ]
         };
         var bait = new Bait(internals.defaults);
-        var createJob = bait.createJob(config);
-        expect(createJob.id).to.exist();
-        done();
+        bait.createJob(config, function (createJob) {
+
+            expect(createJob.id).to.exist();
+            done();
+        });
     });
 
     it('createJob job2', function (done) {
@@ -59,9 +61,11 @@ describe('normal', function () {
             tail: ['cat /etc/hosts']
         };
         var bait = new Bait(internals.defaults);
-        var createJob = bait.createJob(config);
-        expect(createJob.id).to.exist();
-        done();
+        bait.createJob(config, function (createJob) {
+
+            expect(createJob.id).to.exist();
+            done();
+        });
     });
 
     it('getJobs', function (done) {
@@ -80,11 +84,13 @@ describe('normal', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[1].id;
-        var updateJob = bait.updateJob(jobId, config);
-        expect(updateJob.id).to.exist();
-        expect(updateJob.updateTime).to.exist();
-        expect(updateJob.description).to.equal('desc');
-        done();
+        bait.updateJob(jobId, config, function (updateJob) {
+
+            expect(updateJob.id).to.exist();
+            expect(updateJob.updateTime).to.exist();
+            expect(updateJob.description).to.equal('desc');
+            done();
+        });
     });
 
     it('getJobByName job1', function (done) {
@@ -298,10 +304,12 @@ describe('normal', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[1].id;
-        var commits = bait.getAllCommits(jobId);
-        //console.log(commits);
-        expect(commits.length).to.be.equal(0);
-        done();
+        bait.getAllCommits(jobId, function (commits) {
+
+            //console.log(commits);
+            expect(commits.length).to.be.equal(0);
+            done();
+        });
     });
 
     it('getLatestCommit job2', function (done) {
@@ -309,9 +317,11 @@ describe('normal', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[1].id;
-        var commit = bait.getLatestCommit(jobId);
-        expect(commit).to.not.exist();
-        done();
+        bait.getLatestCommit(jobId, function (commit) {
+
+            expect(commit).to.not.exist();
+            done();
+        });
     });
 
     it('getLatestRemoteCommit job2', function (done) {
@@ -319,9 +329,11 @@ describe('normal', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[1].id;
-        var commit = bait.getLatestRemoteCommit(jobId);
-        expect(commit).to.not.exist();
-        done();
+        bait.getLatestRemoteCommit(jobId, function (commit) {
+
+            expect(commit).to.not.exist();
+            done();
+        });
     });
 
     it('getCompareCommits', function (done) {
@@ -329,10 +341,12 @@ describe('normal', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[1].id;
-        var compareCommits = bait.getCompareCommits(jobId, 1, 2);
-        //console.log(compareCommits);
-        expect(compareCommits.length).to.equal(0);
-        done();
+        bait.getCompareCommits(jobId, 1, 2, function (compareCommits) {
+
+            //console.log(compareCommits);
+            expect(compareCommits.length).to.equal(0);
+            done();
+        });
     });
 
     it('deleteJob job1', function (done) {

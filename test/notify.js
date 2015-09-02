@@ -39,9 +39,11 @@ describe('notify', function () {
             }
         };
         var bait = new Bait(internals.defaults);
-        var createJob = bait.createJob(config);
-        expect(createJob.id).to.exist();
-        done();
+        bait.createJob(config, function (createJob) {
+
+            expect(createJob.id).to.exist();
+            done();
+        });
     });
 
     it('startJob', function (done) {
@@ -97,11 +99,13 @@ describe('notify', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        var updateJob = bait.updateJob(jobId, config);
-        expect(updateJob.id).to.exist();
-        expect(updateJob.updateTime).to.exist();
-        expect(updateJob.notify.statuses[0]).to.equal('succeeded');
-        done();
+        bait.updateJob(jobId, config, function (updateJob) {
+
+            expect(updateJob.id).to.exist();
+            expect(updateJob.updateTime).to.exist();
+            expect(updateJob.notify.statuses[0]).to.equal('succeeded');
+            done();
+        });
     });
 
     it('startJob', function (done) {
@@ -176,9 +180,11 @@ describe('notify', function () {
             }
         };
         var bait = new Bait(internals.defaults);
-        var createJob = bait.createJob(config);
-        expect(createJob.id).to.exist();
-        done();
+        bait.createJob(config, function (createJob) {
+
+            expect(createJob.id).to.exist();
+            done();
+        });
     });
 
     it('startJob nonotify', function (done) {
@@ -255,9 +261,11 @@ describe('notify', function () {
             }
         };
         var bait = new Bait(internals.defaults);
-        var createJob = bait.createJob(config);
-        expect(createJob.id).to.exist();
-        done();
+        bait.createJob(config, function (createJob) {
+
+            expect(createJob.id).to.exist();
+            done();
+        });
     });
 
     it('startJob', function (done) {

@@ -30,9 +30,11 @@ describe('runs', function () {
             ]
         };
         var bait = new Bait(internals.defaults);
-        var createJob = bait.createJob(config);
-        expect(createJob.id).to.exist();
-        done();
+        bait.createJob(config, function (createJob) {
+
+            expect(createJob.id).to.exist();
+            done();
+        });
     });
 
     it('deleteRun many', function (done) {

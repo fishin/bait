@@ -31,9 +31,11 @@ describe('prs', function () {
             }
         };
         var bait = new Bait(internals.defaults);
-        var createJob = bait.createJob(config);
-        expect(createJob.id).to.exist();
-        done();
+        bait.createJob(config, function (createJob) {
+
+            expect(createJob.id).to.exist();
+            done();
+        });
     });
 
     it('getPullRequests scm', function (done) {
@@ -162,9 +164,11 @@ describe('prs', function () {
             name: 'mock'
         };
         var bait = new Bait(internals.defaults);
-        var createJob = bait.createJob(config);
-        expect(createJob.id).to.exist();
-        done();
+        bait.createJob(config, function (createJob) {
+
+            expect(createJob.id).to.exist();
+            done();
+        });
     });
 
     it('getPullRequests', function (done) {
@@ -233,9 +237,11 @@ describe('prs', function () {
             body: ['sleep 5']
         };
         var bait = new Bait(internals.defaults);
-        var createJob = bait.createJob(config);
-        expect(createJob.id).to.exist();
-        done();
+        bait.createJob(config, function (createJob) {
+
+            expect(createJob.id).to.exist();
+            done();
+        });
     });
 
     it('startJob', function (done) {
@@ -391,9 +397,11 @@ describe('prs', function () {
             body: ['sleep 5']
         };
         var bait = new Bait(internals.defaults);
-        var createJob = bait.createJob(config);
-        expect(createJob.id).to.exist();
-        done();
+        bait.createJob(config, function (createJob) {
+
+            expect(createJob.id).to.exist();
+            done();
+        });
     });
 
     it('startJob cancel', function (done) {
@@ -460,9 +468,11 @@ describe('prs', function () {
             body: ['npm install', 'npm test']
         };
         var bait = new Bait({ dirPath: internals.defaults.dirPath, mock: false });
-        var createJob = bait.createJob(config);
-        expect(createJob.id).to.exist();
-        done();
+        bait.createJob(config, function (createJob) {
+
+            expect(createJob.id).to.exist();
+            done();
+        });
     });
 
     it('startJob real prs', function (done) {

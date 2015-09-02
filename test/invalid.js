@@ -35,9 +35,11 @@ describe('invalid', function () {
             ]
         };
         var bait = new Bait(internals.defaults);
-        var createJob = bait.createJob(config);
-        expect(createJob.id).to.exist();
-        done();
+        bait.createJob(config, function (createJob) {
+
+            expect(createJob.id).to.exist();
+            done();
+        });
     });
 
     it('updateJob cmd scm https', function (done) {
@@ -52,11 +54,13 @@ describe('invalid', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        var updateJob = bait.updateJob(jobId, config);
-        expect(updateJob.id).to.exist();
-        expect(updateJob.updateTime).to.not.exist();
-        expect(updateJob.scm).to.not.exist();
-        done();
+        bait.updateJob(jobId, config, function (updateJob) {
+
+            expect(updateJob.id).to.exist();
+            expect(updateJob.updateTime).to.not.exist();
+            expect(updateJob.scm).to.not.exist();
+            done();
+        });
     });
 
     it('updateJob cmd scm type', function (done) {
@@ -69,11 +73,13 @@ describe('invalid', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        var updateJob = bait.updateJob(jobId, config);
-        expect(updateJob.id).to.exist();
-        expect(updateJob.updateTime).to.not.exist();
-        expect(updateJob.scm).to.not.exist();
-        done();
+        bait.updateJob(jobId, config, function (updateJob) {
+
+            expect(updateJob.id).to.exist();
+            expect(updateJob.updateTime).to.not.exist();
+            expect(updateJob.scm).to.not.exist();
+            done();
+        });
     });
 
     it('startJob cmd', function (done) {
@@ -129,7 +135,7 @@ describe('invalid', function () {
         done();
     });
 
-    it('createJob scm type', function (done) {
+    it('createJob invalid scm type', function (done) {
 
         var config = {
             name: 'invalid',
@@ -138,13 +144,15 @@ describe('invalid', function () {
             }
         };
         var bait = new Bait(internals.defaults);
-        var createJob = bait.createJob(config);
-        expect(createJob.id).to.not.exist();
-        expect(createJob.message).to.exist();
-        done();
+        bait.createJob(config, function (createJob) {
+
+            expect(createJob.id).to.not.exist();
+            expect(createJob.message).to.exist();
+            done();
+        });
     });
 
-    it('createJob scm http', function (done) {
+    it('createJob scm invalid repo http', function (done) {
 
         var config = {
             name: 'http',
@@ -155,10 +163,11 @@ describe('invalid', function () {
             }
         };
         var bait = new Bait(internals.defaults);
-        var createJob = bait.createJob(config);
-        expect(createJob.id).to.not.exist();
-        expect(createJob.message).to.exist();
-        done();
-    });
+        bait.createJob(config, function (createJob) {
 
+            expect(createJob.id).to.not.exist();
+            expect(createJob.message).to.exist();
+            done();
+        });
+    });
 });

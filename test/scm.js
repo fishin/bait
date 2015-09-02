@@ -39,10 +39,12 @@ describe('scm', function () {
             ]
         };
         var bait = new Bait(internals.defaults);
-        var createJob = bait.createJob(config);
-        expect(createJob.id).to.exist();
-        expect(createJob.scm.url).to.equal('https://github.com/fishin/bait');
-        done();
+        bait.createJob(config, function (createJob) {
+
+            expect(createJob.id).to.exist();
+            expect(createJob.scm.url).to.equal('https://github.com/fishin/bait');
+            done();
+        });
     });
 
     it('updateJob scm', function (done) {
@@ -57,11 +59,13 @@ describe('scm', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        var updateJob = bait.updateJob(jobId, config);
-        expect(updateJob.id).to.exist();
-        expect(updateJob.updateTime).to.exist();
-        expect(updateJob.scm.url).to.equal('https://github.com/fishin/pail');
-        done();
+        bait.updateJob(jobId, config, function (updateJob) {
+
+            expect(updateJob.id).to.exist();
+            expect(updateJob.updateTime).to.exist();
+            expect(updateJob.scm.url).to.equal('https://github.com/fishin/pail');
+            done();
+        });
     });
 
     it('startJob', function (done) {
@@ -111,9 +115,11 @@ describe('scm', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        var commit = bait.getLatestCommit(jobId);
-        expect(commit).to.be.length(40);
-        done();
+        bait.getLatestCommit(jobId, function (commit) {
+
+            expect(commit).to.be.length(40);
+            done();
+        });
     });
 
     it('getLatestRemoteCommit', function (done) {
@@ -121,9 +127,11 @@ describe('scm', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        var commit = bait.getLatestRemoteCommit(jobId);
-        expect(commit).to.be.length(40);
-        done();
+        bait.getLatestRemoteCommit(jobId, function (commit) {
+
+            expect(commit).to.be.length(40);
+            done();
+        });
     });
 
     it('getAllCommits', function (done) {
@@ -131,10 +139,12 @@ describe('scm', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        var commits = bait.getAllCommits(jobId);
-        //console.log(commits);
-        expect(commits.length).to.be.above(0);
-        done();
+        bait.getAllCommits(jobId, function (commits) {
+
+            //console.log(commits);
+            expect(commits.length).to.be.above(0);
+            done();
+        });
     });
 
     it('getCompareCommits', function (done) {
@@ -142,11 +152,15 @@ describe('scm', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        var commits = bait.getAllCommits(jobId);
-        var compareCommits = bait.getCompareCommits(jobId, commits[0].commit, commits[1].commit);
-        //console.log(commits);
-        expect(compareCommits.length).to.be.above(0);
-        done();
+        bait.getAllCommits(jobId, function (commits) {
+
+            bait.getCompareCommits(jobId, commits[0].commit, commits[1].commit, function (compareCommits) {
+
+                //console.log(compareCommits);
+                expect(compareCommits.length).to.be.above(0);
+                done();
+            });
+        });
     });
 
     it('getWorkspaceArtifact', function (done) {
@@ -264,10 +278,12 @@ describe('scm', function () {
             ]
         };
         var bait = new Bait(internals.defaults);
-        var createJob = bait.createJob(config);
-        expect(createJob.id).to.exist();
-        expect(createJob.scm.url).to.equal('https://github.com/fishin/pail');
-        done();
+        bait.createJob(config, function (createJob) {
+
+            expect(createJob.id).to.exist();
+            expect(createJob.scm.url).to.equal('https://github.com/fishin/pail');
+            done();
+        });
     });
 
     it('startJob runOnCommit 1', function (done) {
@@ -348,10 +364,12 @@ describe('scm', function () {
             ]
         };
         var bait = new Bait(internals.defaults);
-        var createJob = bait.createJob(config);
-        expect(createJob.id).to.exist();
-        expect(createJob.scm.url).to.equal('https://github.com/fishin/pail');
-        done();
+        bait.createJob(config, function (createJob) {
+
+            expect(createJob.id).to.exist();
+            expect(createJob.scm.url).to.equal('https://github.com/fishin/pail');
+            done();
+        });
     });
 
     it('startJob fail', function (done) {
@@ -418,9 +436,11 @@ describe('scm', function () {
             }
         };
         var bait = new Bait(internals.defaults);
-        var createJob = bait.createJob(config);
-        expect(createJob.id).to.exist();
-        done();
+        bait.createJob(config, function (createJob) {
+
+            expect(createJob.id).to.exist();
+            done();
+        });
     });
 
     it('startJob no body', function (done) {
@@ -484,11 +504,13 @@ describe('scm', function () {
             body: ['uptime']
         };
         var bait = new Bait(internals.defaults);
-        var createJob = bait.createJob(config);
-        expect(createJob.id).to.exist();
-        expect(createJob.body[0]).to.equal('uptime');
-        expect(createJob.scm.type).to.equal('none');
-        done();
+        bait.createJob(config, function (createJob) {
+
+            expect(createJob.id).to.exist();
+            expect(createJob.body[0]).to.equal('uptime');
+            expect(createJob.scm.type).to.equal('none');
+            done();
+        });
     });
 
     it('updateJob noscm', function (done) {
@@ -503,14 +525,16 @@ describe('scm', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        var updateJob = bait.updateJob(jobId, config);
-        expect(updateJob.scm.type).to.equal('none');
-        expect(updateJob.id).to.exist();
-        expect(updateJob.updateTime).to.exist();
-        expect(updateJob.body[0]).to.equal('uptime');
-        expect(updateJob.scm.branch).to.equal('master');
-        expect(updateJob.scm.url).to.equal('https://github.com/fishin/pail');
-        done();
+        bait.updateJob(jobId, config, function (updateJob) {
+
+            expect(updateJob.scm.type).to.equal('none');
+            expect(updateJob.id).to.exist();
+            expect(updateJob.updateTime).to.exist();
+            expect(updateJob.body[0]).to.equal('uptime');
+            expect(updateJob.scm.branch).to.equal('master');
+            expect(updateJob.scm.url).to.equal('https://github.com/fishin/pail');
+            done();
+        });
     });
 
     it('startJob noscm', function (done) {

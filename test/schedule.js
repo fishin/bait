@@ -30,10 +30,12 @@ describe('schedule', function () {
             }
         };
         var bait = new Bait(internals.defaults);
-        var createJob = bait.createJob(config);
-        expect(createJob.id).to.exist();
-        expect(createJob.schedule.pattern).to.equal('*/5 * * * *');
-        done();
+        bait.createJob(config, function (createJob) {
+
+            expect(createJob.id).to.exist();
+            expect(createJob.schedule.pattern).to.equal('*/5 * * * *');
+            done();
+        });
     });
 
     it('updateJob job', function (done) {
@@ -46,10 +48,12 @@ describe('schedule', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        var updateJob = bait.updateJob(jobId, config);
-        expect(updateJob.id).to.exist();
-        expect(updateJob.schedule.pattern).to.equal('*/10 * * * *');
-        done();
+        bait.updateJob(jobId, config, function (updateJob) {
+
+            expect(updateJob.id).to.exist();
+            expect(updateJob.schedule.pattern).to.equal('*/10 * * * *');
+            done();
+        });
     });
 
     it('deleteJob job', function (done) {

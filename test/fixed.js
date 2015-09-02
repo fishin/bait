@@ -28,9 +28,11 @@ describe('fixed', function () {
             ]
         };
         var bait = new Bait(internals.defaults);
-        var createJob = bait.createJob(config);
-        expect(createJob.id).to.exist();
-        done();
+        bait.createJob(config, function (createJob) {
+
+            expect(createJob.id).to.exist();
+            done();
+        });
     });
 
     it('startJob', function (done) {
@@ -82,11 +84,13 @@ describe('fixed', function () {
         var bait = new Bait(internals.defaults);
         var jobs = bait.getJobs();
         var jobId = jobs[0].id;
-        var updateJob = bait.updateJob(jobId, config);
-        expect(updateJob.id).to.exist();
-        expect(updateJob.updateTime).to.exist();
-        expect(updateJob.body[0]).to.equal('date');
-        done();
+        bait.updateJob(jobId, config, function (updateJob) {
+
+            expect(updateJob.id).to.exist();
+            expect(updateJob.updateTime).to.exist();
+            expect(updateJob.body[0]).to.equal('date');
+            done();
+        });
     });
 
     it('startJob', function (done) {
