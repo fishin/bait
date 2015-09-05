@@ -106,7 +106,7 @@ describe('cancel', function () {
         var config = {
             name: 'npm',
             body: [
-                'npm ls',
+                'npm install',
                 'uptime'
             ]
         };
