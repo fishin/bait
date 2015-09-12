@@ -192,7 +192,7 @@ describe('scm', function () {
         var jobId = jobs[0].id;
         var runs = bait.getRuns(jobId, null);
         var runId = runs[0].id;
-        var result = bait.getTestResult(jobId, runId, 'test.lab');
+        var result = bait.getTestResult(jobId, runId);
         //console.log(result);
         expect(result.totalTests).to.exist();
         expect(result.tests).to.exist();
