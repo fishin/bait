@@ -1,8 +1,16 @@
 sudo: required
 language: node_js
-
 node_js:
-  - 0.10
+  - 4
 before_script:
   - git config --global user.email "lloyd.benson@gmail.com"
   - git config --global user.name "Travis-CI"
+env:
+  - CXX="g++-4.8"
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - g++-4.8
+    - gcc-4.8
