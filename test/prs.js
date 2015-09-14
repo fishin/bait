@@ -357,6 +357,21 @@ describe('prs', function () {
         done();
     });
 
+    it('deleteRuns', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        var pr = {
+            number: 1
+        };
+        var runs = bait.getRuns(jobId, pr);
+        bait.deleteRuns(jobId, pr);
+        runs = bait.getRuns(jobId, pr);
+        expect(runs.length).to.equal(0);
+        done();
+    });
+
     it('deletePullRequest', function (done) {
 
         var bait = new Bait(internals.defaults);

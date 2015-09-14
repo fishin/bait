@@ -219,4 +219,53 @@ describe('runs', function () {
         expect(jobs.length).to.equal(0);
         done();
     });
+
+    it('createJob deleteRuns', function (done) {
+
+        // switching this to pail later
+        var config = {
+            name: 'deleteRuns',
+            body: [
+                'date'
+            ]
+        };
+        var bait = new Bait(internals.defaults);
+        bait.createJob(config, function (createJob) {
+
+            expect(createJob.id).to.exist();
+            done();
+        });
+    });
+
+    it('deleteRuns', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        var pail = new Pail({ dirPath: internals.defaults.dirPath + '/' + jobId });
+        var successConfig = { name: 'success', foo: 'bar' };
+        var successPail = pail.createPail(successConfig);
+        expect(successPail.name).to.equal('success');
+        expect(successPail.status).to.equal('created');
+        successPail.status = 'succeeded';
+        var updateSuccessPail = pail.updatePail(successPail);
+        expect(updateSuccessPail.status).to.equal('succeeded');
+        var runs = bait.getRuns(jobId, null);
+        expect(runs.length).to.equal(1);
+        bait.deleteRuns(jobId, null);
+        runs = bait.getRuns(jobId, null);
+        expect(runs.length).to.equal(0);
+        done();
+    });
+
+    it('deleteJob deleteRuns', function (done) {
+
+        var bait = new Bait(internals.defaults);
+        var jobs = bait.getJobs();
+        var jobId = jobs[0].id;
+        bait.deleteJob(jobId);
+        jobs = bait.getJobs();
+        expect(jobs.length).to.equal(0);
+        done();
+    });
 });
