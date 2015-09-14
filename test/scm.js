@@ -1,6 +1,5 @@
 var Code = require('code');
 var Lab = require('lab');
-var Hapi = require('hapi');
 var Mock = require('mock');
 var Pail = require('pail');
 

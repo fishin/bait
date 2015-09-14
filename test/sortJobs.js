@@ -1,7 +1,6 @@
 var Code = require('code');
 var Fs = require('fs');
 var Lab = require('lab');
-var Hapi = require('hapi');
 var Pail = require('pail');
 var Path = require('path');
 

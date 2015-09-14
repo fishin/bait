@@ -1,6 +1,5 @@
 var Code = require('code');
 var Lab = require('lab');
-var Hapi = require('hapi');
 var Pail = require('pail');
 
 var Bait = require('../lib/index');
