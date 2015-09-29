@@ -1,6 +1,5 @@
 var Code = require('code');
 var Lab = require('lab');
-var Pail = require('pail');
 
 var Bait = require('../lib/index');
 
@@ -88,7 +87,6 @@ describe('invalid', function () {
         var jobId = jobs[0].id;
         bait.startJob(jobId, null, function () {
 
-            var job = bait.getJob(jobId);
             var runs = bait.getRuns(jobId, null);
             var runId = runs[0].id;
             var run = bait.getRun(jobId, null, runId);

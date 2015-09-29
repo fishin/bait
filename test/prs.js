@@ -1,7 +1,6 @@
 var Code = require('code');
 var Lab = require('lab');
 var Mock = require('mock');
-var Pail = require('pail');
 
 var Bait = require('../lib/index');
 
@@ -280,7 +279,6 @@ describe('prs', function () {
         var pr = {
             number: 1
         };
-        var cmds = ['uptime'];
         bait.startJob(jobId, pr, function () {
 
             done();

@@ -1,7 +1,5 @@
 var Code = require('code');
-var Fs = require('fs');
 var Lab = require('lab');
-var Path = require('path');
 var Pail = require('pail');
 
 var Bait = require('../lib/index');
