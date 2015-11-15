@@ -1,25 +1,27 @@
-var Code = require('code');
-var Lab = require('lab');
+'use strict';
 
-var Bait = require('../lib/index');
+const Code = require('code');
+const Lab = require('lab');
 
-var internals = {
+const Bait = require('../lib/index');
+
+const internals = {
     defaults: {
         dirPath: __dirname + '/tmp'
     }
 };
 
-var lab = exports.lab = Lab.script();
-var expect = Code.expect;
-var describe = lab.describe;
-var it = lab.it;
+const lab = exports.lab = Lab.script();
+const expect = Code.expect;
+const describe = lab.describe;
+const it = lab.it;
 
-describe('schedule', function () {
+describe('schedule', () => {
 
-    it('createJob job', function (done) {
+    it('createJob job', (done) => {
 
         // switching this to pail later
-        var config = {
+        const config = {
             name: 'job',
             body: ['date'],
             schedule: {
@@ -27,8 +29,8 @@ describe('schedule', function () {
                 pattern: '*/5 * * * *'
             }
         };
-        var bait = new Bait(internals.defaults);
-        bait.createJob(config, function (createJob) {
+        const bait = new Bait(internals.defaults);
+        bait.createJob(config, (createJob) => {
 
             expect(createJob.id).to.exist();
             expect(createJob.schedule.pattern).to.equal('*/5 * * * *');
@@ -36,17 +38,17 @@ describe('schedule', function () {
         });
     });
 
-    it('updateJob job', function (done) {
+    it('updateJob job', (done) => {
 
-        var config = {
+        const config = {
             schedule: {
                 pattern: '*/10 * * * *'
             }
         };
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        bait.updateJob(jobId, config, function (updateJob) {
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        bait.updateJob(jobId, config, (updateJob) => {
 
             expect(updateJob.id).to.exist();
             expect(updateJob.schedule.pattern).to.equal('*/10 * * * *');
@@ -54,11 +56,11 @@ describe('schedule', function () {
         });
     });
 
-    it('deleteJob job', function (done) {
+    it('deleteJob job', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
+        const bait = new Bait(internals.defaults);
+        let jobs = bait.getJobs();
+        const jobId = jobs[0].id;
         bait.deleteJob(jobId);
         jobs = bait.getJobs();
         expect(jobs.length).to.equal(0);

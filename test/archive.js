@@ -1,25 +1,27 @@
-var Code = require('code');
-var Fs = require('fs');
-var Lab = require('lab');
-var Pail = require('pail');
-var Path = require('path');
+'use strict';
 
-var Bait = require('../lib/index');
+const Code = require('code');
+const Fs = require('fs');
+const Lab = require('lab');
+const Pail = require('pail');
+const Path = require('path');
 
-var internals = {
+const Bait = require('../lib/index');
+
+const internals = {
     defaults: {
         dirPath: __dirname + '/tmp'
     }
 };
 
-var lab = exports.lab = Lab.script();
-var expect = Code.expect;
-var describe = lab.describe;
-var it = lab.it;
+const lab = exports.lab = Lab.script();
+const expect = Code.expect;
+const describe = lab.describe;
+const it = lab.it;
 
-describe('archiveArtifacts', function () {
+describe('archiveArtifacts', () => {
 
-    it('archiveArtifacts maxdays', function (done) {
+    it('archiveArtifacts maxdays', (done) => {
 
         try {
             Fs.mkdirSync(internals.defaults.dirPath);
@@ -28,11 +30,11 @@ describe('archiveArtifacts', function () {
 
             //dont care
         }
-        var jobDir = Path.join(internals.defaults.dirPath, 'job');
-        var pail = new Pail(internals.defaults);
+        const jobDir = Path.join(internals.defaults.dirPath, 'job');
+        const pail = new Pail(internals.defaults);
         pail.createDir('job');
-        var jobId = '12345678-1234-1234-1234-123456789012';
-        var jobConfig = {
+        const jobId = '12345678-1234-1234-1234-123456789012';
+        const jobConfig = {
             id: jobId,
             name: 'archive',
             archive: {
@@ -43,15 +45,15 @@ describe('archiveArtifacts', function () {
         };
         pail.createDir(Path.join('job', jobId));
         Fs.writeFileSync(Path.join(jobDir, jobId, 'config.json'), JSON.stringify(jobConfig));
-        var runId1 = '12345678-1234-1234-1234-123456789011';
+        const runId1 = '12345678-1234-1234-1234-123456789011';
         pail.createDir(Path.join('job', jobId, runId1));
-        var startTime = new Date().getTime() - 1000 * 60 * 60 * 24;
-        var runConfig = {
+        let startTime = new Date().getTime() - 1000 * 60 * 60 * 24;
+        let runConfig = {
             id: runId1,
             startTime: startTime
         };
         Fs.writeFileSync(Path.join(jobDir, jobId, runId1, 'config.json'), JSON.stringify(runConfig));
-        var runId2 = '12345678-1234-1234-1234-123456789012';
+        const runId2 = '12345678-1234-1234-1234-123456789012';
         pail.createDir(Path.join('job', jobId, runId2));
         startTime = new Date().getTime();
         runConfig = {
@@ -59,10 +61,10 @@ describe('archiveArtifacts', function () {
             startTime: startTime
         };
         Fs.writeFileSync(Path.join(jobDir, jobId, runId2, 'config.json'), JSON.stringify(runConfig));
-        var bait = new Bait({ dirPath: jobDir });
-        var jobs = bait.getJobs();
+        const bait = new Bait({ dirPath: jobDir });
+        const jobs = bait.getJobs();
         expect(jobs.length).to.equal(1);
-        var runs = bait.getRuns(jobId, null);
+        let runs = bait.getRuns(jobId, null);
         expect(runs.length).to.equal(2);
         bait.archiveArtifacts(jobId, runs[1].id);
         runs = bait.getRuns(jobId, null);
@@ -71,13 +73,13 @@ describe('archiveArtifacts', function () {
         done();
     });
 
-    it('archiveArtifacts maxnum', function (done) {
+    it('archiveArtifacts maxnum', (done) => {
 
-        var jobDir = Path.join(internals.defaults.dirPath, 'job');
-        var pail = new Pail(internals.defaults);
+        const jobDir = Path.join(internals.defaults.dirPath, 'job');
+        const pail = new Pail(internals.defaults);
         pail.createDir('job');
-        var jobId = '12345678-1234-1234-1234-123456789012';
-        var jobConfig = {
+        const jobId = '12345678-1234-1234-1234-123456789012';
+        const jobConfig = {
             id: jobId,
             name: 'archive',
             archive: {
@@ -88,25 +90,25 @@ describe('archiveArtifacts', function () {
         };
         pail.createDir(Path.join('job', jobId));
         Fs.writeFileSync(Path.join(jobDir, jobId, 'config.json'), JSON.stringify(jobConfig));
-        var runId1 = '12345678-1234-1234-1234-123456789011';
+        const runId1 = '12345678-1234-1234-1234-123456789011';
         pail.createDir(Path.join('job', jobId, runId1));
-        var startTime = new Date().getTime();
-        var runConfig = {
+        const startTime = new Date().getTime();
+        let runConfig = {
             id: runId1,
             startTime: startTime
         };
         Fs.writeFileSync(Path.join(jobDir, jobId, runId1, 'config.json'), JSON.stringify(runConfig));
-        var runId2 = '12345678-1234-1234-1234-123456789012';
+        const runId2 = '12345678-1234-1234-1234-123456789012';
         pail.createDir(Path.join('job', jobId, runId2));
         runConfig = {
             id: runId2,
             startTime: startTime
         };
         Fs.writeFileSync(Path.join(jobDir, jobId, runId2, 'config.json'), JSON.stringify(runConfig));
-        var bait = new Bait({ dirPath: jobDir });
-        var jobs = bait.getJobs();
+        const bait = new Bait({ dirPath: jobDir });
+        const jobs = bait.getJobs();
         expect(jobs.length).to.equal(1);
-        var runs = bait.getRuns(jobId, null);
+        let runs = bait.getRuns(jobId, null);
         expect(runs.length).to.equal(2);
         bait.archiveArtifacts(jobId, runs[1].id);
         runs = bait.getRuns(jobId, null);
@@ -115,13 +117,13 @@ describe('archiveArtifacts', function () {
         done();
     });
 
-    it('archive none', function (done) {
+    it('archive none', (done) => {
 
-        var jobDir = Path.join(internals.defaults.dirPath, 'job');
-        var pail = new Pail(internals.defaults);
+        const jobDir = Path.join(internals.defaults.dirPath, 'job');
+        const pail = new Pail(internals.defaults);
         pail.createDir('job');
-        var jobId = '12345678-1234-1234-1234-123456789012';
-        var jobConfig = {
+        const jobId = '12345678-1234-1234-1234-123456789012';
+        const jobConfig = {
             id: jobId,
             name: 'archive',
             archive: {
@@ -130,18 +132,18 @@ describe('archiveArtifacts', function () {
         };
         pail.createDir(Path.join('job', jobId));
         Fs.writeFileSync(Path.join(jobDir, jobId, 'config.json'), JSON.stringify(jobConfig));
-        var runId1 = '12345678-1234-1234-1234-123456789011';
+        const runId1 = '12345678-1234-1234-1234-123456789011';
         pail.createDir(Path.join('job', jobId, runId1));
-        var startTime = new Date().getTime();
-        var runConfig = {
+        const startTime = new Date().getTime();
+        const runConfig = {
             id: runId1,
             startTime: startTime
         };
         Fs.writeFileSync(Path.join(jobDir, jobId, runId1, 'config.json'), JSON.stringify(runConfig));
-        var bait = new Bait({ dirPath: jobDir });
-        var jobs = bait.getJobs();
+        const bait = new Bait({ dirPath: jobDir });
+        const jobs = bait.getJobs();
         expect(jobs.length).to.equal(1);
-        var runs = bait.getRuns(jobId, null);
+        let runs = bait.getRuns(jobId, null);
         expect(runs.length).to.equal(1);
         bait.archiveArtifacts(jobId, runs[0].id);
         runs = bait.getRuns(jobId, null);

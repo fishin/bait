@@ -1,24 +1,26 @@
-var Code = require('code');
-var Lab = require('lab');
+'use strict';
 
-var Bait = require('../lib/index');
+const Code = require('code');
+const Lab = require('lab');
 
-var internals = {
+const Bait = require('../lib/index');
+
+const internals = {
     defaults: {
         dirPath: __dirname + '/tmp'
     }
 };
 
-var lab = exports.lab = Lab.script();
-var expect = Code.expect;
-var describe = lab.describe;
-var it = lab.it;
+const lab = exports.lab = Lab.script();
+const expect = Code.expect;
+const describe = lab.describe;
+const it = lab.it;
 
-describe('scm', function () {
+describe('scm', () => {
 
-    it('createJob', function (done) {
+    it('createJob', (done) => {
 
-        var config = {
+        const config = {
             name: 'scm',
             scm: {
                 type: 'git',
@@ -35,8 +37,8 @@ describe('scm', function () {
                 'date'
             ]
         };
-        var bait = new Bait(internals.defaults);
-        bait.createJob(config, function (createJob) {
+        const bait = new Bait(internals.defaults);
+        bait.createJob(config, (createJob) => {
 
             expect(createJob.id).to.exist();
             expect(createJob.scm.url).to.equal('https://github.com/fishin/bait');
@@ -44,19 +46,19 @@ describe('scm', function () {
         });
     });
 
-    it('updateJob scm', function (done) {
+    it('updateJob scm', (done) => {
 
-        var config = {
+        const config = {
             scm: {
                 type: 'git',
                 url: 'https://github.com/fishin/pail',
                 branch: 'master'
             }
         };
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        bait.updateJob(jobId, config, function (updateJob) {
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        bait.updateJob(jobId, config, (updateJob) => {
 
             expect(updateJob.id).to.exist();
             expect(updateJob.updateTime).to.exist();
@@ -65,16 +67,16 @@ describe('scm', function () {
         });
     });
 
-    it('startJob', function (done) {
+    it('startJob', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        bait.startJob(jobId, null, function () {
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        bait.startJob(jobId, null, () => {
 
-            var runs = bait.getRuns(jobId, null);
-            var runId = runs[0].id;
-            var run = bait.getRun(jobId, null, runId);
+            const runs = bait.getRuns(jobId, null);
+            const runId = runs[0].id;
+            const run = bait.getRun(jobId, null, runId);
             expect(run.id).to.exist();
             expect(run.startTime).to.exist();
             expect(runs.length).to.equal(1);
@@ -82,16 +84,16 @@ describe('scm', function () {
         });
     });
 
-    it('getRun', function (done) {
+    it('getRun', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var runs = bait.getRuns(jobId, null);
-        var runId = runs[0].id;
-        var intervalObj1 = setInterval(function () {
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        const runs = bait.getRuns(jobId, null);
+        const runId = runs[0].id;
+        const intervalObj1 = setInterval(() => {
 
-            var run = bait.getRun(jobId, null, runId);
+            const run = bait.getRun(jobId, null, runId);
             //console.log(run);
             if (run.finishTime) {
                 clearInterval(intervalObj1);
@@ -106,36 +108,37 @@ describe('scm', function () {
         }, 1000);
     });
 
-    it('getLatestCommit', function (done) {
+    it('getLatestCommit', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        bait.getLatestCommit(jobId, function (commit) {
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        bait.getLatestCommit(jobId, (commit) => {
 
-            expect(commit).to.be.length(40);
-            done();
-        });
-    });
-
-    it('getLatestRemoteCommit', function (done) {
-
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        bait.getLatestRemoteCommit(jobId, function (commit) {
 
             expect(commit).to.be.length(40);
             done();
         });
     });
 
-    it('getAllCommits', function (done) {
+    it('getLatestRemoteCommit', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        bait.getAllCommits(jobId, function (commits) {
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        bait.getLatestRemoteCommit(jobId, (commit) => {
+
+            expect(commit).to.be.length(40);
+            done();
+        });
+    });
+
+    it('getAllCommits', (done) => {
+
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        bait.getAllCommits(jobId, (commits) => {
 
             //console.log(commits);
             expect(commits.length).to.be.above(0);
@@ -143,14 +146,14 @@ describe('scm', function () {
         });
     });
 
-    it('getCompareCommits', function (done) {
+    it('getCompareCommits', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        bait.getAllCommits(jobId, function (commits) {
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        bait.getAllCommits(jobId, (commits) => {
 
-            bait.getCompareCommits(jobId, commits[0].commit, commits[1].commit, function (compareCommits) {
+            bait.getCompareCommits(jobId, commits[0].commit, commits[1].commit, (compareCommits) => {
 
                 //console.log(compareCommits);
                 expect(compareCommits.length).to.be.above(0);
@@ -159,36 +162,36 @@ describe('scm', function () {
         });
     });
 
-    it('getWorkspaceArtifact', function (done) {
+    it('getWorkspaceArtifact', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var contents = bait.getWorkspaceArtifact(jobId, 'test.lab');
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        const contents = bait.getWorkspaceArtifact(jobId, 'test.lab');
         expect(contents).to.contain('test');
         done();
     });
 
-    it('getArchiveArtifact', function (done) {
+    it('getArchiveArtifact', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var runs = bait.getRuns(jobId, null);
-        var runId = runs[0].id;
-        var contents = bait.getArchiveArtifact(jobId, runId, 'test.lab');
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        const runs = bait.getRuns(jobId, null);
+        const runId = runs[0].id;
+        const contents = bait.getArchiveArtifact(jobId, runId, 'test.lab');
         expect(contents).to.contain('test');
         done();
     });
 
-    it('getTestResult', function (done) {
+    it('getTestResult', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var runs = bait.getRuns(jobId, null);
-        var runId = runs[0].id;
-        var result = bait.getTestResult(jobId, runId);
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        const runs = bait.getRuns(jobId, null);
+        const runId = runs[0].id;
+        const result = bait.getTestResult(jobId, runId);
         //console.log(result);
         expect(result.totalTests).to.exist();
         expect(result.tests).to.exist();
@@ -199,24 +202,24 @@ describe('scm', function () {
         done();
     });
 
-    it('getArchiveArtifacts', function (done) {
+    it('getArchiveArtifacts', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var runs = bait.getRuns(jobId, null);
-        var runId = runs[0].id;
-        var files = bait.getArchiveArtifacts(jobId, runId);
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        const runs = bait.getRuns(jobId, null);
+        const runId = runs[0].id;
+        const files = bait.getArchiveArtifacts(jobId, runId);
         expect(files[0]).to.equal('test.lab');
         done();
     });
 
-    it('getRunByName last', function (done) {
+    it('getRunByName last', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var run = bait.getRunByName(jobId, 'last');
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        const run = bait.getRunByName(jobId, 'last');
         expect(run.id).to.exist();
         expect(run.startTime).to.exist();
         expect(run.finishTime).to.exist();
@@ -224,43 +227,43 @@ describe('scm', function () {
         done();
     });
 
-    it('deleteRun', function (done) {
+    it('deleteRun', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var runs = bait.getRuns(jobId, null);
-        var runId = runs[0].id;
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        const runs = bait.getRuns(jobId, null);
+        const runId = runs[0].id;
         bait.deleteRun(jobId, null, runId);
-        var deleteRuns = bait.getRuns(jobId, null);
+        const deleteRuns = bait.getRuns(jobId, null);
         expect(deleteRuns.length).to.equal(0);
         done();
     });
 
-    it('deleteWorkspace', function (done) {
+    it('deleteWorkspace', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
         bait.deleteWorkspace(jobId);
         done();
     });
 
-    it('deleteJob', function (done) {
+    it('deleteJob', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
+        const bait = new Bait(internals.defaults);
+        let jobs = bait.getJobs();
+        const jobId = jobs[0].id;
         bait.deleteJob(jobId);
         jobs = bait.getJobs();
         expect(jobs.length).to.equal(0);
         done();
     });
 
-    it('createJob runOnCommit', function (done) {
+    it('createJob runOnCommit', (done) => {
 
         // switching this to pail later
-        var config = {
+        const config = {
             name: 'scm',
             scm: {
                 type: 'git',
@@ -273,8 +276,8 @@ describe('scm', function () {
                 'npm test'
             ]
         };
-        var bait = new Bait(internals.defaults);
-        bait.createJob(config, function (createJob) {
+        const bait = new Bait(internals.defaults);
+        bait.createJob(config, (createJob) => {
 
             expect(createJob.id).to.exist();
             expect(createJob.scm.url).to.equal('https://github.com/fishin/pail');
@@ -282,29 +285,29 @@ describe('scm', function () {
         });
     });
 
-    it('startJob runOnCommit 1', function (done) {
+    it('startJob runOnCommit 1', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        bait.startJob(jobId, null, function () {
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        bait.startJob(jobId, null, () => {
 
-            var runs = bait.getRuns(jobId, null);
+            const runs = bait.getRuns(jobId, null);
             expect(runs.length).to.equal(1);
             done();
         });
     });
 
-    it('getRun runOnCommit 1', function (done) {
+    it('getRun runOnCommit 1', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var runs = bait.getRuns(jobId, null);
-        var runId = runs[0].id;
-        var intervalObj2 = setInterval(function () {
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        const runs = bait.getRuns(jobId, null);
+        const runId = runs[0].id;
+        const intervalObj2 = setInterval(() => {
 
-            var run = bait.getRun(jobId, null, runId);
+            const run = bait.getRun(jobId, null, runId);
             //console.log(run);
             if (run.finishTime) {
                 clearInterval(intervalObj2);
@@ -319,33 +322,33 @@ describe('scm', function () {
         }, 1000);
     });
 
-    it('startJob runOnCommit 2', function (done) {
+    it('startJob runOnCommit 2', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        bait.startJob(jobId, null, function () {
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        bait.startJob(jobId, null, () => {
 
-            var runs = bait.getRuns(jobId, null);
+            const runs = bait.getRuns(jobId, null);
             expect(runs.length).to.equal(1);
             done();
         });
     });
 
-    it('deleteJob runOnCommit', function (done) {
+    it('deleteJob runOnCommit', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
+        const bait = new Bait(internals.defaults);
+        let jobs = bait.getJobs();
+        const jobId = jobs[0].id;
         bait.deleteJob(jobId);
         jobs = bait.getJobs();
         expect(jobs.length).to.equal(0);
         done();
     });
 
-    it('createJob fail', function (done) {
+    it('createJob fail', (done) => {
 
-        var config = {
+        const config = {
             name: 'scm',
             scm: {
                 type: 'git',
@@ -357,8 +360,8 @@ describe('scm', function () {
                 'npm test'
             ]
         };
-        var bait = new Bait(internals.defaults);
-        bait.createJob(config, function (createJob) {
+        const bait = new Bait(internals.defaults);
+        bait.createJob(config, (createJob) => {
 
             expect(createJob.id).to.exist();
             expect(createJob.scm.url).to.equal('https://github.com/fishin/pail');
@@ -366,16 +369,16 @@ describe('scm', function () {
         });
     });
 
-    it('startJob fail', function (done) {
+    it('startJob fail', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        bait.startJob(jobId, null, function () {
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        bait.startJob(jobId, null, () => {
 
-            var runs = bait.getRuns(jobId, null);
-            var runId = runs[0].id;
-            var run = bait.getRun(jobId, null, runId);
+            const runs = bait.getRuns(jobId, null);
+            const runId = runs[0].id;
+            const run = bait.getRun(jobId, null, runId);
             expect(run.id).to.exist();
             expect(run.startTime).to.exist();
             expect(runs.length).to.equal(1);
@@ -383,16 +386,16 @@ describe('scm', function () {
         });
     });
 
-    it('getRun fail', function (done) {
+    it('getRun fail', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var runs = bait.getRuns(jobId, null);
-        var runId = runs[0].id;
-        var intervalObj3 = setInterval(function () {
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        const runs = bait.getRuns(jobId, null);
+        const runId = runs[0].id;
+        const intervalObj3 = setInterval(() => {
 
-            var run = bait.getRun(jobId, null, runId);
+            const run = bait.getRun(jobId, null, runId);
             //console.log(run);
             if (run.finishTime) {
                 clearInterval(intervalObj3);
@@ -406,21 +409,21 @@ describe('scm', function () {
         }, 1000);
     });
 
-    it('deleteJob fail', function (done) {
+    it('deleteJob fail', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
+        const bait = new Bait(internals.defaults);
+        let jobs = bait.getJobs();
+        const jobId = jobs[0].id;
         bait.deleteJob(jobId);
         jobs = bait.getJobs();
         expect(jobs.length).to.equal(0);
         done();
     });
 
-    it('createJob no body', function (done) {
+    it('createJob no body', (done) => {
 
         // switching this to pail later
-        var config = {
+        const config = {
             name: 'prs',
             scm: {
                 type: 'git',
@@ -428,24 +431,24 @@ describe('scm', function () {
                 branch: 'master'
             }
         };
-        var bait = new Bait(internals.defaults);
-        bait.createJob(config, function (createJob) {
+        const bait = new Bait(internals.defaults);
+        bait.createJob(config, (createJob) => {
 
             expect(createJob.id).to.exist();
             done();
         });
     });
 
-    it('startJob no body', function (done) {
+    it('startJob no body', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        bait.startJob(jobId, null, function () {
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        bait.startJob(jobId, null, () => {
 
-            var runs = bait.getRuns(jobId, null);
-            var runId = runs[0].id;
-            var run = bait.getRun(jobId, null, runId);
+            const runs = bait.getRuns(jobId, null);
+            const runId = runs[0].id;
+            const run = bait.getRun(jobId, null, runId);
             expect(run.id).to.exist();
             expect(run.startTime).to.exist();
             expect(runs.length).to.equal(1);
@@ -453,16 +456,16 @@ describe('scm', function () {
         });
     });
 
-    it('getRun no body', function (done) {
+    it('getRun no body', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var runs = bait.getRuns(jobId, null);
-        var runId = runs[0].id;
-        var intervalObj = setInterval(function () {
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        const runs = bait.getRuns(jobId, null);
+        const runId = runs[0].id;
+        const intervalObj = setInterval(() => {
 
-            var run = bait.getRun(jobId, null, runId);
+            const run = bait.getRun(jobId, null, runId);
             //console.log(run);
             if (run.finishTime) {
                 clearInterval(intervalObj);
@@ -475,28 +478,28 @@ describe('scm', function () {
         }, 1000);
     });
 
-    it('deleteJob nobody', function (done) {
+    it('deleteJob nobody', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
+        const bait = new Bait(internals.defaults);
+        let jobs = bait.getJobs();
+        const jobId = jobs[0].id;
         bait.deleteJob(jobId);
         jobs = bait.getJobs();
         expect(jobs.length).to.equal(0);
         done();
     });
 
-    it('createJob noscm', function (done) {
+    it('createJob noscm', (done) => {
 
-        var config = {
+        const config = {
             name: 'noscm',
             scm: {
                 type: 'none'
             },
             body: ['uptime']
         };
-        var bait = new Bait(internals.defaults);
-        bait.createJob(config, function (createJob) {
+        const bait = new Bait(internals.defaults);
+        bait.createJob(config, (createJob) => {
 
             expect(createJob.id).to.exist();
             expect(createJob.body[0]).to.equal('uptime');
@@ -505,19 +508,19 @@ describe('scm', function () {
         });
     });
 
-    it('updateJob noscm', function (done) {
+    it('updateJob noscm', (done) => {
 
-        var config = {
+        const config = {
             scm: {
                 type: 'none',
                 url: 'https://github.com/fishin/pail',
                 branch: 'master'
             }
         };
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        bait.updateJob(jobId, config, function (updateJob) {
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        bait.updateJob(jobId, config, (updateJob) => {
 
             expect(updateJob.scm.type).to.equal('none');
             expect(updateJob.id).to.exist();
@@ -529,16 +532,16 @@ describe('scm', function () {
         });
     });
 
-    it('startJob noscm', function (done) {
+    it('startJob noscm', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        bait.startJob(jobId, null, function () {
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        bait.startJob(jobId, null, () => {
 
-            var runs = bait.getRuns(jobId, null);
-            var runId = runs[0].id;
-            var run = bait.getRun(jobId, null, runId);
+            const runs = bait.getRuns(jobId, null);
+            const runId = runs[0].id;
+            const run = bait.getRun(jobId, null, runId);
             expect(run.id).to.exist();
             expect(run.startTime).to.exist();
             expect(runs.length).to.equal(1);
@@ -546,16 +549,16 @@ describe('scm', function () {
         });
     });
 
-    it('getRun noscm', function (done) {
+    it('getRun noscm', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var runs = bait.getRuns(jobId, null);
-        var runId = runs[0].id;
-        var intervalObj1 = setInterval(function () {
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        const runs = bait.getRuns(jobId, null);
+        const runId = runs[0].id;
+        const intervalObj1 = setInterval(() => {
 
-            var run = bait.getRun(jobId, null, runId);
+            const run = bait.getRun(jobId, null, runId);
             //console.log(run);
             if (run.finishTime) {
                 clearInterval(intervalObj1);
@@ -570,11 +573,11 @@ describe('scm', function () {
         }, 1000);
     });
 
-    it('deleteJob noscm', function (done) {
+    it('deleteJob noscm', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
+        const bait = new Bait(internals.defaults);
+        let jobs = bait.getJobs();
+        const jobId = jobs[0].id;
         bait.deleteJob(jobId);
         jobs = bait.getJobs();
         expect(jobs.length).to.equal(0);

@@ -1,26 +1,28 @@
-var Code = require('code');
-var Lab = require('lab');
-var Mock = require('mock');
+'use strict';
 
-var Bait = require('../lib/index');
+const Code = require('code');
+const Lab = require('lab');
+const Mock = require('mock');
 
-var internals = {
+const Bait = require('../lib/index');
+
+const internals = {
     defaults: {
         dirPath: __dirname + '/tmp',
         mock: true
     }
 };
 
-var lab = exports.lab = Lab.script();
-var expect = Code.expect;
-var describe = lab.describe;
-var it = lab.it;
+const lab = exports.lab = Lab.script();
+const expect = Code.expect;
+const describe = lab.describe;
+const it = lab.it;
 
-describe('prs', function () {
+describe('prs', () => {
 
-    it('createJob scm', function (done) {
+    it('createJob scm', (done) => {
 
-        var config = {
+        const config = {
             name: 'mock',
             scm: {
                 type: 'git',
@@ -28,18 +30,18 @@ describe('prs', function () {
                 branch: 'master'
             }
         };
-        var bait = new Bait(internals.defaults);
-        bait.createJob(config, function (createJob) {
+        const bait = new Bait(internals.defaults);
+        bait.createJob(config, (createJob) => {
 
             expect(createJob.id).to.exist();
             done();
         });
     });
 
-    it('getPullRequests scm', function (done) {
+    it('getPullRequests scm', (done) => {
 
-        var type = 'github';
-        var routes = [
+        const type = 'github';
+        const routes = [
             {
                 method: 'get',
                 path: '/repos/org/repo/pulls',
@@ -51,15 +53,15 @@ describe('prs', function () {
                 file: 'anonymous.json'
             }
         ];
-        Mock.prepareServer(type, routes, function (server) {
+        Mock.prepareServer(type, routes, (server) => {
 
-            server.start(function () {
+            server.start(() => {
 
                 //console.log(server.info);
-                var bait = new Bait({ dirPath: internals.defaults.dirPath, github: { url: server.info.uri } });
-                var jobs = bait.getJobs();
-                var jobId = jobs[0].id;
-                bait.getPullRequests(jobId, null, function (prs) {
+                const bait = new Bait({ dirPath: internals.defaults.dirPath, github: { url: server.info.uri } });
+                const jobs = bait.getJobs();
+                const jobId = jobs[0].id;
+                bait.getPullRequests(jobId, null, (prs) => {
 
                     //console.log(prs);
                     expect(prs.length).to.be.above(0);
@@ -69,10 +71,10 @@ describe('prs', function () {
         });
     });
 
-    it('getPullRequest scm', function (done) {
+    it('getPullRequest scm', (done) => {
 
-        var type = 'github';
-        var routes = [
+        const type = 'github';
+        const routes = [
             {
                 method: 'get',
                 path: '/repos/org/repo/pulls/1',
@@ -84,16 +86,16 @@ describe('prs', function () {
                 file: 'anonymous.json'
             }
         ];
-        Mock.prepareServer(type, routes, function (server) {
+        Mock.prepareServer(type, routes, (server) => {
 
-            server.start(function () {
+            server.start(() => {
 
                 //console.log(server.info);
-                var bait = new Bait({ dirPath: internals.defaults.dirPath, github: { url: server.info.uri } });
-                var jobs = bait.getJobs();
-                var jobId = jobs[0].id;
-                var number = 1;
-                bait.getPullRequest(jobId, number, null, function (pr) {
+                const bait = new Bait({ dirPath: internals.defaults.dirPath, github: { url: server.info.uri } });
+                const jobs = bait.getJobs();
+                const jobId = jobs[0].id;
+                const number = 1;
+                bait.getPullRequest(jobId, number, null, (pr) => {
 
                     expect(pr.number).to.equal(1);
                     expect(pr.title).to.equal('mock pr');
@@ -107,10 +109,10 @@ describe('prs', function () {
         });
     });
 
-    it('mergePullRequest scm', function (done) {
+    it('mergePullRequest scm', (done) => {
 
-        var type = 'github';
-        var routes = [
+        const type = 'github';
+        const routes = [
             {
                 method: 'put',
                 path: '/repos/org/repo/pulls/1/merge',
@@ -122,17 +124,17 @@ describe('prs', function () {
                 file: 'authorized.json'
             }
         ];
-        Mock.prepareServer(type, routes, function (server) {
+        Mock.prepareServer(type, routes, (server) => {
 
-            server.start(function () {
+            server.start(() => {
 
                 //console.log(server.info);
-                var bait = new Bait({ dirPath: internals.defaults.dirPath, github: { url: server.info.uri } });
-                var jobs = bait.getJobs();
-                var jobId = jobs[0].id;
-                var number = 1;
-                var token = 1;
-                bait.mergePullRequest(jobId, number, token, function (result) {
+                const bait = new Bait({ dirPath: internals.defaults.dirPath, github: { url: server.info.uri } });
+                const jobs = bait.getJobs();
+                const jobId = jobs[0].id;
+                const number = 1;
+                const token = 1;
+                bait.mergePullRequest(jobId, number, token, (result) => {
 
                     //console.log(result);
                     expect(result.sha.length).to.equal(40);
@@ -144,37 +146,37 @@ describe('prs', function () {
         });
     });
 
-    it('deleteJob scm', function (done) {
+    it('deleteJob scm', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
+        const bait = new Bait(internals.defaults);
+        let jobs = bait.getJobs();
+        const jobId = jobs[0].id;
         bait.deleteJob(jobId);
         jobs = bait.getJobs();
         expect(jobs.length).to.equal(0);
         done();
     });
 
-    it('createJob', function (done) {
+    it('createJob', (done) => {
 
         // switching this to pail later
-        var config = {
+        const config = {
             name: 'mock'
         };
-        var bait = new Bait(internals.defaults);
-        bait.createJob(config, function (createJob) {
+        const bait = new Bait(internals.defaults);
+        bait.createJob(config, (createJob) => {
 
             expect(createJob.id).to.exist();
             done();
         });
     });
 
-    it('getPullRequests', function (done) {
+    it('getPullRequests', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        bait.getPullRequests(jobId, null, function (prs) {
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        bait.getPullRequests(jobId, null, (prs) => {
 
             //console.log(prs);
             expect(prs.length).to.equal(0);
@@ -182,13 +184,13 @@ describe('prs', function () {
         });
     });
 
-    it('getPullRequest', function (done) {
+    it('getPullRequest', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var number = 0;
-        bait.getPullRequest(jobId, number, null, function (pr) {
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        const number = 0;
+        bait.getPullRequest(jobId, number, null, (pr) => {
 
             //console.log(pr);
             expect(pr).to.not.exist();
@@ -196,13 +198,13 @@ describe('prs', function () {
         });
     });
 
-    it('mergePullRequest', function (done) {
+    it('mergePullRequest', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var number = 0;
-        bait.mergePullRequest(jobId, number, null, function (result) {
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        const number = 0;
+        bait.mergePullRequest(jobId, number, null, (result) => {
 
             //console.log(pr);
             expect(result).to.not.exist();
@@ -210,21 +212,21 @@ describe('prs', function () {
         });
     });
 
-    it('deleteJob', function (done) {
+    it('deleteJob', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
+        const bait = new Bait(internals.defaults);
+        let jobs = bait.getJobs();
+        const jobId = jobs[0].id;
         bait.deleteJob(jobId);
         jobs = bait.getJobs();
         expect(jobs.length).to.equal(0);
         done();
     });
 
-    it('createJob', function (done) {
+    it('createJob', (done) => {
 
         // switching this to pail later
-        var config = {
+        const config = {
             name: 'pr',
             scm: {
                 type: 'git',
@@ -234,83 +236,83 @@ describe('prs', function () {
             },
             body: ['sleep 5']
         };
-        var bait = new Bait(internals.defaults);
-        bait.createJob(config, function (createJob) {
+        const bait = new Bait(internals.defaults);
+        bait.createJob(config, (createJob) => {
 
             expect(createJob.id).to.exist();
             done();
         });
     });
 
-    it('startJob', function (done) {
+    it('startJob', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var pr = {
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        const pr = {
             number: 1
         };
-        bait.startJob(jobId, pr, function () {
+        bait.startJob(jobId, pr, () => {
 
             done();
         });
     });
 
-    it('getRunPids 1', function (done) {
+    it('getRunPids 1', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var pr = {
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        const pr = {
             number: 1
         };
-        var runs = bait.getRuns(jobId, pr);
-        var runId = runs[0].id;
-        var pids = bait.getRunPids(jobId, pr, runId);
+        const runs = bait.getRuns(jobId, pr);
+        const runId = runs[0].id;
+        const pids = bait.getRunPids(jobId, pr, runId);
         expect(pids.length).to.equal(1);
         done();
     });
 
-    it('startJob should not result in extra run', function (done) {
+    it('startJob should not result in extra run', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var pr = {
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        const pr = {
             number: 1
         };
-        bait.startJob(jobId, pr, function () {
+        bait.startJob(jobId, pr, () => {
 
             done();
         });
     });
 
-    it('getRuns', function (done) {
+    it('getRuns', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var pr = {
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        const pr = {
             number: 1
         };
-        var runs = bait.getRuns(jobId, pr);
+        const runs = bait.getRuns(jobId, pr);
         expect(runs.length).to.equal(1);
         done();
     });
 
-    it('getRun', function (done) {
+    it('getRun', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var pr = {
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        const pr = {
             number: 1
         };
-        var runs = bait.getRuns(jobId, pr);
-        var runId = runs[0].id;
-        var intervalObj1 = setInterval(function () {
+        const runs = bait.getRuns(jobId, pr);
+        const runId = runs[0].id;
+        const intervalObj1 = setInterval(() => {
 
-            var run = bait.getRun(jobId, pr, runId);
+            const run = bait.getRun(jobId, pr, runId);
             //console.log(run);
             if (run.finishTime) {
                 clearInterval(intervalObj1);
@@ -324,81 +326,81 @@ describe('prs', function () {
         }, 1000);
     });
 
-    it('getRunPids 0', function (done) {
+    it('getRunPids 0', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var pr = {
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        const pr = {
             number: 1
         };
-        var runs = bait.getRuns(jobId, pr);
-        var runId = runs[0].id;
-        var pids = bait.getRunPids(jobId, pr, runId);
+        const runs = bait.getRuns(jobId, pr);
+        const runId = runs[0].id;
+        const pids = bait.getRunPids(jobId, pr, runId);
         expect(pids.length).to.equal(0);
         done();
     });
 
-    it('deleteRun', function (done) {
+    it('deleteRun', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var pr = {
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        const pr = {
             number: 1
         };
-        var runs = bait.getRuns(jobId, pr);
-        var runId = runs[0].id;
+        let runs = bait.getRuns(jobId, pr);
+        const runId = runs[0].id;
         bait.deleteRun(jobId, pr, runId);
         runs = bait.getRuns(jobId, pr);
         expect(runs.length).to.equal(0);
         done();
     });
 
-    it('deleteRuns', function (done) {
+    it('deleteRuns', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var pr = {
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        const pr = {
             number: 1
         };
-        var runs = bait.getRuns(jobId, pr);
+        let runs = bait.getRuns(jobId, pr);
         bait.deleteRuns(jobId, pr);
         runs = bait.getRuns(jobId, pr);
         expect(runs.length).to.equal(0);
         done();
     });
 
-    it('deletePullRequest', function (done) {
+    it('deletePullRequest', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var pr = {
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        const pr = {
             number: 1
         };
         bait.deletePullRequest(jobId, pr.number);
-        var runs = bait.getRuns(jobId, pr);
+        const runs = bait.getRuns(jobId, pr);
         expect(runs.length).to.equal(0);
         done();
     });
 
-    it('deleteJob', function (done) {
+    it('deleteJob', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
+        const bait = new Bait(internals.defaults);
+        let jobs = bait.getJobs();
+        const jobId = jobs[0].id;
         bait.deleteJob(jobId);
         jobs = bait.getJobs();
         expect(jobs.length).to.equal(0);
         done();
     });
 
-    it('createJob cancel', function (done) {
+    it('createJob cancel', (done) => {
 
         // switching this to pail later
-        var config = {
+        const config = {
             name: 'prcancel',
             scm: {
                 type: 'git',
@@ -408,42 +410,42 @@ describe('prs', function () {
             },
             body: ['sleep 5']
         };
-        var bait = new Bait(internals.defaults);
-        bait.createJob(config, function (createJob) {
+        const bait = new Bait(internals.defaults);
+        bait.createJob(config, (createJob) => {
 
             expect(createJob.id).to.exist();
             done();
         });
     });
 
-    it('startJob cancel', function (done) {
+    it('startJob cancel', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var pr = {
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        const pr = {
             number: 1
         };
-        bait.startJob(jobId, pr, function () {
+        bait.startJob(jobId, pr, () => {
 
             done();
         });
     });
 
-    it('cancelRun', function (done) {
+    it('cancelRun', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var pr = {
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        const pr = {
             number: 1
         };
-        var runs = bait.getRuns(jobId, pr);
-        var runId = runs[0].id;
+        const runs = bait.getRuns(jobId, pr);
+        const runId = runs[0].id;
         bait.cancelRun(jobId, pr, runId);
-        var intervalObj2 = setInterval(function () {
+        const intervalObj2 = setInterval(() => {
 
-            var run = bait.getRun(jobId, pr, runId);
+            const run = bait.getRun(jobId, pr, runId);
             if (run.finishTime) {
                 clearInterval(intervalObj2);
                 expect(run.id).to.exist();
@@ -456,21 +458,21 @@ describe('prs', function () {
         }, 1000);
     });
 
-    it('deleteJob cancel', function (done) {
+    it('deleteJob cancel', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
+        const bait = new Bait(internals.defaults);
+        let jobs = bait.getJobs();
+        const jobId = jobs[0].id;
         bait.deleteJob(jobId);
         jobs = bait.getJobs();
         expect(jobs.length).to.equal(0);
         done();
     });
 
-    it('createJob real pr', function (done) {
+    it('createJob real pr', (done) => {
 
         // switching this to pail later
-        var config = {
+        const config = {
             name: 'pr',
             scm: {
                 type: 'git',
@@ -479,24 +481,24 @@ describe('prs', function () {
             },
             body: ['npm install', 'npm test']
         };
-        var bait = new Bait({ dirPath: internals.defaults.dirPath, mock: false });
-        bait.createJob(config, function (createJob) {
+        const bait = new Bait({ dirPath: internals.defaults.dirPath, mock: false });
+        bait.createJob(config, (createJob) => {
 
             expect(createJob.id).to.exist();
             done();
         });
     });
 
-    it('startJob real prs', function (done) {
+    it('startJob real prs', (done) => {
 
-        var bait = new Bait({ dirPath: internals.defaults.dirPath, mock: false });
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        bait.getPullRequests(jobId, null, function (prs) {
+        const bait = new Bait({ dirPath: internals.defaults.dirPath, mock: false });
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        bait.getPullRequests(jobId, null, (prs) => {
 
-            bait.startJob(jobId, prs[0], function () {
+            bait.startJob(jobId, prs[0], () => {
 
-                bait.startJob(jobId, prs[1], function () {
+                bait.startJob(jobId, prs[1], () => {
 
                     done();
                 });
@@ -504,18 +506,18 @@ describe('prs', function () {
         });
     });
 
-    it('getRun pr1', function (done) {
+    it('getRun pr1', (done) => {
 
-        var bait = new Bait({ dirPath: internals.defaults.dirPath, mock: false });
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        bait.getPullRequests(jobId, null, function (prs) {
+        const bait = new Bait({ dirPath: internals.defaults.dirPath, mock: false });
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        bait.getPullRequests(jobId, null, (prs) => {
 
-            var runs = bait.getRuns(jobId, prs[0]);
-            var runId = runs[0].id;
-            var intervalObj3 = setInterval(function () {
+            const runs = bait.getRuns(jobId, prs[0]);
+            const runId = runs[0].id;
+            const intervalObj3 = setInterval(() => {
 
-                var run = bait.getRun(jobId, prs[0], runId);
+                const run = bait.getRun(jobId, prs[0], runId);
                 //console.log(run);
                 if (run.finishTime) {
                     clearInterval(intervalObj3);
@@ -530,18 +532,18 @@ describe('prs', function () {
         });
     });
 
-    it('getRun pr2', function (done) {
+    it('getRun pr2', (done) => {
 
-        var bait = new Bait({ dirPath: internals.defaults.dirPath, mock: false });
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        bait.getPullRequests(jobId, null, function (prs) {
+        const bait = new Bait({ dirPath: internals.defaults.dirPath, mock: false });
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        bait.getPullRequests(jobId, null, (prs) => {
 
-            var runs = bait.getRuns(jobId, prs[1]);
-            var runId = runs[0].id;
-            var intervalObj4 = setInterval(function () {
+            const runs = bait.getRuns(jobId, prs[1]);
+            const runId = runs[0].id;
+            const intervalObj4 = setInterval(() => {
 
-                var run = bait.getRun(jobId, prs[1], runId);
+                const run = bait.getRun(jobId, prs[1], runId);
                 //console.log(run);
                 if (run.finishTime) {
                     clearInterval(intervalObj4);
@@ -556,11 +558,11 @@ describe('prs', function () {
         });
     });
 
-    it('deleteJob pr real', function (done) {
+    it('deleteJob pr real', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
+        const bait = new Bait(internals.defaults);
+        let jobs = bait.getJobs();
+        const jobId = jobs[0].id;
         bait.deleteJob(jobId);
         jobs = bait.getJobs();
         expect(jobs.length).to.equal(0);

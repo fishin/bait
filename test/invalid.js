@@ -1,58 +1,60 @@
-var Code = require('code');
-var Lab = require('lab');
+'use strict';
 
-var Bait = require('../lib/index');
+const Code = require('code');
+const Lab = require('lab');
 
-var internals = {
+const Bait = require('../lib/index');
+
+const internals = {
     defaults: {
         dirPath: __dirname + '/tmp'
     }
 };
 
-var lab = exports.lab = Lab.script();
-var expect = Code.expect;
-var describe = lab.describe;
-var it = lab.it;
+const lab = exports.lab = Lab.script();
+const expect = Code.expect;
+const describe = lab.describe;
+const it = lab.it;
 
-describe('invalid', function () {
+describe('invalid', () => {
 
-    it('getRun', function (done) {
+    it('getRun', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var run = bait.getRun('invalid', null, 'invalid');
+        const bait = new Bait(internals.defaults);
+        const run = bait.getRun('invalid', null, 'invalid');
         expect(run).to.not.exist();
         done();
     });
 
-    it('createJob cmd', function (done) {
+    it('createJob cmd', (done) => {
 
-        var config = {
+        const config = {
             name: 'invalid',
             body: [
                 'invalid'
             ]
         };
-        var bait = new Bait(internals.defaults);
-        bait.createJob(config, function (createJob) {
+        const bait = new Bait(internals.defaults);
+        bait.createJob(config, (createJob) => {
 
             expect(createJob.id).to.exist();
             done();
         });
     });
 
-    it('updateJob cmd scm https', function (done) {
+    it('updateJob cmd scm https', (done) => {
 
-        var config = {
+        const config = {
             scm: {
                 type: 'git',
                 url: 'https://github.com/fishin/invalid',
                 branch: 'master'
             }
         };
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        bait.updateJob(jobId, config, function (updateJob) {
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        bait.updateJob(jobId, config, (updateJob) => {
 
             expect(updateJob.id).to.exist();
             expect(updateJob.updateTime).to.not.exist();
@@ -61,17 +63,17 @@ describe('invalid', function () {
         });
     });
 
-    it('updateJob cmd scm type', function (done) {
+    it('updateJob cmd scm type', (done) => {
 
-        var config = {
+        const config = {
             scm: {
                 type: 'invalid'
             }
         };
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        bait.updateJob(jobId, config, function (updateJob) {
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        bait.updateJob(jobId, config, (updateJob) => {
 
             expect(updateJob.id).to.exist();
             expect(updateJob.updateTime).to.not.exist();
@@ -80,16 +82,16 @@ describe('invalid', function () {
         });
     });
 
-    it('startJob cmd', function (done) {
+    it('startJob cmd', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        bait.startJob(jobId, null, function () {
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        bait.startJob(jobId, null, () => {
 
-            var runs = bait.getRuns(jobId, null);
-            var runId = runs[0].id;
-            var run = bait.getRun(jobId, null, runId);
+            const runs = bait.getRuns(jobId, null);
+            const runId = runs[0].id;
+            const run = bait.getRun(jobId, null, runId);
             expect(run.id).to.exist();
             expect(run.startTime).to.exist();
             expect(runs.length).to.equal(1);
@@ -97,16 +99,16 @@ describe('invalid', function () {
         });
     });
 
-    it('getRun cmd', function (done) {
+    it('getRun cmd', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
-        var runs = bait.getRuns(jobId, null);
-        var runId = runs[0].id;
-        var intervalObj = setInterval(function () {
+        const bait = new Bait(internals.defaults);
+        const jobs = bait.getJobs();
+        const jobId = jobs[0].id;
+        const runs = bait.getRuns(jobId, null);
+        const runId = runs[0].id;
+        const intervalObj = setInterval(() => {
 
-            var run = bait.getRun(jobId, null, runId);
+            const run = bait.getRun(jobId, null, runId);
             if (run.finishTime) {
                 clearInterval(intervalObj);
                 //console.log(run);
@@ -121,27 +123,27 @@ describe('invalid', function () {
         }, 1000);
     });
 
-    it('deleteJob cmd', function (done) {
+    it('deleteJob cmd', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var jobs = bait.getJobs();
-        var jobId = jobs[0].id;
+        const bait = new Bait(internals.defaults);
+        let jobs = bait.getJobs();
+        const jobId = jobs[0].id;
         bait.deleteJob(jobId);
         jobs = bait.getJobs();
         expect(jobs.length).to.equal(0);
         done();
     });
 
-    it('createJob invalid scm type', function (done) {
+    it('createJob invalid scm type', (done) => {
 
-        var config = {
+        const config = {
             name: 'invalid',
             scm: {
                 type: 'invalid'
             }
         };
-        var bait = new Bait(internals.defaults);
-        bait.createJob(config, function (createJob) {
+        const bait = new Bait(internals.defaults);
+        bait.createJob(config, (createJob) => {
 
             expect(createJob.id).to.not.exist();
             expect(createJob.message).to.exist();
@@ -149,9 +151,9 @@ describe('invalid', function () {
         });
     });
 
-    it('createJob scm invalid repo http', function (done) {
+    it('createJob scm invalid repo http', (done) => {
 
-        var config = {
+        const config = {
             name: 'http',
             scm: {
                 type: 'git',
@@ -159,8 +161,8 @@ describe('invalid', function () {
                 branch: 'master'
             }
         };
-        var bait = new Bait(internals.defaults);
-        bait.createJob(config, function (createJob) {
+        const bait = new Bait(internals.defaults);
+        bait.createJob(config, (createJob) => {
 
             expect(createJob.id).to.not.exist();
             expect(createJob.message).to.exist();

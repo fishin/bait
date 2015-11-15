@@ -1,41 +1,43 @@
-var Code = require('code');
-var Fs = require('fs');
-var Lab = require('lab');
-var Pail = require('pail');
-var Path = require('path');
+'use strict';
 
-var Bait = require('../lib/index');
+const Code = require('code');
+const Fs = require('fs');
+const Lab = require('lab');
+const Pail = require('pail');
+const Path = require('path');
 
-var internals = {
+const Bait = require('../lib/index');
+
+const internals = {
     defaults: {
         dirPath: __dirname + '/tmp'
     }
 };
 
-var lab = exports.lab = Lab.script();
-var expect = Code.expect;
-var describe = lab.describe;
-var it = lab.it;
+const lab = exports.lab = Lab.script();
+const expect = Code.expect;
+const describe = lab.describe;
+const it = lab.it;
 
-describe('sort jobs', function () {
+describe('sort jobs', () => {
 
-    it('getJobs', function (done) {
+    it('getJobs', (done) => {
 
-        var jobDir = Path.join(internals.defaults.dirPath, 'job');
-        var name = ['a', 'c', 'b'];
-        var pail = new Pail(internals.defaults);
+        const jobDir = Path.join(internals.defaults.dirPath, 'job');
+        const name = ['a', 'c', 'b'];
+        const pail = new Pail(internals.defaults);
         pail.createDir('job');
-        for (var i = 1; i < 4; i++) {
-            var id = '12345678-1234-1234-1234-12345678901' + i.toString();
+        for (let i = 1; i < 4; ++i) {
+            const id = '12345678-1234-1234-1234-12345678901' + i.toString();
             pail.createDir(Path.join('job', id));
-            var config = {
+            const config = {
                 id: id,
                 name: name[i - 1]
             };
             Fs.writeFileSync(Path.join(jobDir, id, 'config.json'), JSON.stringify(config));
         }
-        var bait = new Bait({ dirPath: jobDir });
-        var jobs = bait.getJobs();
+        const bait = new Bait({ dirPath: jobDir });
+        const jobs = bait.getJobs();
         //console.log(jobs);
         expect(jobs.length).to.equal(3);
         expect(jobs[0].name).to.equal('a');
