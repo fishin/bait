@@ -399,7 +399,7 @@ describe('scm', () => {
             //console.log(run);
             if (run.finishTime) {
                 clearInterval(intervalObj3);
-                console.log(run);
+                //console.log(run);
                 expect(run.status).to.equal('failed');
                 expect(run.id).to.exist();
                 expect(run.commands).to.be.length(2);
